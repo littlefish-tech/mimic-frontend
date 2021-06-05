@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
-import { Button, Dropdown, Form, Input } from "semantic-ui-react";
+import { Button, Dropdown, Form, Input, Modal } from "semantic-ui-react";
 
 // import Factory from "../lib/Factory";
 
@@ -46,11 +46,14 @@ export interface tObj {
   };
 }
 
-export default function DeployNewVaultToken() {
+export default function DeployNewVaultToken(props: {
+  openPlusModal: boolean;
+  onClose: any;
+}) {
   let managerAddr: string = JSON.parse(localStorage.getItem("account") || "{}");
 
-  const [tokenName, setTokenName] = useState<string>("t");
-  const [tokenSymble, setTokenSymble] = useState<string>("t");
+  const [tokenName, setTokenName] = useState<string>("");
+  const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
   const [tokenObjArr, setTokenObjArr] = useState<Object[]>([]);
   //   const [managerAddr, setManagerAddr] = useState<string>("");
@@ -155,52 +158,61 @@ export default function DeployNewVaultToken() {
   // }, []);
 
   return (
-    <div className="dnVaultToken">
-      <Form>
-        <Form.Group widths="2">
-          <Form.Field
-            control={Input}
-            label="Token Name"
-            placeholder="Token Name"
-            value={tokenName}
-            onChange={(e: any) => setTokenName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group widths="2">
-          <Form.Field
-            control={Input}
-            label="Token Symbol"
-            placeholder="Token Symbbol"
-            value={tokenSymble}
-            onChange={(e: any) => setTokenSymble(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group widths="2">
-          <Form.Field
-            control={Input}
-            label="Manager Address"
-            placeholder="Manager Address"
-            value={managerAddr}
-            // onChange={(e: any) => setManagerAddr(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Dropdown
-            onChange={(e: React.SyntheticEvent<HTMLElement>, data: any) =>
-              setAssetTokenAddr(data.value)
-            }
-            options={assetTokenAddrs}
-            placeholder="Choose an option"
-            selection
-            value={assetTokenAddr}
-            widths="2"
-          />
-        </Form.Group>
+    <div>
+      <Modal
+        open={props.openPlusModal}
+        onClose={props.onClose}
+        closeIcon
+        size="small"
+      >
+        <Modal.Content>
+          <Form>
+            <Form.Field
+              control={Input}
+              label="Token Name"
+              placeholder="Token Name"
+              value={tokenName}
+              onChange={(e: any) => setTokenName(e.target.value)}
+            />
 
-        <Form.Field control={Button} onClick={handleClick}>
-          Generate Token
-        </Form.Field>
-      </Form>
+            <Form.Field
+              control={Input}
+              label="Token Symbol"
+              placeholder="Token Symbbol"
+              value={tokenSymble}
+              onChange={(e: any) => setTokenSymble(e.target.value)}
+            />
+
+            <Form.Field
+              control={Input}
+              label="Manager Address"
+              placeholder="Manager Address"
+              value={managerAddr}
+              // onChange={(e: any) => setManagerAddr(e.target.value)}
+            />
+            <Form.Field>
+              <Dropdown
+                onChange={(e: React.SyntheticEvent<HTMLElement>, data: any) =>
+                  setAssetTokenAddr(data.value)
+                }
+                options={assetTokenAddrs}
+                placeholder="Choose an option"
+                selection
+                value={assetTokenAddr}
+                widths="2"
+              />
+            </Form.Field>
+            <Form.Field
+              control={Button}
+              onClick={handleClick}
+              icon="plus circle"
+              content="Generate Token"
+              labelPosition="right"
+              color="teal"
+            ></Form.Field>
+          </Form>
+        </Modal.Content>
+      </Modal>
     </div>
   );
 }

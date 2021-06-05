@@ -56,4 +56,15 @@ export class VaultToken extends ERC20 {
       this.status = true;
     }
   }
+
+  deposit(amount, f) {
+    this.vt.methods["deposit"](amount)
+      .send({ from: f })
+      .on("receipt", function (receipt) {
+        console.log(receipt);
+      })
+      .on("error", function (error, receipt) {
+        console.log(error);
+      });
+  }
 }

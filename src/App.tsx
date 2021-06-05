@@ -5,7 +5,7 @@ import VTList from "./components/VTList.js";
 // import VaultContract from "./components/VaultContract";
 import { Button, Header, Modal } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
-// import TopMenu from "./components/TopMenu";
+import TopMenu from "./components/TopMenu";
 
 // create a new web3 oject
 let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
@@ -76,17 +76,16 @@ export default function App() {
 
   return (
     <div>
-      {/* <TopMenu
+      <TopMenu
         btnText={btnText}
         acctNum={acctNum}
         chainId={chainId}
         ethBal={ethBal}
         connectMM={connectMM}
-      /> */}
+      />
 
       <VTList acctNum={acctNum} />
       <div className="content"></div>
-      <DeployNewVaultToken />
     </div>
   );
 }

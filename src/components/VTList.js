@@ -90,7 +90,7 @@ export default function VTList(props) {
         if (
           result === props.acctNum &&
           !include(result, managedList) &&
-          v.tName !== "token"
+          (v.tName !== "t" || v.tName !== "token")
         ) {
           managedList.push(v);
           setManagedList(managedList);
@@ -275,6 +275,7 @@ export default function VTList(props) {
                 tList={managedList}
                 update={update}
                 title="Managed Token"
+                acct={props.acctNum}
               />
             </Table.Cell>
             <Table.Cell>
@@ -282,6 +283,7 @@ export default function VTList(props) {
                 tList={portfolioList}
                 update={update}
                 title="Portfolio"
+                acct={props.acctNum}
               />
             </Table.Cell>
             <Table.Cell>
@@ -289,6 +291,7 @@ export default function VTList(props) {
                 tList={followList}
                 update={update}
                 title="Follow List"
+                acct={props.acctNum}
               />
             </Table.Cell>
           </Table.Row>

@@ -1,14 +1,34 @@
-import React, { Component } from "react";
-import { Icon, Input, Menu, Button } from "semantic-ui-react";
-import MMConnect from "./components/MMconnection";
+import React, { useState } from "react";
+import { Icon, Menu, Button } from "semantic-ui-react";
+import MMConnect from "./MMconnection";
+import DeployNewVaultToken from "./DeployNewVaultToken";
 
 export default function TopMenu(props) {
+  const [openPlusModal, setOpenPlusModal] = useState(false);
+  // functions to open the deploy new token modal
+  function openModal() {
+    console.log("clikced");
+    setOpenPlusModal(true);
+  }
+
   return (
     <div>
+      <DeployNewVaultToken
+        openPlusModal={openPlusModal}
+        onClose={() => setOpenPlusModal(false)}
+      />
       <Menu inverted size="tiny" color="black">
         <Menu.Menu position="right">
           <Menu.Item>
-            <Button>
+            <Icon
+              name="plus circle"
+              size="large"
+              color="teal"
+              onClick={openModal}
+            />
+          </Menu.Item>
+          <Menu.Item>
+            <Button color="orange">
               {" "}
               <MMConnect
                 btnText={props.btnText}
@@ -18,9 +38,6 @@ export default function TopMenu(props) {
                 connectMM={props.connectMM}
               />
             </Button>
-          </Menu.Item>
-          <Menu.Item>
-            <Button>Click Here</Button>
           </Menu.Item>
         </Menu.Menu>
       </Menu>

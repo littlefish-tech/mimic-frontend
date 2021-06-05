@@ -8,6 +8,7 @@ export default function TokenList(props: {
   tList: Object[];
   update: number;
   title: string;
+  acct: string;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [clickedItem, setClickedItem] = useState<Object | null>();
@@ -20,7 +21,9 @@ export default function TokenList(props: {
   return (
     <div>
       <div>
-        <Header size="medium">{props.title}</Header>
+        <Header size="large" color="blue">
+          {props.title}
+        </Header>
         <List>
           {props.tList.map((item: any, i) => {
             return (
@@ -30,6 +33,8 @@ export default function TokenList(props: {
                 value={item}
                 verticalAlign="top"
                 disabled={!item.status}
+                celled
+                size="medium"
               >
                 {item.name()}
                 {/* {item.asset !== "" ? " **get it" : " not received"} */}
@@ -40,10 +45,10 @@ export default function TokenList(props: {
       </div>
       <Modal open={open} onClose={() => setOpen(false)} closeIcon>
         <Modal.Header>
-          <ERCTokenInfo token={clickedItem} />
+          <ERCTokenInfo token={clickedItem} acct={props.acct} />
         </Modal.Header>
         <Modal.Content>
-          <VaultTokenInfo token={clickedItem} />
+          <VaultTokenInfo token={clickedItem} acct={props.acct} />
         </Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>
