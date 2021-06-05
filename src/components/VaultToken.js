@@ -2,6 +2,7 @@ import { ERC20 } from "./Erc20";
 const vtabi = require("../abi/vtAbi.json");
 
 // create a vault token class and inherent ERC 20 class
+
 export class VaultToken extends ERC20 {
   constructor(web3, address) {
     super(web3, address);
@@ -9,6 +10,8 @@ export class VaultToken extends ERC20 {
     this.manager = "";
     this.asset = "";
     this.status = false;
+    this.vaultBalance = -1;
+    // an erc20 object corresponding to my asset token
     this.assetObject = null;
   }
   // return the manager address
@@ -58,6 +61,7 @@ export class VaultToken extends ERC20 {
   }
 
   deposit(amount, f) {
+    console.log("from address  " + f);
     this.vt.methods["deposit"](amount)
       .send({ from: f })
       .on("receipt", function (receipt) {
@@ -66,5 +70,9 @@ export class VaultToken extends ERC20 {
       .on("error", function (error, receipt) {
         console.log(error);
       });
+  }
+
+  setVaultBalance(amount) {
+    this.vaultBalance = amount;
   }
 }

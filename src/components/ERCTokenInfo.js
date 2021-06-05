@@ -1,15 +1,21 @@
 import React from "react";
-import { Item, Modal, Header } from "semantic-ui-react";
+import { Item, Modal, Header, Grid, Segment } from "semantic-ui-react";
 
 export default function ERCTokenInfo(props) {
-  console.log("at ercinfo");
-  console.log(props);
   return (
     <div>
-      <Header>{props.token.name()}</Header>
-      <Header>Balance: {props.token.myBalance}</Header>
-      <Header>Total Supply: {props.token.totalSupply}</Header>
-      {/* <Header>{props.token.symbol()}</Header> */}
+      <Header size="medium" color="purple">
+        {props.token.name()}
+      </Header>
+      <Grid stackable columns={2}>
+        <Grid.Column>
+          <Header size="medium">My Balance: {props.token.myBalance}</Header>
+        </Grid.Column>
+        <Grid.Column>
+          <Header size="medium">Total Supply: {props.token.totalSupply}</Header>
+        </Grid.Column>
+        {/* <Header>{props.token.symbol()}</Header> */}
+      </Grid>
     </div>
   );
 }

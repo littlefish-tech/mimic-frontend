@@ -9,7 +9,6 @@ import TopMenu from "./components/TopMenu";
 
 // create a new web3 oject
 let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-console.log(web3);
 
 export default function App() {
   // check localstorage if the wallet address is saves
@@ -30,7 +29,6 @@ export default function App() {
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
-    console.log(acctNum);
     if (acctNum) {
       const fFive = addr.slice(0, 10);
       const lFive = addr.slice(-8);
@@ -45,7 +43,6 @@ export default function App() {
   async function hasMMInstall() {
     if (web3 !== null) {
       await setHasMM(true);
-      console.log(hasMM);
 
       return;
     }
@@ -54,9 +51,7 @@ export default function App() {
     if (!hasMM) {
       alert("You must install MetaMask first");
     } else {
-      console.log("at else");
       const accounts = await web3.eth.getAccounts();
-      console.log(accounts);
       const account: string = accounts[0];
       const fFive = account.slice(0, 10);
       const lFive = account.slice(-8);
@@ -66,10 +61,8 @@ export default function App() {
       const chain_Id = await web3.eth.getChainId();
       const weiBal = await web3.eth.getBalance(account);
       const ethBal = parseInt(weiBal) / 1000000000000000000;
-      console.log(ethBal);
       setChainId(chain_Id);
       setEthBal(ethBal);
-      console.log(ethBal);
       localStorage.setItem("account", JSON.stringify(account));
     }
   }

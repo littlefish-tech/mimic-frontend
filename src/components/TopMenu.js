@@ -20,15 +20,17 @@ export default function TopMenu(props) {
       <Menu inverted size="tiny" color="black">
         <Menu.Menu position="right">
           <Menu.Item>
-            <Icon
-              name="plus circle"
-              size="large"
+            <Button
+              icon="plus circle"
+              size="medium"
               color="teal"
               onClick={openModal}
-            />
+            >
+              New Token
+            </Button>
           </Menu.Item>
           <Menu.Item>
-            <Button color="orange">
+            <Button color="grey">
               {" "}
               <MMConnect
                 btnText={props.btnText}

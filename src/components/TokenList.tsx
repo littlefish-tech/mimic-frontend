@@ -32,7 +32,7 @@ export default function TokenList(props: {
                 onClick={showTokenInfo}
                 value={item}
                 verticalAlign="top"
-                disabled={!item.status}
+                // disabled={!item.status}
                 celled
                 size="medium"
               >
@@ -43,14 +43,13 @@ export default function TokenList(props: {
           })}
         </List>
       </div>
-      <Modal open={open} onClose={() => setOpen(false)} closeIcon>
-        <Modal.Header>
+      <Modal open={open} onClose={() => setOpen(false)} closeIcon size="small">
+        {/* <Modal.Header>
           <ERCTokenInfo token={clickedItem} acct={props.acct} />
-        </Modal.Header>
+        </Modal.Header> */}
         <Modal.Content>
           <VaultTokenInfo token={clickedItem} acct={props.acct} />
         </Modal.Content>
-        <Modal.Actions></Modal.Actions>
       </Modal>
     </div>
   );

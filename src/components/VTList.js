@@ -24,7 +24,6 @@ export default function VTList(props) {
   );
 
   function getAllVT() {
-    console.log("ingetallvt");
     let factoryObj = new Factory(web3, factoryContractAddr);
 
     let p = factoryObj.findAllVT();
@@ -37,7 +36,6 @@ export default function VTList(props) {
       for (let i = 0; i < events.length; i++) {
         let addr = events[i].returnValues.vaultToken;
         if (!include(addr, vTokenList)) {
-          console.log("found a new token   " + addr);
           foundNewToken = true;
           let v = new VaultToken(web3, events[i].returnValues.vaultToken);
           vTokenList.push(v);
@@ -178,7 +176,6 @@ export default function VTList(props) {
       setUpdate(update + 1);
     }, 3000);
     // }
-    console.log("populate" + vtList.length);
     for (let i = 0; i < vtList.length; i++) {
       // if (vtList[i].name() === "Name") {
       populateName(i, vtList, setVTList);
@@ -202,6 +199,14 @@ export default function VTList(props) {
           }
         }
       });
+
+      // get vault tokens balance from asset token
+      if (vtList[i].assetObject) {
+        vtList[i].assetObject.getBalance(vtList[i].address).then((result) => {
+          vtList[i].setVaultBalance(result);
+        });
+      }
+
       vtList[i].updateTotalSupply().then((result) => {
         vtList[i].setTotalSupply(result);
       });
