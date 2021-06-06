@@ -63,7 +63,10 @@ export class VaultToken extends ERC20 {
 
   deposit(amount, f) {
     console.log("amt  " + amount);
-
+    this.assetObject.approve(this.address, amount, f).then((result) => {
+      console.log("approve result +");
+      console.log(result);
+    });
     this.vt.methods["deposit"](amount)
       .send({ from: f })
       .on("receipt", function (receipt) {
@@ -79,6 +82,10 @@ export class VaultToken extends ERC20 {
   }
 
   initialize(amount, f) {
+    this.assetObject.approve(this.address, amount, f).then((result) => {
+      console.log("approve result +");
+      console.log(result);
+    });
     this.vt.methods["initializeRatio"](amount)
       .send({ from: f })
       .on("receipt", function (receipt) {

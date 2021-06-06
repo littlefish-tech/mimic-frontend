@@ -21,7 +21,7 @@ export default function VaultTokenInfo(props) {
   }
 
   function initialize(amt) {
-    let amount = web3.utils.toWei("1", "ether");
+    let amount = web3.utils.toWei("10000", "wei");
     props.token.initialize(amount, props.acct);
   }
 
@@ -61,7 +61,7 @@ export default function VaultTokenInfo(props) {
               disabled={props.token.myBalance === 0}
             >
               Withdraw
-              <Icon name="minus" />
+              <Icon name="arrow right" />
             </Button>
           </Grid.Column>
 
@@ -86,14 +86,14 @@ export default function VaultTokenInfo(props) {
               color="orange"
               icon
               size="large"
-              labelPosition="right"
+              labelPosition="left"
               disabled={
                 props.token.totalSupply === 0 ||
                 props.token.assetObject.myBalance === 0
               }
             >
               Deposit
-              <Icon name="plus" />
+              <Icon name="arrow left" />
             </Button>
             {/* <Header>Total Supply: {props.token.assetObject.totalSupply}</Header> */}
           </Grid.Column>

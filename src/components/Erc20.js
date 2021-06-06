@@ -61,4 +61,13 @@ export class ERC20 {
   setTotalSupply(s) {
     this.totalSupply = parseInt(s);
   }
+  async approve(c, a, f) {
+    let r = await this.erc.methods
+      .approve(c, a)
+      .send({ from: f })
+      .on("receipt", function (receipt) {
+        console.log("approve receipt " + receipt);
+      });
+    return r;
+  }
 }

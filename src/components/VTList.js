@@ -31,7 +31,6 @@ export default function VTList(props) {
 
     p.then((result) => {
       let events = result;
-      console.log(events);
       for (let i = 0; i < events.length; i++) {
         let addr = events[i].returnValues.vaultToken;
         if (!include(addr, vTokenList)) {
