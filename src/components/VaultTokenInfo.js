@@ -13,11 +13,12 @@ import {
 import ERCTokenInfo from "./ERCTokenInfo";
 
 export default function VaultTokenInfo(props) {
-  console.log("props.token.assetObject");
-  console.log(props.token.assetObject);
-
-  function deposit(amount, to) {
+  function deposit(amount) {
     props.token.deposit(50000000000, props.acct);
+  }
+
+  function initialize(amount) {
+    props.token.initialize(1, props.acct);
   }
 
   return (
@@ -53,6 +54,7 @@ export default function VaultTokenInfo(props) {
               icon
               size="large"
               labelPosition="right"
+              disabled={props.token.myBalance === 0}
             >
               Withdraw
               <Icon name="minus" />
@@ -81,6 +83,10 @@ export default function VaultTokenInfo(props) {
               icon
               size="large"
               labelPosition="right"
+              disabled={
+                props.token.totalSupply === 0 ||
+                props.token.assetObject.myBalance === 0
+              }
             >
               Deposit
               <Icon name="plus" />
@@ -101,6 +107,25 @@ export default function VaultTokenInfo(props) {
           <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
         </Grid.Column>
       </Grid>
+
+      {props.token.totalSupply === 0 && (
+        <div>
+          <Divider />
+          <Grid>
+            <Button onClick={initialize}>Initialize</Button>
+          </Grid>
+        </div>
+      )}
+
+      {props.token.manageToken && (
+        <div>
+          <Divider />
+          <Header>Manage</Header>
+          <Grid>
+            <Button>Write call</Button>
+          </Grid>
+        </div>
+      )}
 
       {/* <Header>{props.token.symbol()}</Header> */}
     </div>

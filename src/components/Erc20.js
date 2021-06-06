@@ -42,7 +42,7 @@ export class ERC20 {
     return b;
   }
   setBalance(b) {
-    this.myBalance = b;
+    this.myBalance = parseInt(b);
   }
 
   totalSupply() {
@@ -59,6 +59,6 @@ export class ERC20 {
     return s;
   }
   setTotalSupply(s) {
-    this.totalSupply = s;
+    this.totalSupply = parseInt(s);
   }
 }

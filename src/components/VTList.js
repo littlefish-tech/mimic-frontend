@@ -8,7 +8,7 @@ import VaultContract from "./VaultContract";
 import { Table } from "semantic-ui-react";
 import { ERC20 } from "./Erc20";
 
-const factoryContractAddr = "0xE777AD5675A98C20A6d1E14Df8AA81543623Ea29";
+const factoryContractAddr = "0xfE72CAF37BFd6276295f34DE7E4Ecf32123e0ecd";
 
 export default function VTList(props) {
   const [vtList, setVTList] = useState([]);
@@ -92,6 +92,7 @@ export default function VTList(props) {
         ) {
           managedList.push(v);
           setManagedList(managedList);
+          v.manageToken = true;
         }
       });
     }
