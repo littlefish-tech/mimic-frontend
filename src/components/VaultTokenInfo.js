@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Item,
   Modal,
@@ -9,20 +9,42 @@ import {
   Label,
   Icon,
   Segment,
+  Form,
+  Dropdown,
+  Menu,
 } from "semantic-ui-react";
 import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";
 let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
+const units = [
+  { key: 1, text: "Wei", value: "wei" },
+  { key: 2, text: "Token", value: "ether" },
+];
+
 export default function VaultTokenInfo(props) {
+  const [depositAmt, setDeposit] = useState(0);
+  const [initializeAmt, setInitializeAmt] = useState(0);
+  const [dUnit, setDUnit] = useState("wei");
+  const [wUnit, setWUnit] = useState("wei");
+  const [iUnit, setIUnit] = useState("wei");
+
   function deposit(amt) {
-    let amount = web3.utils.toWei("10000", "wei");
+    let amount = web3.utils.toWei(amt, dUnit);
     props.token.deposit(amount, props.acct);
+    setDeposit(0);
   }
 
   function initialize(amt) {
-    let amount = web3.utils.toWei("10000", "wei");
+    let amount = web3.utils.toWei(amt, iUnit);
     props.token.initialize(amount, props.acct);
+  }
+
+  function updatedUnit(e, { value }) {
+    setDUnit(value);
+  }
+  function updateIUnit(e, { value }) {
+    setIUnit(value);
   }
 
   return (
@@ -52,17 +74,37 @@ export default function VaultTokenInfo(props) {
               Total Supply: {props.token.totalSupply / 1e18}
             </Header>
             <Divider hidden />
-            <Button
-              onClick={deposit}
-              color="blue"
-              icon
-              size="large"
-              labelPosition="right"
-              disabled={props.token.myBalance === 0}
-            >
-              Withdraw
-              <Icon name="arrow right" />
-            </Button>
+            {props.token.totalSupply > 0 && (
+              <Form>
+                <Form.Group>
+                  <Form.Field>
+                    <input
+                      placeholder="Deposit"
+                      onChange={(e) => setDeposit(e.target.value)}
+                    />
+                  </Form.Field>
+                  <Menu compact>
+                    <Dropdown
+                      defaultValue="wei"
+                      options={units}
+                      item
+                      onChange={updatedUnit}
+                    />
+                  </Menu>
+                </Form.Group>
+                <Button
+                  onClick={deposit}
+                  color="blue"
+                  icon
+                  size="large"
+                  labelPosition="right"
+                  disabled={props.token.myBalance === 0}
+                >
+                  Withdraw
+                  <Icon name="arrow right" />
+                </Button>
+              </Form>
+            )}
           </Grid.Column>
 
           <Grid.Column textAlign="right">
@@ -81,20 +123,41 @@ export default function VaultTokenInfo(props) {
               Vault Balance: {props.token.vaultBalance / 1e18}
             </Header>
             <Divider hidden />
-            <Button
-              onClick={deposit}
-              color="orange"
-              icon
-              size="large"
-              labelPosition="left"
-              disabled={
-                props.token.totalSupply === 0 ||
-                props.token.assetObject.myBalance === 0
-              }
-            >
-              Deposit
-              <Icon name="arrow left" />
-            </Button>
+            {props.token.totalSupply > 0 && (
+              <Form>
+                <Form.Group>
+                  <Form.Field>
+                    <input
+                      placeholder="Deposit (wei)"
+                      onChange={(e) => setDeposit(e.target.value)}
+                    />
+                  </Form.Field>
+                  <Menu compact>
+                    <Dropdown
+                      defaultValue="wei"
+                      options={units}
+                      item
+                      onChange={updatedUnit}
+                    />
+                  </Menu>
+                </Form.Group>
+
+                <Button
+                  onClick={() => deposit(depositAmt)}
+                  color="orange"
+                  icon
+                  size="large"
+                  labelPosition="left"
+                  disabled={
+                    props.token.totalSupply === 0 ||
+                    props.token.assetObject.myBalance === 0
+                  }
+                >
+                  Deposit
+                  <Icon name="arrow left" />
+                </Button>
+              </Form>
+            )}
             {/* <Header>Total Supply: {props.token.assetObject.totalSupply}</Header> */}
           </Grid.Column>
           {/* <Header>{props.token.symbol()}</Header> */}
@@ -103,20 +166,42 @@ export default function VaultTokenInfo(props) {
           <Icon name="sync" size="huge" color="teal" />
         </Divider>
       </Segment>
-      <Grid textAlign="center" stackable>
-        <Grid.Column>
-          <Header size="large" color="blue">
-            Ratio: {props.token.totalSupply / props.token.assetObject.myBalance}
-          </Header>
-          <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
-        </Grid.Column>
-      </Grid>
-
+      {props.token.vaultBalance > 0 && (
+        <Grid textAlign="center" stackable>
+          <Grid.Column>
+            <Header size="large" color="blue">
+              Ratio: {props.token.totalSupply / props.token.vaultBalance}
+            </Header>
+            <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
+          </Grid.Column>
+        </Grid>
+      )}
       {props.token.totalSupply === 0 && (
         <div>
           <Divider />
-          <Grid>
-            <Button onClick={initialize}>Initialize</Button>
+          <Divider hidden />
+          <Grid textAlign="center">
+            <Form>
+              <Form.Group>
+                <Form.Field>
+                  <input
+                    placeholder="Initilize"
+                    onChange={(e) => setInitializeAmt(e.target.value)}
+                  />
+                </Form.Field>
+                <Menu compact>
+                  <Dropdown
+                    defaultValue="wei"
+                    options={units}
+                    item
+                    onChange={updateIUnit}
+                  />
+                </Menu>
+                <Button onClick={() => initialize(initializeAmt)} color="teal">
+                  Initialize
+                </Button>
+              </Form.Group>
+            </Form>
           </Grid>
         </div>
       )}
