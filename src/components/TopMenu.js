@@ -16,6 +16,7 @@ export default function TopMenu(props) {
       <DeployNewVaultToken
         openPlusModal={openPlusModal}
         onClose={() => setOpenPlusModal(false)}
+        acctNum={props.acctNum}
       />
       <Menu inverted size="tiny" color="black">
         <Menu.Menu position="right">

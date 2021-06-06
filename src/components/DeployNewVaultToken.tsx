@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import { Button, Dropdown, Form, Input, Modal } from "semantic-ui-react";
+import { Factory } from "./Factory";
 
 // import Factory from "../lib/Factory";
 
@@ -49,6 +50,7 @@ export interface tObj {
 export default function DeployNewVaultToken(props: {
   openPlusModal: boolean;
   onClose: any;
+  acctNum: string;
 }) {
   let managerAddr: string = JSON.parse(localStorage.getItem("account") || "{}");
 
@@ -58,104 +60,19 @@ export default function DeployNewVaultToken(props: {
   const [tokenObjArr, setTokenObjArr] = useState<Object[]>([]);
   //   const [managerAddr, setManagerAddr] = useState<string>("");
 
-  let factoryContract = new web3.eth.Contract(factoryAbi, factoryContractAddr);
+  let factory = new Factory(web3);
 
   function handleClick(e: any) {
     e.preventDefault();
-    factoryContract.methods["deployNewVaultToken"](
+
+    factory.deployNewVT(
       tokenName,
       tokenSymble,
       controllerAddr,
-      uniswapAddr,
-      assetTokenAddr
-    )
-      .send({ from: managerAddr })
-      //   .on("transactionHash", function (hash: any) {
-      //     console.log("transactionHash" + hash);
-      //   })
-      .on("receipt", function (receipt: any) {
-        console.log("receipt");
-        console.log(receipt.events);
-      })
-      .on("error", function (error: any, receipt: any) {
-        console.log(error);
-      });
+      assetTokenAddr,
+      props.acctNum
+    );
   }
-
-  // function getVaultTokenList() {
-  //   factoryContract
-  //     .getPastEvents("NewVaultToken", {
-  //       fromBlock: 0,
-  //       toBlock: "latest",
-  //     })
-  //     .then(function (events) {
-  //       console.log(events);
-  //       setTokenObjArr(events);
-
-  //       let vtContractAddr = events[events.length - 1].returnValues.vaultToken;
-  //       let vtContract = new web3.eth.Contract(vtAbi, vtContractAddr);
-  //       //==========TESTING FROM HERE
-
-  //       let ercContract = new ERC20(web3, vtContractAddr);
-  //       console.log(ercContract);
-
-  //       // ercContract.name().then((result) => {
-  //       //   console.log(result);
-  //       // });
-  //       // create a new erc20 object with the contract addr with the asset toke address
-
-  //       let e = new ERC20(web3, "0x1528F3FCc26d13F7079325Fb78D9442607781c8C");
-
-  //       // e.name().then((result) => {
-  //       //   console.log(result);
-  //       // });
-
-  //       //==========TESTING ENDS HERE
-  //       let vtObj = new VaultToken(web3, vtContractAddr);
-  //       vtObj.manager().then((result) => {
-  //         console.log(result);
-  //       });
-  //       vtObj.symbol().then((result) => {
-  //         console.log(result);
-  //       });
-  //       vtObj.asset().then((result) => {
-  //         console.log(result);
-  //       });
-
-  //       // =========testing vault token contract
-
-  //       //====end testing vault token contract
-  //       // let mAddr: string = "";
-  //       // vtContract.methods.name().call(function (error: any, result: any) {
-  //       //   console.log("name" + result);
-  //       // });
-  //       // vtContract.methods.symbol().call(function (error: any, result: any) {
-  //       //   console.log("symbol" + result);
-  //       // });
-  //       // vtContract.methods.asset().call(function (error: any, result: any) {
-  //       //   console.log("asset" + result);
-  //       // });
-  //       // vtContract.methods.manager().call(function (error: any, result: any) {
-  //       //   mAddr = result;
-  //       //   console.log("manager" + result);
-  //       //   vtContract.methods
-  //       //     .balanceOf(mAddr)
-  //       //     .call(function (error: any, result: any) {
-  //       //       console.log("manager balance" + result);
-  //       //     });
-  //       //   console.log("hello");
-  //       // });
-  //       // vtContract.methods
-  //       //   .totalSupply()
-  //       //   .call(function (error: any, result: any) {
-  //       //     console.log("ttsupply" + result);
-  //       //   });
-  //     });
-  // }
-
-  // useEffect(() => {
-  //   getVaultTokenList();
-  // }, []);
 
   return (
     <div>

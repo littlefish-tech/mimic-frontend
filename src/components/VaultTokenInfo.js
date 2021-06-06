@@ -10,15 +10,19 @@ import {
   Icon,
   Segment,
 } from "semantic-ui-react";
+import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";
+let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
 export default function VaultTokenInfo(props) {
-  function deposit(amount) {
-    props.token.deposit(50000000000, props.acct);
+  function deposit(amt) {
+    let amount = web3.utils.toWei("10000", "wei");
+    props.token.deposit(amount, props.acct);
   }
 
-  function initialize(amount) {
-    props.token.initialize(1, props.acct);
+  function initialize(amt) {
+    let amount = web3.utils.toWei("1", "ether");
+    props.token.initialize(amount, props.acct);
   }
 
   return (

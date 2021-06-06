@@ -62,7 +62,8 @@ export class VaultToken extends ERC20 {
   }
 
   deposit(amount, f) {
-    console.log("from address  " + f);
+    console.log("amt  " + amount);
+
     this.vt.methods["deposit"](amount)
       .send({ from: f })
       .on("receipt", function (receipt) {

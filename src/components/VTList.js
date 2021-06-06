@@ -8,8 +8,6 @@ import VaultContract from "./VaultContract";
 import { Table } from "semantic-ui-react";
 import { ERC20 } from "./Erc20";
 
-const factoryContractAddr = "0xfE72CAF37BFd6276295f34DE7E4Ecf32123e0ecd";
-
 export default function VTList(props) {
   const [vtList, setVTList] = useState([]);
   const [count, setCount] = useState(-1);
@@ -24,7 +22,7 @@ export default function VTList(props) {
   );
 
   function getAllVT() {
-    let factoryObj = new Factory(web3, factoryContractAddr);
+    let factoryObj = new Factory(web3);
 
     let p = factoryObj.findAllVT();
     let vTokenList = vtList;
@@ -33,6 +31,7 @@ export default function VTList(props) {
 
     p.then((result) => {
       let events = result;
+      console.log(events);
       for (let i = 0; i < events.length; i++) {
         let addr = events[i].returnValues.vaultToken;
         if (!include(addr, vTokenList)) {
@@ -51,7 +50,7 @@ export default function VTList(props) {
   }
 
   function getAllVTOld() {
-    let factoryObj = new Factory(web3, factoryContractAddr);
+    let factoryObj = new Factory(web3);
 
     let p = factoryObj.findAllVT();
     let vTokenList = [];
