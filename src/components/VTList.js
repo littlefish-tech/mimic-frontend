@@ -187,11 +187,7 @@ export default function VTList(props) {
         // put the vtList[i] to in portfolio list
         // if it is not already there
 
-        if (
-          result > 0 ||
-          vtList[i].tName === "solar" ||
-          vtList[i].tName === "flower"
-        ) {
+        if (result > 0) {
           if (!include(vtList[i].address, portfolioList)) {
             portfolioList.push(vtList[i]);
             setPortfolioList(portfolioList);
@@ -210,6 +206,36 @@ export default function VTList(props) {
         vtList[i].setTotalSupply(result);
       });
       vtList[i].updateStatus();
+
+      // findWithdrawalWindowActivated
+      vtList[i].findWithdrawalWindowActivated().then((result) => {
+        // console.log(
+        //   vtList[i].tName + "     findWithdrawalWindowActivated +    "
+        // );
+        // console.log(result);
+        if (result.length > 0) {
+          let ts = result[0].returnValues.closesAfter;
+          vtList[i].expireTime = ts;
+          // let date = new Date(ts * 1000);
+          // var hours = date.getHours();
+          // // Minutes part from the timestamp
+          // var minutes = "0" + date.getMinutes();
+          // // Seconds part from the timestamp
+          // var seconds = "0" + date.getSeconds();
+
+          // // Will display time in 10:30:23 format
+          // var formattedTime =
+          //   date +
+          //   " " +
+          //   hours +
+          //   ":" +
+          //   minutes.substr(-2) +
+          //   ":" +
+          //   seconds.substr(-2);
+
+          // console.log(formattedTime);
+        }
+      });
     }
 
     for (let i = 0; i < assetTokenList.length; i++) {

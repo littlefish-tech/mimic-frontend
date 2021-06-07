@@ -14,6 +14,7 @@ export class VaultToken extends ERC20 {
     // an erc20 object corresponding to my asset token
     this.assetObject = null;
     this.manageToken = false;
+    this.expireTime = -1;
   }
   // return the manager address
   async getManager() {
@@ -77,6 +78,22 @@ export class VaultToken extends ERC20 {
       });
   }
 
+  withdraw(amount, f) {
+    console.log("amt  " + amount);
+    this.assetObject.approve(this.address, amount, f).then((result) => {
+      console.log("approve result +");
+      console.log(result);
+    });
+    this.vt.methods["withdraw"](amount)
+      .send({ from: f })
+      .on("receipt", function (receipt) {
+        console.log(receipt);
+      })
+      .on("error", function (error, receipt) {
+        console.log(error);
+      });
+  }
+
   setVaultBalance(amount) {
     this.vaultBalance = parseInt(amount);
   }
@@ -94,5 +111,12 @@ export class VaultToken extends ERC20 {
       .on("error", function (error, receipt) {
         console.log(error);
       });
+  }
+
+  findWithdrawalWindowActivated() {
+    return this.vt.getPastEvents("WithdrawalWindowActivated", {
+      fromBlock: 0,
+      toBlock: "latest",
+    });
   }
 }

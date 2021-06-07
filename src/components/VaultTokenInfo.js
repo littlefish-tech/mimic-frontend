@@ -40,9 +40,18 @@ export default function VaultTokenInfo(props) {
     props.token.initialize(amount, props.acct);
   }
 
+  function withDraw(amt) {
+    let amount = web3.utils.toWei(amt, wUnit);
+    props.token.initialize(amount, props.acct);
+  }
+
   function updatedUnit(e, { value }) {
     setDUnit(value);
   }
+  function updatewUnit(e, { value }) {
+    setDUnit(value);
+  }
+
   function updateIUnit(e, { value }) {
     setIUnit(value);
   }
@@ -88,12 +97,12 @@ export default function VaultTokenInfo(props) {
                       defaultValue="wei"
                       options={units}
                       item
-                      onChange={updatedUnit}
+                      onChange={updatewUnit}
                     />
                   </Menu>
                 </Form.Group>
                 <Button
-                  onClick={deposit}
+                  onClick={withDraw}
                   color="blue"
                   icon
                   size="large"

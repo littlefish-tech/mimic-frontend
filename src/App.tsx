@@ -14,7 +14,7 @@ export default function App() {
   // check localstorage if the wallet address is saves
   // if wallet address is saved
   // display the address
-  let addr: string = JSON.parse(localStorage.getItem("account") || "{}");
+  let addr: string = JSON.parse(localStorage.getItem("account") || "false");
   // if (addr) {
   //   const fFive = addr.slice(0, 10);
   //   const lFive = addr.slice(-8);
@@ -29,6 +29,8 @@ export default function App() {
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
+    console.log("acctNum");
+    console.log(typeof acctNum);
     if (acctNum) {
       const fFive = addr.slice(0, 10);
       const lFive = addr.slice(-8);

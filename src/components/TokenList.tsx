@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { List } from "semantic-ui-react";
-import { Header, Modal, Button } from "semantic-ui-react";
+import { Header, Modal, Button, Icon, Grid } from "semantic-ui-react";
 import ERCTokenInfo from "./ERCTokenInfo";
 import VaultTokenInfo from "./VaultTokenInfo";
 
@@ -34,9 +34,18 @@ export default function TokenList(props: {
                 verticalAlign="top"
                 // disabled={!item.status}
                 celled
-                size="medium"
+                size="large"
               >
-                {item.name()}
+                <Header>{item.name()}</Header>
+
+                {item.expireTime !== -1 &&
+                  item.expireTime > Date.now() / 1000 && (
+                    <Icon name="clock outline" size="large" color="teal" />
+                  )}
+                {item.expireTime !== -1 &&
+                  item.expireTime < Date.now() / 1000 && (
+                    <Icon name="lock" size="large" color="red" />
+                  )}
                 {/* {item.asset !== "" ? " **get it" : " not received"} */}
               </List.Item>
             );
