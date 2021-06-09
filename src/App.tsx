@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import Web3 from "web3";
 import VTList from "./components/VTList.js";
-import { Button, Header, Modal } from "semantic-ui-react";
+import { Button, Header, Modal, Icon } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
+import Introduction from "./components/Introduction";
 import { AddressBook } from "./components/AddressBook";
 
 // create a new web3 oject
@@ -100,10 +101,25 @@ export default function App() {
         ethBal={ethBal}
         connectMM={connectMM}
       />
+      <Introduction />
       {addr ? (
         <VTList acctNum={acctNum} mpAddress={mpAddress} />
       ) : (
-        <div>Please connect to mask first</div>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "20px",
+            marginTop: "20px",
+            color: "red",
+          }}
+        >
+          <Icon name="exclamation triangle" color="red" />
+          Please install
+          <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
+            {" "}
+            MetaMask
+          </a>{" "}
+        </div>
       )}
 
       <div className="content"></div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Icon, Menu, Button } from "semantic-ui-react";
+import { Icon, Menu, Button, Image, Divider } from "semantic-ui-react";
 import MMConnect from "./MMconnection";
 import DeployNewVaultToken from "./DeployNewVaultToken";
+import profileImg from "../images/cover.png";
 
 export default function TopMenu(props) {
   const [openPlusModal, setOpenPlusModal] = useState(false);
@@ -14,12 +15,25 @@ export default function TopMenu(props) {
 
   return (
     <div>
-      <DeployNewVaultToken
-        openPlusModal={openPlusModal}
-        onClose={() => setOpenPlusModal(false)}
-        acctNum={props.acctNum}
-      />
-      <Menu inverted size="tiny" color="black">
+      <Menu inverted circular secondary>
+        <DeployNewVaultToken
+          openPlusModal={openPlusModal}
+          onClose={() => setOpenPlusModal(false)}
+          acctNum={props.acctNum}
+        />
+        <Menu.Item>
+          <img
+            src={profileImg}
+            style={{
+              width: "200px",
+              height: "100px",
+              borderRadius: "50%",
+              objectFit: "cover",
+
+              marginLeft: "100px",
+            }}
+          />
+        </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
             <Button
