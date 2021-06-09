@@ -25,9 +25,6 @@ export default function TopMenu(props) {
           <img
             src={profileImg}
             style={{
-              width: "200px",
-              height: "100px",
-              borderRadius: "50%",
               objectFit: "cover",
 
               marginLeft: "100px",

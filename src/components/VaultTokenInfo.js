@@ -44,6 +44,7 @@ export default function VaultTokenInfo(props) {
   const [premiumAmount, setPemiumAmount] = useState(0);
   const [otherPartyAddress, setOtherPartyAddress] = useState(0);
   const [showWriteCall, setShowWriteCall] = useState(false);
+  const [showSellCall, setShowSellCall] = useState(false);
   const [writeColor, setWriteColor] = useState("teal");
   const [sellColor, setSellColor] = useState("teal");
   const [settleColor, setSettleColor] = useState("teal");
@@ -54,6 +55,12 @@ export default function VaultTokenInfo(props) {
   const [showWithdrawSuccessmsg, setShowWithdrawSuccessmsg] = useState(false);
   const [showDepositSuccessmsg, setShowDepositSuccessmsg] = useState(false);
   const [showIniSuccessmsg, setShowIniSuccessmsg] = useState(false);
+
+  const [showWriteErrMsg, setShowWriteErrMsg] = useState(false);
+  const [showWriteSuccMsg, setShowWriteSuccMsg] = useState(false);
+
+  const [showSellErrMsg, setShowSellErrMsg] = useState(false);
+  const [showSellSuccMsg, setShowSellSuccMsg] = useState(false);
 
   function deposit(amt) {
     if (amt === 0) {
@@ -148,6 +155,28 @@ export default function VaultTokenInfo(props) {
     props.token.writeCalls(amount, pAmount, otherPartyAddress, props.acct);
   }
 
+  function confirmWriteCall(e) {
+    e.preventDefault();
+    if (writeCallAmt === 0 || oTokenAddress === "") {
+      setShowWriteErrMsg(true);
+      setTimeout(() => {
+        setShowWriteErrMsg(false);
+      }, 3000);
+
+      return;
+    }
+    writeCall(writeCallAmt, oTokenAddress);
+    setShowWriteCall(false);
+    setShowWriteSuccMsg(true);
+    setTimeout(() => {
+      setShowWriteSuccMsg(false);
+      setWriteCallAmt(0);
+      setOTokenaddress("");
+    }, 3000);
+  }
+
+  function confirmSellCall(e) {}
+
   function writeCallRender() {
     return (
       <Form>
@@ -178,15 +207,26 @@ export default function VaultTokenInfo(props) {
         <Form.Field>
           <input placeholder={props.mpAddress} value={props.mpAddress} />
         </Form.Field>
+        {showWriteErrMsg && <ErrorMessage />}
+        {showWriteSuccMsg && <SuccessMessage />}
         <Button
-          onClick={() => {
-            writeCall(writeCallAmt, oTokenAddress);
-            setShowWriteCall(false);
-          }}
+          onClick={confirmWriteCall}
+          // {() => {
+          //   writeCall(writeCallAmt, oTokenAddress);
+          //   setShowWriteCall(false);
+          // }}
         >
           Confirm
         </Button>
-        <Button onClick={() => setShowWriteCall(false)}>Cancel</Button>
+        <Button
+          onClick={() => {
+            setShowWriteCall(false);
+            setSellColor("teal");
+            setSettleColor("teal");
+          }}
+        >
+          Cancel
+        </Button>
       </Form>
     );
   }
@@ -358,6 +398,70 @@ export default function VaultTokenInfo(props) {
     );
   }
 
+  function renderSellCall() {
+    return (
+      <Form>
+        <Divider hidden />
+        <Form.Group>
+          <Form.Field>
+            <input
+              placeholder="amount"
+              onChange={(e) => setSellCallAmt(e.target.value)}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Menu compact>
+          <Dropdown
+            defaultValue="wei"
+            options={units}
+            item
+            onChange={updateSellCallUnit}
+          />
+        </Menu>
+        <Form.Group>
+          <Form.Field>
+            <input
+              placeholder="amount"
+              onChange={(e) => setPemiumAmount(e.target.value)}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Menu compact>
+          <Dropdown
+            defaultValue="wei"
+            options={units}
+            item
+            onChange={updatePremiumUnit}
+          />
+        </Menu>
+
+        <Form.Field>
+          <input
+            placeholder="Other party address"
+            onChange={(e) => setOtherPartyAddress(e.target.value)}
+          />
+        </Form.Field>
+        <Button
+          onClick={() => {
+            sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+            setShowSellCall(false);
+          }}
+        >
+          Confirm
+        </Button>
+        <Button
+          onClick={() => {
+            setShowSellCall(false);
+            setWriteColor("teal");
+            setSettleColor("teal");
+          }}
+        >
+          Cancel
+        </Button>
+      </Form>
+    );
+  }
+
   function managerMenu() {
     return (
       <div>
@@ -376,6 +480,7 @@ export default function VaultTokenInfo(props) {
                 color={writeColor}
                 onClick={() => {
                   setShowWriteCall(true);
+                  setShowSellCall(false);
                   setSellColor("grey");
                   setSettleColor("grey");
                 }}
@@ -390,7 +495,9 @@ export default function VaultTokenInfo(props) {
                 labelPosition="right"
                 icon
                 onClick={() => {
-                  sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+                  // sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+                  setShowSellCall(true);
+                  setShowWriteCall(false);
                   setWriteColor("grey");
                   setSettleColor("grey");
                 }}
@@ -411,6 +518,7 @@ export default function VaultTokenInfo(props) {
           </Grid.Row>
         </Grid>
         {showWriteCall && writeCallRender()}
+        {showSellCall && renderSellCall()}
       </div>
     );
   }
