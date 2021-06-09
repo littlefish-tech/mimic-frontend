@@ -51,6 +51,7 @@ export default function TokenList(props: {
             value={item}
             icon="edit"
             color="blue"
+            disabled={!item.status}
           />
         </Table.Cell>
         <Table.Cell verticalAlign="middle">
@@ -100,6 +101,7 @@ export default function TokenList(props: {
                   key={i}
                   verticalAlign="top"
                   // disabled={!item.status}
+
                   value={item}
                   celled
                   size="large"

@@ -53,20 +53,14 @@ export default function App() {
   }, []);
 
   function getMarginPoolAddress() {
-    console.log("at marginpool result");
     let ab = new AddressBook(web3);
-    console.log(ab);
     ab.getMarginPool().then((result) => {
-      console.log("margin pool");
-      console.log(result);
       setMPAddress(result);
     });
   }
 
   // check if meta mask is installed
   async function hasMMInstall() {
-    console.log(web3);
-    console.log(typeof window.ethereum);
     if (typeof window.ethereum !== "undefined") {
       await setHasMM(true);
 
@@ -74,7 +68,6 @@ export default function App() {
     }
   }
   async function connectMM(e: any) {
-    console.log(hasMM);
     if (!hasMM) {
       alert("You must install MetaMask first");
     } else {
