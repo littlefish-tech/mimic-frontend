@@ -86,7 +86,7 @@ export default function VTList(props) {
         // if the result === my addr
         // append the v to the managed list
         if (
-          result === props.acctNum &&
+          result.toLowerCase() === props.acctNum &&
           !include(result, managedList) &&
           (v.tName !== "t" || v.tName !== "token")
         ) {
