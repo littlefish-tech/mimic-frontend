@@ -14,9 +14,14 @@ export class Factory {
   // address _controller, address _asset, uint256 _maximumAssets) external {
 
   // add the 10e18 to the frontend
-  deployNewVT(tokenName, tokenSymble, controllerAddr, assetTokenAddr, f) {
-    let amount = this.provider.utils.toWei("10", "ether");
-
+  deployNewVT(
+    tokenName,
+    tokenSymble,
+    controllerAddr,
+    assetTokenAddr,
+    amount,
+    f
+  ) {
     this.factory.methods["deployNewVaultToken"](
       tokenName,
       tokenSymble,

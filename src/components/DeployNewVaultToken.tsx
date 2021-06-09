@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
-import { Button, Dropdown, Form, Input, Modal } from "semantic-ui-react";
+import {
+  Button,
+  Dropdown,
+  Form,
+  Header,
+  Input,
+  Modal,
+} from "semantic-ui-react";
 import { Factory } from "./Factory";
 
 // import Factory from "../lib/Factory";
 
 // const assetTokenAddr = require("../assetTokenAddr.json");
 
-let web3 = new Web3(
-  Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-);
+// let web3 = new Web3(
+//   Web3.givenProvider || "ws://some.local-or-remote.node:8546"
+// );
+let web3 = new Web3(Web3.givenProvider);
 
 const controllerAddr = "0xdee7d0f8ccc0f7ac7e45af454e5e7ec1552e8e4e";
-
-//factory contract address
-const factoryContractAddr = "0xE777AD5675A98C20A6d1E14Df8AA81543623Ea29";
-
-// import the factory contract abi
-const factoryAbi = require("../abi/factoryabi.json");
-const vtAbi = require("../abi/vtAbi.json");
-
-const uniswapAddr: string = "0x20afC36823E038F37f55976a65330f452B2f2637";
 
 const assetTokenAddrs = [
   {
@@ -57,19 +56,20 @@ export default function DeployNewVaultToken(props: {
   const [tokenName, setTokenName] = useState<string>("");
   const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
-  const [tokenObjArr, setTokenObjArr] = useState<Object[]>([]);
-  //   const [managerAddr, setManagerAddr] = useState<string>("");
+  const [maxAmt, setMaxAmt] = useState<string>("10");
 
   let factory = new Factory(web3);
 
   function handleClick(e: any) {
     e.preventDefault();
-
+    let amount = web3.utils.toWei(maxAmt, "ether");
+    console.log(amount);
     factory.deployNewVT(
       tokenName,
       tokenSymble,
       controllerAddr,
       assetTokenAddr,
+      amount,
       props.acctNum
     );
   }
@@ -99,7 +99,13 @@ export default function DeployNewVaultToken(props: {
               value={tokenSymble}
               onChange={(e: any) => setTokenSymble(e.target.value)}
             />
-
+            <Form.Field
+              control={Input}
+              label="Maximum Amount (Ether)"
+              placeholder="1"
+              value={maxAmt}
+              onChange={(e: any) => setMaxAmt(e.target.value)}
+            />
             <Form.Field
               control={Input}
               label="Manager Address"
@@ -108,12 +114,14 @@ export default function DeployNewVaultToken(props: {
               // onChange={(e: any) => setManagerAddr(e.target.value)}
             />
             <Form.Field>
+              <Header size="small">Asset Token Address</Header>
               <Dropdown
                 onChange={(e: React.SyntheticEvent<HTMLElement>, data: any) =>
                   setAssetTokenAddr(data.value)
                 }
+                allowAdditions
                 options={assetTokenAddrs}
-                placeholder="Choose an option"
+                placeholder="Asset Token Address"
                 selection
                 value={assetTokenAddr}
                 widths="2"

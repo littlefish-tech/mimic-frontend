@@ -15,7 +15,8 @@ import {
 } from "semantic-ui-react";
 import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";
-let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+// let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+let web3 = new Web3(Web3.givenProvider);
 
 const units = [
   { key: 1, text: "Wei", value: "wei" },
@@ -24,10 +25,24 @@ const units = [
 
 export default function VaultTokenInfo(props) {
   const [depositAmt, setDeposit] = useState(0);
+  const [withdrawAmt, setWithdrawDeposit] = useState(0);
   const [initializeAmt, setInitializeAmt] = useState(0);
   const [dUnit, setDUnit] = useState("wei");
   const [wUnit, setWUnit] = useState("wei");
   const [iUnit, setIUnit] = useState("wei");
+  const [writeCallUnit, setWiteCallIUnit] = useState("wei");
+  const [sellCallUnit, setSellCallIUnit] = useState("wei");
+  const [pemiumUnit, setPemiumUnit] = useState("wei");
+
+  const [oTokenAddress, setOTokenaddress] = useState("");
+  const [writeCallAmt, setWriteCallAmt] = useState(0);
+  const [sellCallAmt, setSellCallAmt] = useState(0);
+  const [premiumAmount, setPemiumAmount] = useState(0);
+  const [otherPartyAddress, setOtherPartyAddress] = useState(0);
+  const [showWriteCall, setShowWriteCall] = useState(false);
+  const [writeColor, setWriteColor] = useState("teal");
+  const [sellColor, setSellColor] = useState("teal");
+  const [settleColor, setSettleColor] = useState("teal");
 
   function deposit(amt) {
     let amount = web3.utils.toWei(amt, dUnit);
@@ -42,27 +57,91 @@ export default function VaultTokenInfo(props) {
 
   function withDraw(amt) {
     let amount = web3.utils.toWei(amt, wUnit);
-    props.token.initialize(amount, props.acct);
+    props.token.withdraw(amount, props.acct);
   }
 
   function updatedUnit(e, { value }) {
     setDUnit(value);
   }
   function updatewUnit(e, { value }) {
-    setDUnit(value);
+    setWUnit(value);
   }
 
   function updateIUnit(e, { value }) {
     setIUnit(value);
   }
 
-  return (
-    <div>
-      {/* <Header>Asset Token: {props.token.asset}</Header>
-      <Header>Manager: {props.token.manager}</Header> */}
-      {/* {props.token.assetObject && (
-        <ERCTokenInfo token={props.token.assetObject} />
-      )} */}
+  function updatePremiumUnit(e, { value }) {
+    setPemiumUnit(value);
+  }
+
+  function updateWriteCallUnit(e, { value }) {
+    setWiteCallIUnit(value);
+  }
+  function updateSellCallUnit(e, { value }) {
+    setSellCallIUnit(value);
+  }
+
+  function settleVault() {
+    props.token.settleVault(props.acct);
+  }
+
+  function writeCall(amt, oTAddress) {
+    let amount = web3.utils.toWei(amt, writeCallUnit);
+
+    props.token.writeCalls(amount, oTAddress, props.mpAddress, props.acct);
+  }
+
+  function sellCall(amt, premiumAmount, otherPartyAddress) {
+    let amount = web3.utils.toWei(amt, sellCallUnit);
+    let pAmount = web3.utils.toWei(premiumAmount, pemiumUnit);
+    props.token.writeCalls(amount, pAmount, otherPartyAddress, props.acct);
+  }
+
+  function writeCallRender() {
+    return (
+      <Form>
+        <Divider hidden />
+        <Form.Group>
+          <Form.Field>
+            <input
+              placeholder="amount"
+              onChange={(e) => setWriteCallAmt(e.target.value)}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Menu compact>
+          <Dropdown
+            defaultValue="wei"
+            options={units}
+            item
+            onChange={updateWriteCallUnit}
+          />
+        </Menu>
+
+        <Form.Field>
+          <input
+            placeholder="oToken Address"
+            onChange={(e) => setOTokenaddress(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <input placeholder={props.mpAddress} value={props.mpAddress} />
+        </Form.Field>
+        <Button
+          onClick={() => {
+            writeCall(writeCallAmt, oTokenAddress);
+            setShowWriteCall(false);
+          }}
+        >
+          Confirm
+        </Button>
+        <Button onClick={() => setShowWriteCall(false)}>Cancel</Button>
+      </Form>
+    );
+  }
+  function showTokenPair() {
+    return (
       <Segment basic>
         <Grid stackable columns={2}>
           <Grid.Column>
@@ -89,7 +168,7 @@ export default function VaultTokenInfo(props) {
                   <Form.Field>
                     <input
                       placeholder="Deposit"
-                      onChange={(e) => setDeposit(e.target.value)}
+                      onChange={(e) => setWithdrawDeposit(e.target.value)}
                     />
                   </Form.Field>
                   <Menu compact>
@@ -102,7 +181,7 @@ export default function VaultTokenInfo(props) {
                   </Menu>
                 </Form.Group>
                 <Button
-                  onClick={withDraw}
+                  onClick={() => withDraw(withdrawAmt)}
                   color="blue"
                   icon
                   size="large"
@@ -175,55 +254,123 @@ export default function VaultTokenInfo(props) {
           <Icon name="sync" size="huge" color="teal" />
         </Divider>
       </Segment>
-      {props.token.vaultBalance > 0 && (
-        <Grid textAlign="center" stackable>
-          <Grid.Column>
-            <Header size="large" color="blue">
-              Ratio: {props.token.totalSupply / props.token.vaultBalance}
-            </Header>
-            <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
-          </Grid.Column>
-        </Grid>
-      )}
-      {props.token.totalSupply === 0 && (
-        <div>
-          <Divider />
-          <Divider hidden />
-          <Grid textAlign="center">
-            <Form>
-              <Form.Group>
-                <Form.Field>
-                  <input
-                    placeholder="Initilize"
-                    onChange={(e) => setInitializeAmt(e.target.value)}
-                  />
-                </Form.Field>
-                <Menu compact>
-                  <Dropdown
-                    defaultValue="wei"
-                    options={units}
-                    item
-                    onChange={updateIUnit}
-                  />
-                </Menu>
-                <Button onClick={() => initialize(initializeAmt)} color="teal">
-                  Initialize
-                </Button>
-              </Form.Group>
-            </Form>
-          </Grid>
-        </div>
-      )}
+    );
+  }
 
-      {props.token.manageToken && (
-        <div>
-          <Divider />
+  function showRatio() {
+    return (
+      <Grid textAlign="center" stackable>
+        <Grid.Column>
+          <Header size="large" color="blue">
+            Ratio: {props.token.totalSupply / props.token.vaultBalance}
+          </Header>
+          <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
+        </Grid.Column>
+      </Grid>
+    );
+  }
+
+  function showInitialize() {
+    return (
+      <div>
+        <Divider />
+        <Divider hidden />
+        <Grid textAlign="center">
+          <Form>
+            <Form.Group>
+              <Form.Field>
+                <input
+                  placeholder="Initilize"
+                  onChange={(e) => setInitializeAmt(e.target.value)}
+                />
+              </Form.Field>
+              <Menu compact>
+                <Dropdown
+                  defaultValue="wei"
+                  options={units}
+                  item
+                  onChange={updateIUnit}
+                />
+              </Menu>
+              <Button onClick={() => initialize(initializeAmt)} color="teal">
+                Initialize
+              </Button>
+            </Form.Group>
+          </Form>
+        </Grid>
+      </div>
+    );
+  }
+
+  function managerMenu() {
+    return (
+      <div>
+        <Divider />
+        <Divider hidden />
+        <Divider hidden />
+        <Grid centered>
           <Header>Manage</Header>
-          <Grid>
-            <Button>Write call</Button>
-          </Grid>
-        </div>
-      )}
+        </Grid>
+        <Grid centered columns={3} textAlign="center" relaxed>
+          <Grid.Row>
+            <Grid.Column stretched>
+              <Button
+                labelPosition="right"
+                icon
+                color={writeColor}
+                onClick={() => {
+                  setShowWriteCall(true);
+                  setSellColor("grey");
+                  setSettleColor("grey");
+                }}
+              >
+                Write Call
+                <Icon name="triangle down" />
+              </Button>
+            </Grid.Column>
+            <Grid.Column stretched>
+              <Button
+                color={sellColor}
+                labelPosition="right"
+                icon
+                onClick={() => {
+                  sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+                  setWriteColor("grey");
+                  setSettleColor("grey");
+                }}
+              >
+                Sell Call
+                <Icon name="triangle down" />
+              </Button>
+            </Grid.Column>
+            <Grid.Column stretched>
+              <Button
+                color={settleColor}
+                onClick={settleVault}
+                disabled={props.token.expireTime > Date.now()}
+              >
+                Settle Vault
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        {showWriteCall && writeCallRender()}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* <Header>Asset Token: {props.token.asset}</Header>
+      <Header>Manager: {props.token.manager}</Header> */}
+      {/* {props.token.assetObject && (
+        <ERCTokenInfo token={props.token.assetObject} />
+      )} */}
+      {showTokenPair()}
+      {props.token.vaultBalance > 0 && showRatio()}
+      {props.token.totalSupply === 0 && showInitialize()}
+
+      {props.token.manageToken && managerMenu()}
 
       {/* <Header>{props.token.symbol()}</Header> */}
     </div>

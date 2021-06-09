@@ -2,13 +2,20 @@ import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import Web3 from "web3";
 import VTList from "./components/VTList.js";
-// import VaultContract from "./components/VaultContract";
 import { Button, Header, Modal } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
+import { AddressBook } from "./components/AddressBook";
 
 // create a new web3 oject
-let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+// let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+let web3 = new Web3(Web3.givenProvider);
+
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
 
 export default function App() {
   // check localstorage if the wallet address is saves
@@ -26,6 +33,7 @@ export default function App() {
   const [acctNum, setAcctNum] = useState<string>(addr);
   const [chainId, setChainId] = useState<number | undefined>();
   const [ethBal, setEthBal] = useState<number | undefined>();
+  const [mpAddress, setMPAddress] = useState<string>("");
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -37,19 +45,34 @@ export default function App() {
       let t = `${fFive}...${lFive}`;
 
       setBtnText(t);
+      getMarginPoolAddress();
     }
     hasMMInstall();
   }, []);
 
+  function getMarginPoolAddress() {
+    console.log("at marginpool result");
+    let ab = new AddressBook(web3);
+    console.log(ab);
+    ab.getMarginPool().then((result) => {
+      console.log("margin pool");
+      console.log(result);
+      setMPAddress(result);
+    });
+  }
+
   // check if meta mask is installed
   async function hasMMInstall() {
-    if (web3 !== null) {
+    console.log(web3);
+    console.log(typeof window.ethereum);
+    if (typeof window.ethereum !== "undefined") {
       await setHasMM(true);
 
       return;
     }
   }
   async function connectMM(e: any) {
+    console.log(hasMM);
     if (!hasMM) {
       alert("You must install MetaMask first");
     } else {
@@ -78,8 +101,12 @@ export default function App() {
         ethBal={ethBal}
         connectMM={connectMM}
       />
+      {addr ? (
+        <VTList acctNum={acctNum} mpAddress={mpAddress} />
+      ) : (
+        <div>Please connect to mask first</div>
+      )}
 
-      <VTList acctNum={acctNum} />
       <div className="content"></div>
     </div>
   );

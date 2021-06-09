@@ -5,6 +5,7 @@ import DeployNewVaultToken from "./DeployNewVaultToken";
 
 export default function TopMenu(props) {
   const [openPlusModal, setOpenPlusModal] = useState(false);
+
   // functions to open the deploy new token modal
   function openModal() {
     console.log("clikced");
@@ -26,6 +27,7 @@ export default function TopMenu(props) {
               size="medium"
               color="teal"
               onClick={openModal}
+              disabled={!props.acctNum}
             >
               New Token
             </Button>

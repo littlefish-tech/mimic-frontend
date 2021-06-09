@@ -3,7 +3,6 @@ import Web3 from "web3";
 import { Factory } from "./Factory";
 import { VaultToken } from "./VaultToken";
 import TokenList from "./TokenList";
-import VaultContract from "./VaultContract";
 
 import { Table } from "semantic-ui-react";
 import { ERC20 } from "./Erc20";
@@ -17,11 +16,14 @@ export default function VTList(props) {
   const [followList, setFollowList] = useState([]);
   const [assetTokenList, setAssetTokenList] = useState([]);
 
-  let web3 = new Web3(
-    Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-  );
+  // let web3 = new Web3(
+  //   Web3.givenProvider || "ws://some.local-or-remote.node:8546"
+  // );
+
+  let web3 = new Web3(Web3.givenProvider);
 
   function getAllVT() {
+    console.log("getting all vault token");
     let factoryObj = new Factory(web3);
 
     let p = factoryObj.findAllVT();
@@ -306,6 +308,7 @@ export default function VTList(props) {
                 update={update}
                 title="Managed Token"
                 acct={props.acctNum}
+                mpAddress={props.mpAddress}
               />
             </Table.Cell>
             <Table.Cell>

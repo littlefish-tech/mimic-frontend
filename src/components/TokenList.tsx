@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { List } from "semantic-ui-react";
-import { Header, Modal, Button, Icon, Grid } from "semantic-ui-react";
+import { Header, Modal, Button, Icon, Table, Divider } from "semantic-ui-react";
 import ERCTokenInfo from "./ERCTokenInfo";
 import VaultTokenInfo from "./VaultTokenInfo";
 
@@ -9,13 +9,81 @@ export default function TokenList(props: {
   update: number;
   title: string;
   acct: string;
+  mpAddress: string;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [clickedItem, setClickedItem] = useState<Object | null>();
 
   function showTokenInfo(e: any, i: any) {
+    console.log(e);
     setClickedItem(i.value);
     setOpen(true);
+  }
+
+  function renderTime(ts: number) {
+    var s = new Date(ts).toLocaleDateString("en-US");
+    // console.log(s)
+    // // expected output "8/30/2017"
+
+    var t = new Date(ts).toLocaleTimeString("en-US");
+    // console.log(s)
+    // // expected output "3:19:27 PM"
+    return s + "  " + t;
+  }
+
+  function timeLeft(ts: number) {
+    let n = ts - Date.now();
+    let t = new Date(n);
+    let h = t.getHours();
+    let m = t.getMinutes();
+    let s = t.getSeconds();
+    return h + ":" + m + ":" + s;
+  }
+
+  function onetoken(item: any) {
+    return (
+      <>
+        {" "}
+        {/* <Table padded columns={3} striped> */}
+        <Table.Cell collapsing verticalAlign="middle">
+          <Button
+            onClick={showTokenInfo}
+            value={item}
+            icon="edit"
+            color="blue"
+          />
+        </Table.Cell>
+        <Table.Cell verticalAlign="middle">
+          <Header>{item.name()}</Header>
+        </Table.Cell>
+        <Table.Cell verticalAlign="middle">
+          <Header size="small" color="grey">
+            {item.address}
+          </Header>
+        </Table.Cell>
+        {item.expireTime !== -1 && item.expireTime > Date.now() / 1000 && (
+          <>
+            <Table.Cell verticalAlign="middle">
+              <Icon name="clock outline" size="large" color="teal" />
+            </Table.Cell>
+            <Table.Cell verticalAlign="middle">
+              <Header size="small">{timeLeft(item.expireTime * 1000)}</Header>
+            </Table.Cell>
+          </>
+        )}
+        {item.expireTime !== -1 && item.expireTime < Date.now() / 1000 && (
+          <>
+            <Table.Cell verticalAlign="middle">
+              <Icon name="lock" size="large" color="red" />
+            </Table.Cell>
+            <Table.Cell verticalAlign="middle">
+              <Header size="small">{renderTime(item.expireTime * 1000)}</Header>
+            </Table.Cell>
+          </>
+        )}
+        {/* </Table> */}
+      </>
+    );
   }
 
   return (
@@ -24,40 +92,36 @@ export default function TokenList(props: {
         <Header size="large" color="blue">
           {props.title}
         </Header>
-        <List>
-          {props.tList.map((item: any, i) => {
-            return (
-              <List.Item
-                key={i}
-                onClick={showTokenInfo}
-                value={item}
-                verticalAlign="top"
-                // disabled={!item.status}
-                celled
-                size="large"
-              >
-                <Header>{item.name()}</Header>
-
-                {item.expireTime !== -1 &&
-                  item.expireTime > Date.now() / 1000 && (
-                    <Icon name="clock outline" size="large" color="teal" />
-                  )}
-                {item.expireTime !== -1 &&
-                  item.expireTime < Date.now() / 1000 && (
-                    <Icon name="lock" size="large" color="red" />
-                  )}
-                {/* {item.asset !== "" ? " **get it" : " not received"} */}
-              </List.Item>
-            );
-          })}
-        </List>
+        <Table striped celled>
+          <Table.Body>
+            {props.tList.map((item: any, i) => {
+              return (
+                <Table.Row
+                  key={i}
+                  verticalAlign="top"
+                  // disabled={!item.status}
+                  value={item}
+                  celled
+                  size="large"
+                >
+                  {onetoken(item)}
+                  {/* <Table.Cell value={item}>{onetoken(item)}</Table.Cell> */}
+                </Table.Row>
+              );
+            })}
+          </Table.Body>
+        </Table>
       </div>
       <Modal open={open} onClose={() => setOpen(false)} closeIcon size="small">
         {/* <Modal.Header>
           <ERCTokenInfo token={clickedItem} acct={props.acct} />
         </Modal.Header> */}
         <Modal.Content>
-          <VaultTokenInfo token={clickedItem} acct={props.acct} />
+          <VaultTokenInfo
+            token={clickedItem}
+            acct={props.acct}
+            mpAddress={props.mpAddress}
+          />
         </Modal.Content>
       </Modal>
     </div>
