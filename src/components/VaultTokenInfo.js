@@ -50,8 +50,10 @@ export default function VaultTokenInfo(props) {
 
   const [showWithdrawErrormsg, setShowWithdrawErrormsg] = useState(false);
   const [showDepositErrormsg, setShowDepositErrormsg] = useState(false);
+  const [showIniErrormsg, setShowIniErrormsg] = useState(false);
   const [showWithdrawSuccessmsg, setShowWithdrawSuccessmsg] = useState(false);
   const [showDepositSuccessmsg, setShowDepositSuccessmsg] = useState(false);
+  const [showIniSuccessmsg, setShowIniSuccessmsg] = useState(false);
 
   function deposit(amt) {
     if (amt === 0) {
@@ -72,8 +74,21 @@ export default function VaultTokenInfo(props) {
   }
 
   function initialize(amt) {
+    if (amt === 0) {
+      setShowIniErrormsg(true);
+      setTimeout(() => {
+        setShowIniErrormsg(false);
+      }, 3000);
+
+      return;
+    }
     let amount = web3.utils.toWei(amt, iUnit);
     props.token.initialize(amount, props.acct);
+    setShowIniSuccessmsg(true);
+    setTimeout(() => {
+      setShowIniSuccessmsg(false);
+      setInitializeAmt(0);
+    }, 3000);
   }
 
   function withDraw(amt) {
@@ -318,7 +333,7 @@ export default function VaultTokenInfo(props) {
             <Form.Group>
               <Form.Field>
                 <input
-                  placeholder="Initilize"
+                  value={initializeAmt}
                   onChange={(e) => setInitializeAmt(e.target.value)}
                 />
               </Form.Field>
@@ -330,10 +345,13 @@ export default function VaultTokenInfo(props) {
                   onChange={updateIUnit}
                 />
               </Menu>
+
               <Button onClick={() => initialize(initializeAmt)} color="teal">
                 Initialize
               </Button>
             </Form.Group>
+            {showIniErrormsg && <ErrorMessage />}
+            {showIniSuccessmsg && <SuccessMessage />}
           </Form>
         </Grid>
       </div>
