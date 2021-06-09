@@ -7,6 +7,7 @@ import {
   Header,
   Input,
   Modal,
+  Message,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
 
@@ -57,11 +58,20 @@ export default function DeployNewVaultToken(props: {
   const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
   const [maxAmt, setMaxAmt] = useState<string>("10");
+  const [showErrorMessage, setSowErrorMessage] = useState<boolean>(false);
 
   let factory = new Factory(web3);
 
   function handleClick(e: any) {
     e.preventDefault();
+    if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
+      setSowErrorMessage(true);
+      setTimeout(() => {
+        setSowErrorMessage(false);
+      }, 3000);
+
+      return;
+    }
     let amount = web3.utils.toWei(maxAmt, "ether");
     console.log(amount);
     factory.deployNewVT(
@@ -71,6 +81,17 @@ export default function DeployNewVaultToken(props: {
       assetTokenAddr,
       amount,
       props.acctNum
+    );
+  }
+
+  function errorMessage() {
+    return (
+      <Message
+        header="Error"
+        content="Please make sure to enter all fields"
+        negative
+        size="small"
+      />
     );
   }
 
@@ -90,6 +111,7 @@ export default function DeployNewVaultToken(props: {
               placeholder="Token Name"
               value={tokenName}
               onChange={(e: any) => setTokenName(e.target.value)}
+              required
             />
 
             <Form.Field
@@ -98,6 +120,7 @@ export default function DeployNewVaultToken(props: {
               placeholder="Token Symbbol"
               value={tokenSymble}
               onChange={(e: any) => setTokenSymble(e.target.value)}
+              required
             />
             <Form.Field
               control={Input}
@@ -105,6 +128,7 @@ export default function DeployNewVaultToken(props: {
               placeholder="1"
               value={maxAmt}
               onChange={(e: any) => setMaxAmt(e.target.value)}
+              required
             />
             <Form.Field
               control={Input}
@@ -112,6 +136,7 @@ export default function DeployNewVaultToken(props: {
               placeholder="Manager Address"
               value={managerAddr}
               // onChange={(e: any) => setManagerAddr(e.target.value)}
+              required
             />
             <Form.Field>
               <Header size="small">Asset Token Address</Header>
@@ -125,8 +150,10 @@ export default function DeployNewVaultToken(props: {
                 selection
                 value={assetTokenAddr}
                 widths="2"
+                required
               />
             </Form.Field>
+            {showErrorMessage && errorMessage()}
             <Form.Field
               control={Button}
               onClick={handleClick}
@@ -134,7 +161,8 @@ export default function DeployNewVaultToken(props: {
               content="Generate Token"
               labelPosition="right"
               color="teal"
-            ></Form.Field>
+              required
+            />
           </Form>
         </Modal.Content>
       </Modal>
