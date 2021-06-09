@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 import {
   Item,
   Modal,
@@ -12,6 +15,7 @@ import {
   Form,
   Dropdown,
   Menu,
+  Message,
 } from "semantic-ui-react";
 import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";
@@ -25,7 +29,7 @@ const units = [
 
 export default function VaultTokenInfo(props) {
   const [depositAmt, setDeposit] = useState(0);
-  const [withdrawAmt, setWithdrawDeposit] = useState(0);
+  const [withdrawAmt, setWithdrawAmt] = useState(0);
   const [initializeAmt, setInitializeAmt] = useState(0);
   const [dUnit, setDUnit] = useState("wei");
   const [wUnit, setWUnit] = useState("wei");
@@ -44,10 +48,27 @@ export default function VaultTokenInfo(props) {
   const [sellColor, setSellColor] = useState("teal");
   const [settleColor, setSettleColor] = useState("teal");
 
+  const [showWithdrawErrormsg, setShowWithdrawErrormsg] = useState(false);
+  const [showDepositErrormsg, setShowDepositErrormsg] = useState(false);
+  const [showWithdrawSuccessmsg, setShowWithdrawSuccessmsg] = useState(false);
+  const [showDepositSuccessmsg, setShowDepositSuccessmsg] = useState(false);
+
   function deposit(amt) {
+    if (amt === 0) {
+      setShowDepositErrormsg(true);
+      setTimeout(() => {
+        setShowDepositErrormsg(false);
+      }, 3000);
+
+      return;
+    }
     let amount = web3.utils.toWei(amt, dUnit);
     props.token.deposit(amount, props.acct);
-    setDeposit(0);
+    setShowDepositSuccessmsg(true);
+    setTimeout(() => {
+      setShowDepositSuccessmsg(false);
+      setDeposit(0);
+    }, 3000);
   }
 
   function initialize(amt) {
@@ -56,8 +77,22 @@ export default function VaultTokenInfo(props) {
   }
 
   function withDraw(amt) {
+    if (amt === 0) {
+      setShowWithdrawErrormsg(true);
+      setTimeout(() => {
+        setShowWithdrawErrormsg(false);
+      }, 3000);
+
+      return;
+    }
     let amount = web3.utils.toWei(amt, wUnit);
     props.token.withdraw(amount, props.acct);
+
+    setShowWithdrawSuccessmsg(true);
+    setTimeout(() => {
+      setShowWithdrawSuccessmsg(false);
+      setWithdrawAmt(0);
+    }, 3000);
   }
 
   function updatedUnit(e, { value }) {
@@ -167,8 +202,8 @@ export default function VaultTokenInfo(props) {
                 <Form.Group>
                   <Form.Field>
                     <input
-                      placeholder="Deposit"
-                      onChange={(e) => setWithdrawDeposit(e.target.value)}
+                      value={withdrawAmt}
+                      onChange={(e) => setWithdrawAmt(e.target.value)}
                     />
                   </Form.Field>
                   <Menu compact>
@@ -180,6 +215,8 @@ export default function VaultTokenInfo(props) {
                     />
                   </Menu>
                 </Form.Group>
+                {showWithdrawErrormsg && <ErrorMessage />}
+                {showWithdrawSuccessmsg && <SuccessMessage />}
                 <Button
                   onClick={() => withDraw(withdrawAmt)}
                   color="blue"
@@ -216,7 +253,7 @@ export default function VaultTokenInfo(props) {
                 <Form.Group>
                   <Form.Field>
                     <input
-                      placeholder="Deposit (wei)"
+                      value={depositAmt}
                       onChange={(e) => setDeposit(e.target.value)}
                     />
                   </Form.Field>
@@ -229,7 +266,8 @@ export default function VaultTokenInfo(props) {
                     />
                   </Menu>
                 </Form.Group>
-
+                {showDepositErrormsg && <ErrorMessage />}
+                {showDepositSuccessmsg && <SuccessMessage />}
                 <Button
                   onClick={() => deposit(depositAmt)}
                   color="orange"
