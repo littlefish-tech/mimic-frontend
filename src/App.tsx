@@ -39,7 +39,8 @@ export default function App() {
   useEffect(() => {
     console.log("acctNum");
     console.log(typeof acctNum);
-    if (acctNum) {
+    console.log(acctNum);
+    if (acctNum && acctNum !== "undefined") {
       const fFive = addr.slice(0, 10);
       const lFive = addr.slice(-8);
       let t = `${fFive}...${lFive}`;
@@ -47,6 +48,7 @@ export default function App() {
       setBtnText(t);
       getMarginPoolAddress();
     }
+
     hasMMInstall();
   }, []);
 
@@ -76,7 +78,11 @@ export default function App() {
     if (!hasMM) {
       alert("You must install MetaMask first");
     } else {
-      const accounts = await web3.eth.getAccounts();
+      // const accounts = await web3.eth.getAccounts();
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log(accounts);
       const account: string = accounts[0];
       const fFive = account.slice(0, 10);
       const lFive = account.slice(-8);
