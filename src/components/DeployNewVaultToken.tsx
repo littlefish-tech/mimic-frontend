@@ -10,6 +10,8 @@ import {
   Message,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 
 // import Factory from "../lib/Factory";
 
@@ -58,16 +60,17 @@ export default function DeployNewVaultToken(props: {
   const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
   const [maxAmt, setMaxAmt] = useState<string>("10");
-  const [showErrorMessage, setSowErrorMessage] = useState<boolean>(false);
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
 
   let factory = new Factory(web3);
 
   function handleClick(e: any) {
     e.preventDefault();
     if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
-      setSowErrorMessage(true);
+      setShowErrorMessage(true);
       setTimeout(() => {
-        setSowErrorMessage(false);
+        setShowErrorMessage(false);
       }, 3000);
 
       return;
@@ -82,17 +85,13 @@ export default function DeployNewVaultToken(props: {
       amount,
       props.acctNum
     );
-  }
-
-  function errorMessage() {
-    return (
-      <Message
-        header="Error"
-        content="Please make sure to enter all fields"
-        negative
-        size="small"
-      />
-    );
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+      setTokenName("");
+      setTokenSymble("");
+      setAssetTokenAddr("");
+    }, 3000);
   }
 
   return (
@@ -153,7 +152,8 @@ export default function DeployNewVaultToken(props: {
                 required
               />
             </Form.Field>
-            {showErrorMessage && errorMessage()}
+            {showErrorMessage && <ErrorMessage />}
+            {showSuccessMessage && <SuccessMessage />}
             <Form.Field
               control={Button}
               onClick={handleClick}
