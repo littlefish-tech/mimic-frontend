@@ -30,11 +30,8 @@ export default function Introduction() {
     color: "black",
     fontSize: "44px",
     fontWeight: "bold",
-    marginBottom: "15px",
-    display: "block",
-    textAlign: "center",
-    paddingBottom: "15px",
     transition: "transform 0.5s",
+    cursor: "pointer",
   };
   const aboutTextStyle = {
     lineHeight: "2.5",
@@ -102,38 +99,42 @@ export default function Introduction() {
           </p>
         </div>
       </div>
-      <ul
+      <div
         style={{
           marginTop: "50px",
-
-          lineHeight: "2",
+          textAlign: "center",
+          paddingBottom: "70px",
+          paddingTop: "50px",
+          display: "flex",
+          flexDirection: "center",
+          justifyContent: "space-evenly",
         }}
       >
-        <a
+        <div
           className="socialLink"
           href="https://twitter.com/Official_ASDev"
           style={socialStyle}
         >
           <Icon name="twitter" />
           Twitter{" "}
-        </a>
-        <a
+        </div>
+        <div
           className="socialLink"
           href="https://github.com/Alpha-Serpentis-Developments/Project-Mimic"
           style={socialStyle}
         >
           <Icon name="github" />
           Github
-        </a>
-        <a
+        </div>
+        <div
           className="socialLink"
           href="https://discord.gg/u9wMgBY"
           style={socialStyle}
         >
           <Icon name="discord" />
           Discord
-        </a>
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }
