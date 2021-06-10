@@ -32,29 +32,29 @@ export default function TopMenu(props) {
           />
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item>
-            <Button
-              icon="plus circle"
-              size="medium"
-              color="teal"
-              onClick={openModal}
-              disabled={!props.acctNum}
-            >
-              New Token
-            </Button>
-          </Menu.Item>
-          <Menu.Item>
-            <Button color="grey">
-              {" "}
-              <MMConnect
-                btnText={props.btnText}
-                acctNum={props.acctNum}
-                chainId={props.chainId}
-                ethBal={props.ethBal}
-                connectMM={props.connectMM}
-              />
-            </Button>
-          </Menu.Item>
+          {/* <Menu.Item> */}
+          <Button
+            icon="plus circle"
+            size="large"
+            color="teal"
+            onClick={openModal}
+            disabled={!props.acctNum}
+          >
+            New Token
+          </Button>
+          {/* </Menu.Item> */}
+          {/* <Menu.Item> */}
+          <Button color="grey">
+            {" "}
+            <MMConnect
+              btnText={props.btnText}
+              acctNum={props.acctNum}
+              chainId={props.chainId}
+              ethBal={props.ethBal}
+              connectMM={props.connectMM}
+            />
+          </Button>
+          {/* </Menu.Item> */}
         </Menu.Menu>
       </Menu>
     </div>

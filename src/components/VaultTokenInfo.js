@@ -151,8 +151,9 @@ export default function VaultTokenInfo(props) {
 
   function sellCall(amt, premiumAmount, otherPartyAddress) {
     let amount = web3.utils.toWei(amt, sellCallUnit);
+    console.log(amount);
     let pAmount = web3.utils.toWei(premiumAmount, pemiumUnit);
-    props.token.writeCalls(amount, pAmount, otherPartyAddress, props.acct);
+    props.token.sellCalls(amount, pAmount, otherPartyAddress, props.acct);
   }
 
   function confirmWriteCall(e) {
@@ -166,7 +167,6 @@ export default function VaultTokenInfo(props) {
       return;
     }
     writeCall(writeCallAmt, oTokenAddress);
-    setShowWriteCall(false);
     setShowWriteSuccMsg(true);
     setTimeout(() => {
       setShowWriteSuccMsg(false);
@@ -175,7 +175,27 @@ export default function VaultTokenInfo(props) {
     }, 3000);
   }
 
-  function confirmSellCall(e) {}
+  function confirmSellCall(e) {
+    e.preventDefault();
+    if (sellCallAmt === 0 || premiumAmount === 0 || otherPartyAddress === "") {
+      setShowSellErrMsg(true);
+      setTimeout(() => {
+        setShowSellErrMsg(false);
+      }, 3000);
+
+      return;
+    }
+    console.log(sellCallAmt, premiumAmount, otherPartyAddress);
+    sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+    console.log(sellCallAmt, premiumAmount, otherPartyAddress);
+    setShowSellSuccMsg(true);
+    setTimeout(() => {
+      setShowSellSuccMsg(false);
+      setSellCallAmt(0);
+      setPemiumAmount(0);
+      setOtherPartyAddress("");
+    }, 3000);
+  }
 
   function writeCallRender() {
     return (
@@ -184,23 +204,23 @@ export default function VaultTokenInfo(props) {
         <Form.Group>
           <Form.Field>
             <input
-              placeholder="amount"
+              value={writeCallAmt}
               onChange={(e) => setWriteCallAmt(e.target.value)}
             />
           </Form.Field>
-        </Form.Group>
-        <Menu compact>
-          <Dropdown
-            defaultValue="wei"
-            options={units}
-            item
-            onChange={updateWriteCallUnit}
-          />
-        </Menu>
 
+          <Menu compact size="tiny">
+            <Dropdown
+              defaultValue="wei"
+              options={units}
+              item
+              onChange={updateWriteCallUnit}
+            />
+          </Menu>
+        </Form.Group>
         <Form.Field>
           <input
-            placeholder="oToken Address"
+            value={oTokenAddress}
             onChange={(e) => setOTokenaddress(e.target.value)}
           />
         </Form.Field>
@@ -210,6 +230,7 @@ export default function VaultTokenInfo(props) {
         {showWriteErrMsg && <ErrorMessage />}
         {showWriteSuccMsg && <SuccessMessage />}
         <Button
+          color="teal"
           onClick={confirmWriteCall}
           // {() => {
           //   writeCall(writeCallAmt, oTokenAddress);
@@ -261,7 +282,7 @@ export default function VaultTokenInfo(props) {
                       onChange={(e) => setWithdrawAmt(e.target.value)}
                     />
                   </Form.Field>
-                  <Menu compact>
+                  <Menu compact size="tiny">
                     <Dropdown
                       defaultValue="wei"
                       options={units}
@@ -312,7 +333,7 @@ export default function VaultTokenInfo(props) {
                       onChange={(e) => setDeposit(e.target.value)}
                     />
                   </Form.Field>
-                  <Menu compact>
+                  <Menu compact size="tiny">
                     <Dropdown
                       defaultValue="wei"
                       options={units}
@@ -377,7 +398,7 @@ export default function VaultTokenInfo(props) {
                   onChange={(e) => setInitializeAmt(e.target.value)}
                 />
               </Form.Field>
-              <Menu compact>
+              <Menu compact size="tiny">
                 <Dropdown
                   defaultValue="wei"
                   options={units}
@@ -404,48 +425,62 @@ export default function VaultTokenInfo(props) {
         <Divider hidden />
         <Form.Group>
           <Form.Field>
+            <label>Amount</label>
             <input
               placeholder="amount"
               onChange={(e) => setSellCallAmt(e.target.value)}
             />
           </Form.Field>
+
+          <Form.Field>
+            <label>select</label>
+            <Menu compact size="tiny">
+              <Dropdown
+                defaultValue="wei"
+                options={units}
+                item
+                onChange={updateSellCallUnit}
+              />
+            </Menu>
+          </Form.Field>
         </Form.Group>
-        <Menu compact>
-          <Dropdown
-            defaultValue="wei"
-            options={units}
-            item
-            onChange={updateSellCallUnit}
-          />
-        </Menu>
         <Form.Group>
           <Form.Field>
+            <label>Premium Amount</label>
             <input
               placeholder="amount"
               onChange={(e) => setPemiumAmount(e.target.value)}
             />
           </Form.Field>
-        </Form.Group>
-        <Menu compact>
-          <Dropdown
-            defaultValue="wei"
-            options={units}
-            item
-            onChange={updatePremiumUnit}
-          />
-        </Menu>
 
+          <Form.Field>
+            <label>select</label>
+            <Menu compact size="tiny">
+              <Dropdown
+                defaultValue="wei"
+                options={units}
+                item
+                onChange={updatePremiumUnit}
+              />
+            </Menu>
+          </Form.Field>
+        </Form.Group>
         <Form.Field>
+          <label>Other party address</label>
           <input
             placeholder="Other party address"
             onChange={(e) => setOtherPartyAddress(e.target.value)}
           />
         </Form.Field>
+        {showSellErrMsg && <ErrorMessage />}
+        {showSellSuccMsg && <SuccessMessage />}
         <Button
-          onClick={() => {
-            sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
-            setShowSellCall(false);
-          }}
+          color="teal"
+          onClick={confirmSellCall}
+          //   () => {
+          //   sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+          //   setShowSellCall(false);
+          // }}
         >
           Confirm
         </Button>
@@ -480,6 +515,7 @@ export default function VaultTokenInfo(props) {
                 color={writeColor}
                 onClick={() => {
                   setShowWriteCall(true);
+                  setWriteColor("teal");
                   setShowSellCall(false);
                   setSellColor("grey");
                   setSettleColor("grey");
@@ -498,6 +534,7 @@ export default function VaultTokenInfo(props) {
                   // sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
                   setShowSellCall(true);
                   setShowWriteCall(false);
+                  setSellColor("teal");
                   setWriteColor("grey");
                   setSettleColor("grey");
                 }}
@@ -511,6 +548,8 @@ export default function VaultTokenInfo(props) {
                 color={settleColor}
                 onClick={settleVault}
                 disabled={props.token.expireTime > Date.now()}
+                // disabled={props.token.expireTime > Date.now()}
+                disabled
               >
                 Settle Vault
               </Button>
