@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.aboutCard:hover {
+  transform: scale(1.05);
+}
+.socialLink:hover {
+  transform: scale(1.2);
+}

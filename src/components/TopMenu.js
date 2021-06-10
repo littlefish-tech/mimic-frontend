@@ -14,7 +14,11 @@ export default function TopMenu(props) {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: "linear-gradient(#89609e, #eddbf4)",
+      }}
+    >
       <Menu inverted circular secondary>
         <DeployNewVaultToken
           openPlusModal={openPlusModal}
