@@ -1,57 +1,9 @@
 import React, { useState } from "react";
-import {
-  Icon,
-  Menu,
-  Button,
-  Image,
-  Divider,
-  Header,
-  Segment,
-} from "semantic-ui-react";
+import { Menu, Button, Header } from "semantic-ui-react";
 import MMConnect from "./MMconnection";
-import DeployNewVaultToken from "./DeployNewVaultToken";
 import profileImg from "../images/cover.png";
 
 export default function TopMenu(props) {
-  // const [menuActive, setMenuActive] = useState(false);
-  // const [homeNav, setHomeNav] = useState("black");
-  // const [manageNav, setManagerNav] = useState("black");
-  // const [tokenNav, setTokenNav] = useState("black");
-
-  // function clickMenu(e, { name }) {
-  //   e.preventDefault();
-  //   setMenuActive(name);
-  //   if (name === "manager") {
-  //     setManagerNav("purple");
-  //     setTokenNav("black");
-  //     setHomeNav("black");
-  //   } else if (name === "token") {
-  //     setManagerNav("black");
-  //     setTokenNav("purple");
-  //     setHomeNav("black");
-  //   } else if (name === "home") {
-  //     setManagerNav("black");
-  //     setTokenNav("black");
-  //     setHomeNav("purple");
-  //   }
-  // }
-  // function clickManagerNav(e) {
-  //   e.preventDefault();
-  //   setManagerNav("purple");
-  //   setTokenNav("black");
-  // }
-  // function clickTokenNav(e) {
-  //   e.preventDefault();
-  //   setManagerNav("black");
-  //   setTokenNav("purple");
-  // }
-
-  // functions to open the deploy new token modal
-  // function openModal() {
-  //   console.log("clikced");
-  //   setOpenPlusModal(true);
-  // }
-
   return (
     <div
       style={{
@@ -60,11 +12,6 @@ export default function TopMenu(props) {
     >
       <div style={{ paddingTop: "15px" }}>
         <Menu inverted secondary>
-          {/* <DeployNewVaultToken
-            openPlusModal={openPlusModal}
-            onClose={() => setOpenPlusModal(false)}
-            acctNum={props.acctNum}
-          /> */}
           <Menu.Item>
             <img
               src={profileImg}
@@ -112,17 +59,6 @@ export default function TopMenu(props) {
           </Menu.Item>
 
           <Menu.Menu position="right">
-            {/* <Menu.Item>
-              <Button
-                icon="plus circle"
-                size="large"
-                color="teal"
-                onClick={openModal}
-                disabled={!props.acctNum}
-              >
-                New Token
-              </Button>
-            </Menu.Item> */}
             <Menu.Item>
               <Button color="grey">
                 {" "}
