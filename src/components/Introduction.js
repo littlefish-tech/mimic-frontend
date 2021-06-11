@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, Card } from "semantic-ui-react";
 
 import profileImg from "../images/profile.png";
 
@@ -17,7 +16,7 @@ export default function Introduction() {
     width: "40%",
     textAlign: "center",
     lineHeight: "1.2,",
-    fontSize: "28px",
+    fontSize: "24px",
     borderRadius: "30px",
     marginTop: "50px",
     boxShadow:
@@ -26,14 +25,7 @@ export default function Introduction() {
     backgroundColor: "#8980EA",
     color: "white",
   };
-  const socialStyle = {
-    textDecoration: "none",
-    color: "black",
-    fontSize: "44px",
-    fontWeight: "bold",
-    transition: "transform 0.5s",
-    cursor: "pointer",
-  };
+
   const aboutTextStyle = {
     lineHeight: "2.5",
     paddingBottom: "20px",
@@ -72,6 +64,7 @@ export default function Introduction() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-evenly",
+          paddingBottom: "100px",
         }}
       >
         <div className="aboutCard" style={cardStyle}>
@@ -101,42 +94,6 @@ export default function Introduction() {
           <p style={aboutTextStyle}>
             <p style={{ paddingTop: "45px" }}>Coming Soon ...</p>
           </p>
-        </div>
-      </div>
-      <div
-        style={{
-          marginTop: "50px",
-          textAlign: "center",
-          paddingBottom: "70px",
-          paddingTop: "50px",
-          display: "flex",
-          flexDirection: "center",
-          justifyContent: "space-evenly",
-        }}
-      >
-        <div
-          className="socialLink"
-          href="https://twitter.com/Official_ASDev"
-          style={socialStyle}
-        >
-          <Icon name="twitter" />
-          Twitter{" "}
-        </div>
-        <div
-          className="socialLink"
-          href="https://github.com/Alpha-Serpentis-Developments/Project-Mimic"
-          style={socialStyle}
-        >
-          <Icon name="github" />
-          Github
-        </div>
-        <div
-          className="socialLink"
-          href="https://discord.gg/u9wMgBY"
-          style={socialStyle}
-        >
-          <Icon name="discord" />
-          Discord
         </div>
       </div>
     </div>

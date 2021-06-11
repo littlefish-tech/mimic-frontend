@@ -6,6 +6,7 @@ import { Button, Header, Modal, Icon } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
+import Footer from "./components/Footer";
 import { AddressBook } from "./components/AddressBook";
 
 // create a new web3 oject
@@ -123,6 +124,7 @@ export default function App() {
       )}
 
       <div className="content"></div>
+      <Footer />
     </div>
   );
 }
