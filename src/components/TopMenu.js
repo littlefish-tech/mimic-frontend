@@ -16,7 +16,7 @@ export default function TopMenu(props) {
   return (
     <div
       style={{
-        backgroundImage: "linear-gradient(#89609e, #eddbf4)",
+        backgroundColor: "#e8dcef",
       }}
     >
       <Menu inverted circular secondary>
@@ -30,8 +30,8 @@ export default function TopMenu(props) {
             src={profileImg}
             style={{
               objectFit: "cover",
-
-              marginLeft: "100px",
+              marginTop: "10px",
+              marginLeft: "20px",
             }}
           />
         </Menu.Item>
@@ -47,18 +47,18 @@ export default function TopMenu(props) {
             New Token
           </Button>
           {/* </Menu.Item> */}
-          {/* <Menu.Item> */}
-          <Button color="grey">
-            {" "}
-            <MMConnect
-              btnText={props.btnText}
-              acctNum={props.acctNum}
-              chainId={props.chainId}
-              ethBal={props.ethBal}
-              connectMM={props.connectMM}
-            />
-          </Button>
-          {/* </Menu.Item> */}
+          <Menu.Item>
+            <Button color="grey">
+              {" "}
+              <MMConnect
+                btnText={props.btnText}
+                acctNum={props.acctNum}
+                chainId={props.chainId}
+                ethBal={props.ethBal}
+                connectMM={props.connectMM}
+              />
+            </Button>
+          </Menu.Item>
         </Menu.Menu>
       </Menu>
     </div>
