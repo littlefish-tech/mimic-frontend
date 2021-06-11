@@ -302,31 +302,37 @@ export default function VTList(props) {
               {" "}
               <TokenList tList={vtList} update={update} title="Token List" />
             </Table.Cell> */}
-            <Table.Cell>
-              <TokenList
-                tList={managedList}
-                update={update}
-                title="Managed Token"
-                acct={props.acctNum}
-                mpAddress={props.mpAddress}
-              />
-            </Table.Cell>
-            <Table.Cell>
-              <TokenList
-                tList={portfolioList}
-                update={update}
-                title="Portfolio"
-                acct={props.acctNum}
-              />
-            </Table.Cell>
-            <Table.Cell>
-              <TokenList
-                tList={followList}
-                update={update}
-                title="Follow List"
-                acct={props.acctNum}
-              />
-            </Table.Cell>
+            {props.renderManager && (
+              <Table.Cell>
+                <TokenList
+                  tList={managedList}
+                  update={update}
+                  title="Managed Token"
+                  acct={props.acctNum}
+                  mpAddress={props.mpAddress}
+                />
+              </Table.Cell>
+            )}
+            {props.renderPortfolio && (
+              <Table.Cell>
+                <TokenList
+                  tList={portfolioList}
+                  update={update}
+                  title="Portfolio"
+                  acct={props.acctNum}
+                />
+              </Table.Cell>
+            )}
+            {props.renderFollow && (
+              <Table.Cell>
+                <TokenList
+                  tList={followList}
+                  update={update}
+                  title="Follow List"
+                  acct={props.acctNum}
+                />
+              </Table.Cell>
+            )}
           </Table.Row>
         </Table.Body>
       </Table>

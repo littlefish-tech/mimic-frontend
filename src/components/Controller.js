@@ -6,17 +6,21 @@ export class Controller {
     this.provider = web3;
     this.address = ControllerAddr;
     this.controller = new web3.eth.Contract(cabi, ControllerAddr);
-    this.expired = false;
+    this.expired = new Object();
   }
 
   async hasExpired(a) {
-    let isExpired = false;
+    let isExpired = null;
     await this.controller.methods.hasExpired(a).call(function (error, result) {
       isExpired = result;
     });
     return isExpired;
   }
-  setExpired(b) {
-    this.expired = b;
+  setExpired(a, b) {
+    this.expired[a] = b;
+  }
+
+  getExpired(a) {
+    return this.expired[a];
   }
 }

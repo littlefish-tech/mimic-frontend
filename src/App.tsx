@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import Web3 from "web3";
 import VTList from "./components/VTList.js";
-import { Button, Header, Modal, Icon } from "semantic-ui-react";
+import { Button, Header, Modal, Icon, Tab } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
@@ -18,6 +18,12 @@ declare global {
     ethereum: any;
   }
 }
+
+const panes = [
+  { menuItem: "Home", render: () => <Tab.Pane>Tab 1 Content</Tab.Pane> },
+  { menuItem: "Trade", render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
+  { menuItem: "Manager", render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
+];
 
 export default function App() {
   // check localstorage if the wallet address is saves
@@ -36,6 +42,15 @@ export default function App() {
   const [chainId, setChainId] = useState<number | undefined>();
   const [ethBal, setEthBal] = useState<number | undefined>();
   const [mpAddress, setMPAddress] = useState<string>("");
+  const [renderHome, setRenderHome] = useState<boolean>(true);
+  const [renderManager, setRenderManager] = useState<boolean>(false);
+  const [renderFollow, setRenderFollow] = useState<boolean>(false);
+  const [renderPortfolio, setRenderPortfolio] = useState<boolean>(false);
+  const [openPlusModal, setOpenPlusModal] = useState(false);
+
+  const [homeNav, setHomeNav] = useState("black");
+  const [managerNav, setManagerNav] = useState("black");
+  const [tradeNav, setTradeNav] = useState("black");
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -93,6 +108,43 @@ export default function App() {
     }
   }
 
+  function clickHome(e: any) {
+    e.preventDefault();
+    setRenderHome(true);
+    setRenderManager(false);
+    setRenderPortfolio(false);
+    setRenderFollow(false);
+    setHomeNav("purple");
+    setManagerNav("black");
+    setTradeNav("black");
+  }
+  function clickTrade(e: any) {
+    e.preventDefault();
+    setRenderHome(false);
+    setRenderManager(false);
+    setRenderPortfolio(true);
+    setRenderFollow(true);
+    setHomeNav("black");
+    setManagerNav("black");
+    setTradeNav("purple");
+  }
+  function clickManager(e: any) {
+    console.log("click");
+    e.preventDefault();
+    setRenderHome(false);
+    setRenderManager(true);
+    setRenderPortfolio(false);
+    setRenderFollow(false);
+    setHomeNav("black");
+    setManagerNav("purple");
+    setTradeNav("black");
+  }
+
+  function openModal() {
+    console.log("clikced");
+    setOpenPlusModal(true);
+  }
+
   return (
     <div>
       <TopMenu
@@ -101,10 +153,41 @@ export default function App() {
         chainId={chainId}
         ethBal={ethBal}
         connectMM={connectMM}
+        clickHome={clickHome}
+        clickTrade={clickTrade}
+        clickManager={clickManager}
+        renderHome={renderHome}
+        renderManager={renderManager}
+        renderFollow={renderFollow}
+        renderPortfolio={renderPortfolio}
+        homeNav={homeNav}
+        tradeNav={tradeNav}
+        managerNav={managerNav}
       />
-      <Introduction />
+      {/* <Tab panes={panes} /> */}
+      {renderHome && <Introduction />}
       {addr ? (
-        <VTList acctNum={acctNum} mpAddress={mpAddress} />
+        <div>
+          <VTList
+            acctNum={acctNum}
+            mpAddress={mpAddress}
+            renderManager={renderManager}
+            renderFollow={renderFollow}
+            renderPortfolio={renderPortfolio}
+          />
+          {renderManager && (
+            <Button
+              icon="plus circle"
+              size="huge"
+              color="teal"
+              onClick={openModal}
+              disabled={!acctNum}
+              fluid
+            >
+              New Token
+            </Button>
+          )}
+        </div>
       ) : (
         <div
           style={{
@@ -124,6 +207,11 @@ export default function App() {
       )}
 
       <div className="content"></div>
+      <DeployNewVaultToken
+        openPlusModal={openPlusModal}
+        onClose={() => setOpenPlusModal(false)}
+        acctNum={acctNum}
+      />
       <Footer />
     </div>
   );
