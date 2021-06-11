@@ -203,28 +203,33 @@ export default function VaultTokenInfo(props) {
         <Divider hidden />
         <Form.Group>
           <Form.Field>
+            <label>Write Call Amount</label>
             <input
               value={writeCallAmt}
               onChange={(e) => setWriteCallAmt(e.target.value)}
             />
           </Form.Field>
-
-          <Menu compact size="tiny">
-            <Dropdown
-              defaultValue="wei"
-              options={units}
-              item
-              onChange={updateWriteCallUnit}
-            />
-          </Menu>
+          <Form.Field>
+            <label>select</label>
+            <Menu compact size="tiny">
+              <Dropdown
+                defaultValue="wei"
+                options={units}
+                item
+                onChange={updateWriteCallUnit}
+              />
+            </Menu>
+          </Form.Field>
         </Form.Group>
         <Form.Field>
+          <label>oToken Address</label>
           <input
             value={oTokenAddress}
             onChange={(e) => setOTokenaddress(e.target.value)}
           />
         </Form.Field>
         <Form.Field>
+          <label>Margin Pool Address</label>
           <input placeholder={props.mpAddress} value={props.mpAddress} />
         </Form.Field>
         {showWriteErrMsg && <ErrorMessage />}
@@ -427,7 +432,7 @@ export default function VaultTokenInfo(props) {
           <Form.Field>
             <label>Amount</label>
             <input
-              placeholder="amount"
+              value={sellCallAmt}
               onChange={(e) => setSellCallAmt(e.target.value)}
             />
           </Form.Field>
@@ -448,7 +453,7 @@ export default function VaultTokenInfo(props) {
           <Form.Field>
             <label>Premium Amount</label>
             <input
-              placeholder="amount"
+              value={premiumAmount}
               onChange={(e) => setPemiumAmount(e.target.value)}
             />
           </Form.Field>

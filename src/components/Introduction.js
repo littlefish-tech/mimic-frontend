@@ -27,7 +27,7 @@ export default function Introduction() {
   };
 
   const aboutTextStyle = {
-    lineHeight: "2.5",
+    lineHeight: "1.5",
     paddingBottom: "20px",
     paddingLeft: "15px",
     paddingRight: "15px",
@@ -65,6 +65,7 @@ export default function Introduction() {
           flexDirection: "row",
           justifyContent: "space-evenly",
           paddingBottom: "100px",
+          fontFamily: "Arimo-Regular",
         }}
       >
         <div className="aboutCard" style={cardStyle}>
