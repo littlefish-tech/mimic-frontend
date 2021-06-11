@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -12,10 +15,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-.content {
-  min-height: 1050px;
-
-  /* Equal to height of footer */
-  /* But also accounting for potential margin-bottom of last child */
 }
