@@ -147,71 +147,73 @@ export default function App() {
 
   return (
     <div>
-      <TopMenu
-        btnText={btnText}
-        acctNum={acctNum}
-        chainId={chainId}
-        ethBal={ethBal}
-        connectMM={connectMM}
-        clickHome={clickHome}
-        clickTrade={clickTrade}
-        clickManager={clickManager}
-        renderHome={renderHome}
-        renderManager={renderManager}
-        renderFollow={renderFollow}
-        renderPortfolio={renderPortfolio}
-        homeNav={homeNav}
-        tradeNav={tradeNav}
-        managerNav={managerNav}
-      />
-      {/* <Tab panes={panes} /> */}
-      {renderHome && <Introduction />}
-      {addr ? (
-        <div>
-          <VTList
-            acctNum={acctNum}
-            mpAddress={mpAddress}
-            renderManager={renderManager}
-            renderFollow={renderFollow}
-            renderPortfolio={renderPortfolio}
-          />
-          {renderManager && (
-            <Button
-              icon="plus circle"
-              size="huge"
-              color="teal"
-              onClick={openModal}
-              disabled={!acctNum}
-              fluid
-            >
-              New Token
-            </Button>
-          )}
-        </div>
-      ) : (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "20px",
-            marginTop: "20px",
-            color: "red",
-          }}
-        >
-          <Icon name="exclamation triangle" color="red" />
-          Please install
-          <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
-            {" "}
-            MetaMask
-          </a>{" "}
-        </div>
-      )}
+      <div className="content">
+        <TopMenu
+          btnText={btnText}
+          acctNum={acctNum}
+          chainId={chainId}
+          ethBal={ethBal}
+          connectMM={connectMM}
+          clickHome={clickHome}
+          clickTrade={clickTrade}
+          clickManager={clickManager}
+          renderHome={renderHome}
+          renderManager={renderManager}
+          renderFollow={renderFollow}
+          renderPortfolio={renderPortfolio}
+          homeNav={homeNav}
+          tradeNav={tradeNav}
+          managerNav={managerNav}
+        />
+        {/* <Tab panes={panes} /> */}
+        {renderHome && <Introduction />}
+        {addr ? (
+          <div>
+            <VTList
+              acctNum={acctNum}
+              mpAddress={mpAddress}
+              renderManager={renderManager}
+              renderFollow={renderFollow}
+              renderPortfolio={renderPortfolio}
+            />
+            {renderManager && (
+              <Button
+                icon="plus circle"
+                size="huge"
+                color="teal"
+                onClick={openModal}
+                disabled={!acctNum}
+                fluid
+              >
+                New Token
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "20px",
+              marginTop: "20px",
+              color: "red",
+            }}
+          >
+            <Icon name="exclamation triangle" color="red" />
+            Please install
+            <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
+              {" "}
+              MetaMask
+            </a>{" "}
+          </div>
+        )}
 
-      <div className="content"></div>
-      <DeployNewVaultToken
-        openPlusModal={openPlusModal}
-        onClose={() => setOpenPlusModal(false)}
-        acctNum={acctNum}
-      />
+        <DeployNewVaultToken
+          openPlusModal={openPlusModal}
+          onClose={() => setOpenPlusModal(false)}
+          acctNum={acctNum}
+        />
+      </div>
+
       <Footer />
     </div>
   );
