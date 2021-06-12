@@ -42,6 +42,7 @@ export default function App() {
   const [chainId, setChainId] = useState<number | undefined>();
   const [ethBal, setEthBal] = useState<number | undefined>();
   const [mpAddress, setMPAddress] = useState<string>("");
+  const [expireObj, setExpireObj] = useState<Object>({});
   const [renderHome, setRenderHome] = useState<boolean>(true);
   const [renderManager, setRenderManager] = useState<boolean>(false);
   const [renderFollow, setRenderFollow] = useState<boolean>(false);

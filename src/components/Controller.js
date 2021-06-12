@@ -11,7 +11,9 @@ export class Controller {
 
   async hasExpired(a) {
     let isExpired = null;
+    console.log("at controller");
     await this.controller.methods.hasExpired(a).call(function (error, result) {
+      console.log(result);
       isExpired = result;
     });
     return isExpired;

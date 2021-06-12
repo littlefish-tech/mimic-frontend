@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 import {
@@ -552,9 +551,8 @@ export default function VaultTokenInfo(props) {
               <Button
                 color={settleColor}
                 onClick={settleVault}
-                disabled={props.token.expireTime > Date.now()}
                 // disabled={props.token.expireTime > Date.now()}
-                disabled
+                // disabled={props.token.expireTime > Date.now()}
               >
                 Settle Vault
               </Button>
