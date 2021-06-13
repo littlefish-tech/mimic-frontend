@@ -65,7 +65,7 @@ export default function Introduction() {
 
         <div className="aboutCard">
           {" "}
-          <h1 style={cardHeaderStyling}>Leader Board</h1>
+          <h1 style={cardHeaderStyling}>Performance Leaderboard</h1>
           <br />
           <p style={aboutTextStyle}>
             <p style={{ paddingTop: "45px" }}>Coming Soon ...</p>

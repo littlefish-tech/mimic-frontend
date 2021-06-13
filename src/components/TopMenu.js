@@ -7,7 +7,7 @@ export default function TopMenu(props) {
   return (
     <div
       style={{
-        backgroundColor: "#e8dcef",
+        backgroundColor: "#eddbf4",
       }}
     >
       <div>
