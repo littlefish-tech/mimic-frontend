@@ -61,8 +61,7 @@ export default function DeployNewVaultToken(props: {
   const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
   const [maxAmt, setMaxAmt] = useState<string>("10");
-  // const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
-  // const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [showStatus, setShowStatus] = useState<boolean>(false);
   const [statusHeader, setStatusHeader] = useState<string>("");

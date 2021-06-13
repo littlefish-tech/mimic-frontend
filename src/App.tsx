@@ -42,7 +42,7 @@ export default function App() {
   const [chainId, setChainId] = useState<number | undefined>();
   const [ethBal, setEthBal] = useState<number | undefined>();
   const [mpAddress, setMPAddress] = useState<string>("");
-  const [expireObj, setExpireObj] = useState<Object>({});
+
   const [renderHome, setRenderHome] = useState<boolean>(true);
   const [renderManager, setRenderManager] = useState<boolean>(false);
   const [renderFollow, setRenderFollow] = useState<boolean>(false);
@@ -52,6 +52,7 @@ export default function App() {
   const [homeNav, setHomeNav] = useState("black");
   const [managerNav, setManagerNav] = useState("black");
   const [tradeNav, setTradeNav] = useState("black");
+  const [mmColor, setMMColor] = useState("grey");
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -80,6 +81,17 @@ export default function App() {
     const chain_Id = await web3.eth.getChainId();
     setChainId(chain_Id);
     console.log(chain_Id);
+    if (chain_Id === 1) {
+      setMMColor("teal");
+    } else if (chain_Id === 3) {
+      setMMColor("pink");
+    } else if (chain_Id === 42) {
+      setMMColor("purple");
+    } else if (chain_Id === 4) {
+      setMMColor("orange");
+    } else if (chain_Id === 5) {
+      setMMColor("blue");
+    }
   }
   // check if meta mask is installed
   async function hasMMInstall() {
@@ -104,10 +116,11 @@ export default function App() {
       const wAddress = `${fFive}...${lFive}`;
       setAcctNum(account);
       setBtnText(wAddress);
-      const chain_Id = await web3.eth.getChainId();
+      // const chain_Id = await web3.eth.getChainId();
+      getChainID();
       const weiBal = await web3.eth.getBalance(account);
       const ethBal = parseInt(weiBal) / 1000000000000000000;
-      setChainId(chain_Id);
+      // setChainId(chain_Id);
       setEthBal(ethBal);
       localStorage.setItem("account", JSON.stringify(account));
     }
@@ -169,6 +182,7 @@ export default function App() {
           homeNav={homeNav}
           tradeNav={tradeNav}
           managerNav={managerNav}
+          mmColor={mmColor}
         />
         {/* <Tab panes={panes} /> */}
         {renderHome && <Introduction />}

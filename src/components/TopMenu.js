@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Button, Header } from "semantic-ui-react";
+import { Menu, Button, Header, Icon } from "semantic-ui-react";
 import MMConnect from "./MMconnection";
 import profileImg from "../images/cover.png";
 
@@ -60,8 +60,8 @@ export default function TopMenu(props) {
 
           <Menu.Menu position="right">
             <Menu.Item>
-              <Button color="grey">
-                {" "}
+              <Button color="grey" icon labelPosition="left">
+                <Icon name="dot circle" color={props.mmColor} />{" "}
                 <MMConnect
                   btnText={props.btnText}
                   acctNum={props.acctNum}
