@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import Web3 from "web3";
 import VTList from "./components/VTList.js";
-import { Button, Header, Modal, Icon, Tab } from "semantic-ui-react";
+import {
+  Button,
+  Header,
+  Modal,
+  Icon,
+  Tab,
+  Grid,
+  Divider,
+} from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
@@ -26,15 +34,7 @@ const panes = [
 ];
 
 export default function App() {
-  // check localstorage if the wallet address is saves
-  // if wallet address is saved
-  // display the address
   let addr: string = JSON.parse(localStorage.getItem("account") || "false");
-  // if (addr) {
-  //   const fFive = addr.slice(0, 10);
-  //   const lFive = addr.slice(-8);
-  //   addr = `${fFive}...${lFive}`;
-  // }
 
   const [hasMM, setHasMM] = useState<boolean>(false);
   const [btnText, setBtnText] = useState<string>("Connect MetaMask");
@@ -62,7 +62,7 @@ export default function App() {
       const fFive = addr.slice(0, 10);
       const lFive = addr.slice(-8);
       let t = `${fFive}...${lFive}`;
-
+      getChainID();
       setBtnText(t);
       getMarginPoolAddress();
     }
@@ -76,7 +76,11 @@ export default function App() {
       setMPAddress(result);
     });
   }
-
+  async function getChainID() {
+    const chain_Id = await web3.eth.getChainId();
+    setChainId(chain_Id);
+    console.log(chain_Id);
+  }
   // check if meta mask is installed
   async function hasMMInstall() {
     if (typeof window.ethereum !== "undefined") {
@@ -178,16 +182,21 @@ export default function App() {
               renderPortfolio={renderPortfolio}
             />
             {renderManager && (
-              <Button
-                icon="plus circle"
-                size="huge"
-                color="teal"
-                onClick={openModal}
-                disabled={!acctNum}
-                fluid
-              >
-                New Token
-              </Button>
+              <Grid centered padded>
+                <Grid.Row />
+                <Button
+                  icon="plus circle"
+                  size="huge"
+                  color="purple"
+                  onClick={openModal}
+                  disabled={!acctNum}
+                >
+                  New Token
+                </Button>
+                <Grid.Row />
+                <Grid.Row />
+                <Grid.Row />
+              </Grid>
             )}
           </div>
         ) : (

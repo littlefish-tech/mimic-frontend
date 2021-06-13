@@ -6,7 +6,7 @@ import "../App.css";
 export default function SuccessMessage() {
   const socialStyle = {
     textDecoration: "none",
-    color: "white",
+    color: "purple",
     fontSize: "20px",
     fontWeight: "bold",
     transition: "transform 0.5s",
@@ -22,7 +22,7 @@ export default function SuccessMessage() {
         display: "flex",
         flexDirection: "center",
         justifyContent: "space-evenly",
-        backgroundColor: "#89609e",
+        // backgroundColor: "white",
         position: "fixed",
         left: "0",
         bottom: "0",

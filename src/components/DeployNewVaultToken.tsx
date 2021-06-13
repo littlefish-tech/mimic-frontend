@@ -10,8 +10,9 @@ import {
   Message,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
-import ErrorMessage from "./ErrorMessage";
-import SuccessMessage from "./SuccessMessage";
+// import ErrorMessage from "./ErrorMessage";
+// import SuccessMessage from "./SuccessMessage";
+import StatusMessage from "./StatusMessage";
 
 // import Factory from "../lib/Factory";
 
@@ -60,45 +61,96 @@ export default function DeployNewVaultToken(props: {
   const [tokenSymble, setTokenSymble] = useState<string>("");
   const [assetTokenAddr, setAssetTokenAddr] = useState<string>("");
   const [maxAmt, setMaxAmt] = useState<string>("10");
-  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+  // const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+  // const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+  const [statusMessage, setStatusMessage] = useState<string>("");
+  const [showStatus, setShowStatus] = useState<boolean>(false);
+  const [statusHeader, setStatusHeader] = useState<string>("");
+  const [statusError, setStatusError] = useState<boolean>(false);
+  const [txSent, setTxSent] = useState<boolean>(false);
+  const [txHash, setTxHash] = useState<string>("");
 
   let factory = new Factory(web3);
+
+  function setSM(h: any, m: any, s: any, e: any) {
+    setStatusHeader(h);
+    setStatusMessage(m);
+    setShowStatus(s);
+    setStatusError(e);
+  }
 
   function handleClick(e: any) {
     e.preventDefault();
     if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
-      setShowErrorMessage(true);
+      setSM("Error", "Form input Error", true, true);
+
       setTimeout(() => {
-        setShowErrorMessage(false);
+        setSM("", "", false, false);
       }, 3000);
 
       return;
     }
     let amount = web3.utils.toWei(maxAmt, "ether");
     console.log(amount);
-    factory.deployNewVT(
-      tokenName,
-      tokenSymble,
-      controllerAddr,
-      assetTokenAddr,
-      amount,
-      props.acctNum
-    );
-    setShowSuccessMessage(true);
+
+    setSM("MetaMask", "Sending Transaction", true, false);
+    setTxSent(true);
+    factory
+      .deployNewVT(
+        tokenName,
+        tokenSymble,
+        // controllerAddr,
+        "0x0000000000000000000000000000000000000000",
+        assetTokenAddr,
+        amount,
+        props.acctNum
+      )
+      .on("receipt", function (receipt: any) {
+        console.log(receipt);
+        setSM("TX Receipt Received", receipt, true, false);
+      })
+      .on("transactionHash", function (hash: any) {
+        setTxHash(hash);
+        setSM("TX Hash Received", hash, true, false);
+      })
+      .on("error", function (error: any, receipt: any) {
+        let i = error.message.indexOf(":");
+        let m = error.message.substring(0, i > 0 ? i : 40);
+        setSM("TX Error", m, true, true);
+      })
+      .on("confirmation", function (confirmationNumber: any, receipt: any) {
+        setSM(
+          "Deploy TX Confirmed",
+          confirmationNumber + " Confirmation Received",
+          true,
+          false
+        );
+      });
+    // setShowSuccessMessage(true);
     setTimeout(() => {
-      setShowSuccessMessage(false);
-      setTokenName("");
-      setTokenSymble("");
-      setAssetTokenAddr("");
+      // setShowSuccessMessage(false);
+      setTxSent(false);
+      setTxHash("");
+      // resetSM();
     }, 3000);
+  }
+
+  function resetSM() {
+    setSM("", "", false, false);
+  }
+  function closeNewTokenModal() {
+    setTxSent(false);
+    setTxHash("");
+    resetSM();
+    //reset the fields
+    props.onClose();
   }
 
   return (
     <div>
       <Modal
         open={props.openPlusModal}
-        onClose={props.onClose}
+        onClose={closeNewTokenModal}
         closeIcon
         size="small"
       >
@@ -131,6 +183,14 @@ export default function DeployNewVaultToken(props: {
             />
             <Form.Field
               control={Input}
+              label="Controller Address"
+              placeholder="Controller Address"
+              value={controllerAddr}
+              // onChange={(e: any) => setManagerAddr(e.target.value)}
+              required
+            />
+            <Form.Field
+              control={Input}
               label="Manager Address"
               placeholder="Manager Address"
               value={managerAddr}
@@ -149,11 +209,19 @@ export default function DeployNewVaultToken(props: {
                 selection
                 value={assetTokenAddr}
                 widths="2"
-                required
               />
             </Form.Field>
-            {showErrorMessage && <ErrorMessage />}
-            {showSuccessMessage && <SuccessMessage />}
+            {/* {showErrorMessage && <ErrorMessage />} */}
+
+            {showStatus && (
+              <StatusMessage
+                statusHeader={statusHeader}
+                statusMessage={statusMessage}
+                statusError={statusError}
+                txHash={txHash}
+              />
+            )}
+            {/* {showSuccessMessage && <SuccessMessage />} */}
             <Form.Field
               control={Button}
               onClick={handleClick}
@@ -162,6 +230,7 @@ export default function DeployNewVaultToken(props: {
               labelPosition="right"
               color="teal"
               required
+              disabled={txSent}
             />
           </Form>
         </Modal.Content>

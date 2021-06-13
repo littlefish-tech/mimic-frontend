@@ -22,21 +22,13 @@ export class Factory {
     amount,
     f
   ) {
-    this.factory.methods["deployNewVaultToken"](
+    return this.factory.methods["deployNewVaultToken"](
       tokenName,
       tokenSymble,
       controllerAddr,
       assetTokenAddr,
       amount
-    )
-      .send({ from: f })
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-        return receipt;
-      })
-      .on("error", function (error, receipt) {
-        console.log(error);
-      });
+    ).send({ from: f });
   }
   findAllVT() {
     return this.factory.getPastEvents("NewVaultToken", {

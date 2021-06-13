@@ -10,7 +10,7 @@ export default function TopMenu(props) {
         backgroundColor: "#e8dcef",
       }}
     >
-      <div style={{ paddingTop: "15px" }}>
+      <div>
         <Menu inverted secondary>
           <Menu.Item>
             <img

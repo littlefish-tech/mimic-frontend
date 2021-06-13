@@ -295,7 +295,7 @@ export default function VTList(props) {
   }, [update]);
   return (
     <div>
-      <Table celled padded textAlign="center">
+      <Table padded textAlign="center">
         <Table.Body>
           <Table.Row verticalAlign="top">
             {/* <Table.Cell>

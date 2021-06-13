@@ -84,14 +84,7 @@ export class VaultToken extends ERC20 {
       console.log("approve result +");
       console.log(result);
     });
-    this.vt.methods["withdraw"](amount)
-      .send({ from: f })
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-      })
-      .on("error", function (error, receipt) {
-        console.log(error);
-      });
+    return this.vt.methods["withdraw"](amount).send({ from: f });
   }
 
   setVaultBalance(amount) {
@@ -121,42 +114,22 @@ export class VaultToken extends ERC20 {
   }
 
   settleVault(f) {
-    console.log("at vt");
-    this.vt.methods["settleVault"]()
-      .send({ from: f })
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-      })
-      .on("error", function (error, receipt) {
-        console.log(error);
-      });
+    return this.vt.methods["settleVault"]().send({ from: f });
   }
 
   writeCalls(amount, otAddress, mpAddress, f) {
-    console.log("at here");
-
-    this.vt.methods["writeCalls"](amount, otAddress, mpAddress)
-      .send({ from: f })
-      .on("receipt", function (receipt) {
-        console.log("at writecall");
-        console.log(receipt);
-      })
-      .on("error", function (error, receipt) {
-        console.log(error);
-      });
+    return this.vt.methods["writeCalls"](amount, otAddress, mpAddress).send({
+      from: f,
+    });
   }
 
   sellCalls(amount, premiumAmount, otherPartyAddress, f) {
     console.log("at here");
 
-    this.vt.methods["sellCalls"](amount, premiumAmount, otherPartyAddress)
-      .send({ from: f })
-      .on("receipt", function (receipt) {
-        console.log("at sellcalls");
-        console.log(receipt);
-      })
-      .on("error", function (error, receipt) {
-        console.log(error);
-      });
+    return this.vt.methods["sellCalls"](
+      amount,
+      premiumAmount,
+      otherPartyAddress
+    );
   }
 }
