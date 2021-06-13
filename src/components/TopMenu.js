@@ -11,7 +11,7 @@ export default function TopMenu(props) {
       }}
     >
       <div>
-        <Menu inverted secondary>
+        <Menu inverted secondary stackable>
           <Menu.Item>
             <img
               src={profileImg}

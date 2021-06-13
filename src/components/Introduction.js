@@ -5,27 +5,6 @@ import profileImg from "../images/profile.png";
 import "../App.css";
 
 export default function Introduction() {
-  const optionalImg = {
-    width: "600px",
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-  };
-
-  const cardStyle = {
-    width: "40%",
-    textAlign: "center",
-    lineHeight: "1.2,",
-    fontSize: "24px",
-    borderRadius: "30px",
-    marginTop: "50px",
-    boxShadow:
-      "0 20px 40px 0 rgba(0, 0, 0, 0.2), 0 16px 40px 0 rgba(0, 0, 0, 0.19)",
-    transition: "transform 0.5s",
-    backgroundColor: "#8980EA",
-    color: "white",
-  };
-
   const aboutTextStyle = {
     lineHeight: "1.5",
     paddingBottom: "20px",
@@ -42,8 +21,12 @@ export default function Introduction() {
   };
 
   return (
-    <div style={{ backgroundImage: " linear-gradient(#eddbf4, #89609e)" }}>
-      <img src={profileImg} style={optionalImg} />
+    <div
+      style={{
+        backgroundImage: " linear-gradient(#eddbf4, #89609e)",
+      }}
+    >
+      <img src={profileImg} className="optionalBodyImg" />
 
       <h2
         style={{
@@ -59,16 +42,8 @@ export default function Introduction() {
       >
         You Deposit. They Trade. You Earn.
       </h2>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          paddingBottom: "100px",
-          fontFamily: "Arimo-Regular",
-        }}
-      >
-        <div className="aboutCard" style={cardStyle}>
+      <div className="introCards">
+        <div className="aboutCard">
           <h1 style={cardHeaderStyling}>About Optional</h1>
           <br />
           <p style={aboutTextStyle}>
@@ -88,7 +63,7 @@ export default function Introduction() {
           </p>
         </div>
 
-        <div className="aboutCard" style={cardStyle}>
+        <div className="aboutCard">
           {" "}
           <h1 style={cardHeaderStyling}>Leader Board</h1>
           <br />
