@@ -75,7 +75,7 @@ export default function VaultTokenInfo(props) {
     // eval[c]
     c.on("receipt", function (receipt) {
       console.log(receipt);
-      setSM("TX Receipt Received", receipt, true, false);
+      setSM("TX Receipt Received", "", true, false);
     })
       .on("transactionHash", function (hash) {
         setTxHash(hash);
@@ -83,7 +83,7 @@ export default function VaultTokenInfo(props) {
       })
       .on("error", function (error, receipt) {
         let m = "";
-        if (error && error.message) {
+        if (error !== null) {
           let i = error.message.indexOf(":");
           m = error.message.substring(0, i > 0 ? i : 40);
         }

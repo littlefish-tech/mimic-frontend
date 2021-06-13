@@ -105,16 +105,22 @@ export default function DeployNewVaultToken(props: {
         props.acctNum
       )
       .on("receipt", function (receipt: any) {
-        console.log(receipt);
-        setSM("TX Receipt Received", receipt, true, false);
+        //console.log(receipt);
+        setSM("TX Receipt Received", "", true, false);
       })
       .on("transactionHash", function (hash: any) {
         setTxHash(hash);
         setSM("TX Hash Received", hash, true, false);
       })
       .on("error", function (error: any, receipt: any) {
-        let i = error.message.indexOf(":");
-        let m = error.message.substring(0, i > 0 ? i : 40);
+        let m = "";
+        if (error !== null) {
+          let i = error.message.indexOf(":");
+          m = error.message.substring(0, i > 0 ? i : 40);
+        }
+
+        // let i = error.message.indexOf(":");
+        // let m = error.message.substring(0, i > 0 ? i : 40);
         setSM("TX Error", m, true, true);
       })
       .on("confirmation", function (confirmationNumber: any, receipt: any) {
