@@ -1,7 +1,7 @@
 import { VaultToken } from "./VaultToken";
 
 const abi = require("../abi/factoryabi.json");
-const factoryContractAddr = "0xB2438FE65b37c633d6664cCE983b731A92dc1449";
+const factoryContractAddr = "0xa7CD2F79F9aebc0E0fe9bd33Ebf3ce9bD1eBE20c";
 
 export class Factory {
   constructor(web3) {

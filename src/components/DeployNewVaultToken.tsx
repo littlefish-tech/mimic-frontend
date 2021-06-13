@@ -98,8 +98,8 @@ export default function DeployNewVaultToken(props: {
       .deployNewVT(
         tokenName,
         tokenSymble,
-        // controllerAddr,
-        "0x0000000000000000000000000000000000000000",
+        controllerAddr,
+        // "0x0000000000000000000000000000000000000000",
         assetTokenAddr,
         amount,
         props.acctNum
