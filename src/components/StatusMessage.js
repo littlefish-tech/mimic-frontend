@@ -5,9 +5,25 @@ export default function SuccessMessage(props) {
   function makeLink(h) {
     return "https://kovan.etherscan.io/tx/" + h;
   }
+
+  function iconName(s) {
+    if (s === "loading") {
+      return "circle notched";
+    }
+    if (s === "error") {
+      return "exclamation triangle";
+    }
+    if (s === "confirmed") {
+      return "check circle";
+    }
+  }
   return (
     <Message negative={props.statusError} size="small" icon>
-      <Icon name="circle notched" size="tiny" loading />
+      <Icon
+        name={iconName(props.iconStatus)}
+        size="tiny"
+        loading={props.iconStatus === "loading"}
+      />
 
       <Message.Content>
         {" "}

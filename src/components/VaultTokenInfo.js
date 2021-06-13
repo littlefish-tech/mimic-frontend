@@ -60,6 +60,9 @@ export default function VaultTokenInfo(props) {
   const [statusError, setStatusError] = useState(false);
   const [txSent, setTxSent] = useState(false);
   const [txHash, setTxHash] = useState("");
+  const [iconStatus, setIconStatus] = useState("loading");
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [managerClick, setManagerClick] = useState(false);
 
   function setSM(h, m, s, e) {
     setStatusHeader(h);
@@ -68,78 +71,110 @@ export default function VaultTokenInfo(props) {
     setStatusError(e);
   }
 
-  function deposit(amt) {
-    if (amt === 0) {
-      setShowDepositErrormsg(true);
-      setTimeout(() => {
-        setShowDepositErrormsg(false);
-      }, 3000);
-
-      return;
-    }
-    let amount = web3.utils.toWei(amt, dUnit);
-    props.token.deposit(amount, props.acct);
-    setShowDepositSuccessmsg(true);
-    setTimeout(() => {
-      setShowDepositSuccessmsg(false);
-      setDeposit(0);
-    }, 3000);
-  }
-
-  function initialize(amt) {
-    if (amt === 0) {
-      setShowIniErrormsg(true);
-      setTimeout(() => {
-        setShowIniErrormsg(false);
-      }, 3000);
-
-      return;
-    }
-    let amount = web3.utils.toWei(amt, iUnit);
-    props.token.initialize(amount, props.acct);
-    setShowIniSuccessmsg(true);
-    setTimeout(() => {
-      setShowIniSuccessmsg(false);
-      setInitializeAmt(0);
-    }, 3000);
-  }
-
-  function withDraw(amt) {
-    if (amt === 0) {
-      setSM("Error", "Form input Error", true, true);
-      setTimeout(() => {
-        setSM("", "", false, false);
-      }, 3000);
-
-      return;
-    }
-    setSM("MetaMask", "Sending Transaction", true, false);
-    setTxSent(true);
-    let amount = web3.utils.toWei(amt, wUnit);
-    props.token
-      .withdraw(amount, props.acct)
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-        setSM("TX Receipt Received", receipt, true, false);
-      })
+  function sendTX(c, label) {
+    // eval[c]
+    c.on("receipt", function (receipt) {
+      console.log(receipt);
+      setSM("TX Receipt Received", receipt, true, false);
+    })
       .on("transactionHash", function (hash) {
         setTxHash(hash);
         setSM("TX Hash Received", hash, true, false);
       })
       .on("error", function (error, receipt) {
-        let i = error.message.indexOf(":");
-        let m = error.message.substring(0, i > 0 ? i : 40);
-        setSM("TX Error", m, true, true);
+        let m = "";
+        if (error && error.message) {
+          let i = error.message.indexOf(":");
+          m = error.message.substring(0, i > 0 ? i : 40);
+        }
+        setSM(label + " TX Error", m, true, true);
         setTxSent(false);
+        setIconStatus("error");
       })
       .on("confirmation", function (confirmationNumber, receipt) {
         setSM(
-          "Withdraw TX Confirmed",
+          label + " TX Confirmed",
           confirmationNumber + " Confirmation Received",
           true,
           false
         );
+        setIconStatus("confirmed");
       });
+  }
+
+  function deposit(amt) {
+    startTX();
+    if (amt === 0) {
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+      return;
+    }
+    let amount = web3.utils.toWei(amt, dUnit);
+    let c = props.token.deposit(amount, props.acct);
+    sendTX(c, "Deposit");
+  }
+
+  // function deposit2(amt) {
+  //   if (amt === 0) {
+  //     setSM("Error", "Form input Error", true, true);
+  //     setIconStatus("error");
+  //     return;
+  //   }
+  //   let amount = web3.utils.toWei(amt, dUnit);
+  //   props.token
+  //     .deposit(amount, props.acct)
+  //     .on("receipt", function (receipt) {
+  //       console.log(receipt);
+  //       setSM("TX Receipt Received", receipt, true, false);
+  //     })
+  //     .on("transactionHash", function (hash) {
+  //       setTxHash(hash);
+  //       setSM("TX Hash Received", hash, true, false);
+  //     })
+  //     .on("error", function (error, receipt) {
+  //       let i = error.message.indexOf(":");
+  //       let m = error.message.substring(0, i > 0 ? i : 40);
+  //       setSM("Deposit TX Error", m, true, true);
+  //       setTxSent(false);
+  //       setIconStatus("error");
+  //     })
+  //     .on("confirmation", function (confirmationNumber, receipt) {
+  //       setSM(
+  //         "Deposit TX Confirmed",
+  //         confirmationNumber + " Confirmation Received",
+  //         true,
+  //         false
+  //       );
+  //       setIconStatus("confirmed");
+  //     });
+  // }
+
+  function initialize(amt) {
+    startTX();
+    if (amt === 0) {
+      setShowIniErrormsg(true);
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+
+      return;
+    }
+    let amount = web3.utils.toWei(amt, iUnit);
+    let i = props.token.initialize(amount, props.acct);
+    sendTX(i, "initialize");
+  }
+
+  function withDraw(amt) {
+    startTX();
+
+    if (amt === 0) {
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+      return;
+    }
+
+    let amount = web3.utils.toWei(amt, wUnit);
+    let w = props.token.withdraw(amount, props.acct);
+    sendTX(w, "Withdraw");
   }
 
   function updatedUnit(e, { value }) {
@@ -165,120 +200,73 @@ export default function VaultTokenInfo(props) {
   }
 
   function settleVault() {
-    setSM("MetaMask", "Sending Transaction", true, false);
-    setTxSent(true);
-    props.token
-      .settleVault(props.acct)
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-        setSM("TX Receipt Received", receipt, true, false);
-      })
-      .on("transactionHash", function (hash) {
-        setTxHash(hash);
-        setSM("TX Hash Received", hash, true, false);
-      })
-      .on("error", function (error, receipt) {
-        let i = error.message.indexOf(":");
-        let m = error.message.substring(0, i > 0 ? i : 40);
-        setSM("Settle Valut TX Error", m, true, true);
-        setTxSent(false);
-      })
-      .on("confirmation", function (confirmationNumber, receipt) {
-        setSM(
-          "TX Confirmed",
-          confirmationNumber + " Confirmation Received",
-          true,
-          false
-        );
-      });
+    startTX();
+    let s = props.token.settleVault(props.acct);
+    sendTX(s, "Settle Vault");
   }
 
   function writeCall(amt, oTAddress) {
+    startTX();
     let amount = web3.utils.toWei(amt, writeCallUnit);
 
-    props.token
-      .writeCalls(amount, oTAddress, props.mpAddress, props.acct)
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-        setSM("TX Receipt Received", receipt, true, false);
-      })
-      .on("transactionHash", function (hash) {
-        setTxHash(hash);
-        setSM("TX Hash Received", hash, true, false);
-      })
-      .on("error", function (error, receipt) {
-        let i = error.message.indexOf(":");
-        let m = error.message.substring(0, i > 0 ? i : 40);
-        setSM("Write Call TX Error", m, true, true);
-        setTxSent(false);
-      })
-      .on("confirmation", function (confirmationNumber, receipt) {
-        setSM(
-          "TX Confirmed",
-          confirmationNumber + " Confirmation Received",
-          true,
-          false
-        );
-      });
+    let wc = props.token.writeCalls(
+      amount,
+      oTAddress,
+      props.mpAddress,
+      props.acct
+    );
+    sendTX(wc, "Write Call");
   }
 
   function sellCall(amt, premiumAmount, otherPartyAddress) {
     let amount = web3.utils.toWei(amt, sellCallUnit);
     let pAmount = web3.utils.toWei(premiumAmount, pemiumUnit);
-    props.token
-      .sellCalls(amount, pAmount, otherPartyAddress, props.acct)
-      .on("receipt", function (receipt) {
-        console.log(receipt);
-        setSM("TX Receipt Received", receipt, true, false);
-      })
-      .on("transactionHash", function (hash) {
-        setTxHash(hash);
-        setSM("TX Hash Received", hash, true, false);
-      })
-      .on("error", function (error, receipt) {
-        let i = error.message.indexOf(":");
-        let m = error.message.substring(0, i > 0 ? i : 40);
-        setSM("TX Error", m, true, true);
-        setTxSent(false);
-      })
-      .on("confirmation", function (confirmationNumber, receipt) {
-        setSM(
-          "Sell Call TX Confirmed",
-          confirmationNumber + " Confirmation Received",
-          true,
-          false
-        );
-      });
+    let sc = props.token.sellCalls(
+      amount,
+      pAmount,
+      otherPartyAddress,
+      props.acct
+    );
+    sendTX(sc, "Sell Call");
   }
 
   function confirmWriteCall(e) {
+    startTX();
     e.preventDefault();
     if (writeCallAmt === 0 || oTokenAddress === "") {
       setSM("Error", "Form input Error", true, true);
-      setTimeout(() => {
-        setSM("", "", false, false);
-      }, 3000);
+      setIconStatus("error");
 
       return;
     }
-    setSM("MetaMask", "Sending Transaction", true, false);
-    setTxSent(true);
+
     writeCall(writeCallAmt, oTokenAddress);
   }
 
   function confirmSellCall(e) {
+    startTX();
     e.preventDefault();
     if (sellCallAmt === 0 || premiumAmount === 0 || otherPartyAddress === "") {
       setSM("Error", "Form input Error", true, true);
-      setTimeout(() => {
-        setSM("", "", false, false);
-      }, 3000);
+      setIconStatus("error");
 
       return;
     }
+
+    sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+  }
+
+  function startTX() {
+    setBtnDisabled(true);
     setSM("MetaMask", "Sending Transaction", true, false);
     setTxSent(true);
-    sellCall(sellCallAmt, premiumAmount, otherPartyAddress);
+  }
+
+  function disableAllInput() {}
+  function resetForm() {
+    setBtnDisabled(false);
+    setIconStatus("loading");
+    setShowStatus(false);
   }
 
   function writeCallRender() {
@@ -316,18 +304,8 @@ export default function VaultTokenInfo(props) {
           <label>Margin Pool Address</label>
           <input placeholder={props.mpAddress} value={props.mpAddress} />
         </Form.Field>
-        {/* {showWriteErrMsg && <ErrorMessage />}
-        {showWriteSuccMsg && <SuccessMessage />} */}
 
-        <Button
-          color="teal"
-          onClick={confirmWriteCall}
-          // {() => {
-          //   writeCall(writeCallAmt, oTokenAddress);
-          //   setShowWriteCall(false);
-          // }}
-          disabled={txSent}
-        >
+        <Button color="teal" onClick={confirmWriteCall} disabled={btnDisabled}>
           Confirm
         </Button>
         <Button
@@ -338,19 +316,12 @@ export default function VaultTokenInfo(props) {
             setTxSent(false);
             setSellColor("teal");
             setSettleColor("teal");
+            setManagerClick(false);
           }}
-          disabled={txSent}
+          disabled={btnDisabled}
         >
           Cancel
         </Button>
-        {showStatus && (
-          <StatusMessage
-            statusHeader={statusHeader}
-            statusMessage={statusMessage}
-            statusError={statusError}
-            txHash={txHash}
-          />
-        )}
       </Form>
     );
   }
@@ -376,7 +347,7 @@ export default function VaultTokenInfo(props) {
               Total Supply: {props.token.totalSupply / 1e18}
             </Header>
             <Divider hidden />
-            {props.token.totalSupply > 0 && (
+            {props.token.totalSupply > 0 && !managerClick && (
               <Form>
                 <Form.Group>
                   <Form.Field>
@@ -394,22 +365,13 @@ export default function VaultTokenInfo(props) {
                     />
                   </Menu>
                 </Form.Group>
-
-                {showStatus && (
-                  <StatusMessage
-                    statusHeader={statusHeader}
-                    statusMessage={statusMessage}
-                    statusError={statusError}
-                    txHash={txHash}
-                  />
-                )}
                 <Button
                   onClick={() => withDraw(withdrawAmt)}
                   color="blue"
                   icon
                   size="large"
                   labelPosition="right"
-                  disabled={txSent}
+                  disabled={btnDisabled}
                 >
                   Withdraw
                   <Icon name="arrow right" />
@@ -433,7 +395,7 @@ export default function VaultTokenInfo(props) {
               Vault Balance: {props.token.vaultBalance / 1e18}
             </Header>
             <Divider hidden />
-            {props.token.totalSupply > 0 && (
+            {props.token.totalSupply > 0 && !managerClick && (
               <Form>
                 <Form.Group>
                   <Form.Field>
@@ -461,7 +423,8 @@ export default function VaultTokenInfo(props) {
                   labelPosition="left"
                   disabled={
                     props.token.totalSupply === 0 ||
-                    props.token.assetObject.myBalance === 0
+                    props.token.assetObject.myBalance === 0 ||
+                    btnDisabled
                   }
                 >
                   Deposit
@@ -516,7 +479,11 @@ export default function VaultTokenInfo(props) {
                 />
               </Menu>
 
-              <Button onClick={() => initialize(initializeAmt)} color="teal">
+              <Button
+                onClick={() => initialize(initializeAmt)}
+                color="teal"
+                disabled={btnDisabled}
+              >
                 Initialize
               </Button>
             </Form.Group>
@@ -581,15 +548,7 @@ export default function VaultTokenInfo(props) {
             onChange={(e) => setOtherPartyAddress(e.target.value)}
           />
         </Form.Field>
-        {showStatus && (
-          <StatusMessage
-            statusHeader={statusHeader}
-            statusMessage={statusMessage}
-            statusError={statusError}
-            txHash={txHash}
-          />
-        )}
-        <Button color="teal" onClick={confirmSellCall} disabled={txSent}>
+        <Button color="teal" onClick={confirmSellCall} disabled={btnDisabled}>
           Confirm
         </Button>
         <Button
@@ -597,8 +556,9 @@ export default function VaultTokenInfo(props) {
             setShowSellCall(false);
             setWriteColor("teal");
             setSettleColor("teal");
+            setManagerClick(false);
           }}
-          disabled={txSent}
+          disabled={btnDisabled}
         >
           Cancel
         </Button>
@@ -628,7 +588,9 @@ export default function VaultTokenInfo(props) {
                   setShowSellCall(false);
                   setSellColor("grey");
                   setSettleColor("grey");
+                  setManagerClick(true);
                 }}
+                disabled={btnDisabled}
               >
                 Write Call
                 <Icon name="triangle down" />
@@ -645,7 +607,9 @@ export default function VaultTokenInfo(props) {
                   setSellColor("teal");
                   setWriteColor("grey");
                   setSettleColor("grey");
+                  setManagerClick(true);
                 }}
+                disabled={btnDisabled}
               >
                 Sell Call
                 <Icon name="triangle down" />
@@ -655,20 +619,12 @@ export default function VaultTokenInfo(props) {
               <Button
                 color={settleColor}
                 onClick={settleVault}
-                disabled={txSent}
+                disabled={btnDisabled}
               >
                 Settle Vault
               </Button>
             </Grid.Column>
           </Grid.Row>
-          {showStatus && (
-            <StatusMessage
-              statusHeader={statusHeader}
-              statusMessage={statusMessage}
-              statusError={statusError}
-              txHash={txHash}
-            />
-          )}
         </Grid>
         {showWriteCall && writeCallRender()}
         {showSellCall && renderSellCall()}
@@ -678,7 +634,24 @@ export default function VaultTokenInfo(props) {
 
   return (
     <div>
+      {showStatus && (
+        <Grid>
+          <Grid.Row>
+            <StatusMessage
+              statusHeader={statusHeader}
+              statusMessage={statusMessage}
+              statusError={statusError}
+              txHash={txHash}
+              iconStatus={iconStatus}
+            />
+            {iconStatus !== "loading" && (
+              <Button onClick={resetForm}>Confirm</Button>
+            )}
+          </Grid.Row>
+        </Grid>
+      )}
       {showTokenPair()}
+
       {props.token.vaultBalance > 0 && showRatio()}
       {props.token.totalSupply === 0 && showInitialize()}
 
