@@ -55,6 +55,7 @@
     0 16px 40px 0 rgba(0, 0, 0, 0.19);
   transition: transform 0.5s;
   background-color: #bf81ff;
+  padding-bottom: 50px;
   /* color: white; */
 }
 
