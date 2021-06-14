@@ -73,10 +73,11 @@ export default function VaultTokenInfo(props) {
 
   function sendTX(c, label) {
     // eval[c]
-    c.on("receipt", function (receipt) {
-      console.log(receipt);
-      setSM("TX Receipt Received", "", true, false);
-    })
+    c
+      // .on("receipt", function (receipt) {
+      //   console.log(receipt);
+      //   setSM("TX Receipt Received", "", true, false);
+      // })
       .on("transactionHash", function (hash) {
         setTxHash(hash);
         setSM("TX Hash Received", hash, true, false);

@@ -5,17 +5,18 @@ import VTList from "./components/VTList.js";
 import {
   Button,
   Header,
-  Modal,
   Icon,
   Tab,
   Grid,
-  Divider,
+  Menu,
+  Sidebar,
 } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
 import Footer from "./components/Footer";
 import { AddressBook } from "./components/AddressBook";
+import TopSidebar from "./components/TopSideBar";
 
 // create a new web3 oject
 // let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
@@ -47,12 +48,13 @@ export default function App() {
   const [renderManager, setRenderManager] = useState<boolean>(false);
   const [renderFollow, setRenderFollow] = useState<boolean>(false);
   const [renderPortfolio, setRenderPortfolio] = useState<boolean>(false);
-  const [openPlusModal, setOpenPlusModal] = useState(false);
+  const [openPlusModal, setOpenPlusModal] = useState<boolean>(false);
 
   const [homeNav, setHomeNav] = useState("black");
   const [managerNav, setManagerNav] = useState("black");
   const [tradeNav, setTradeNav] = useState("black");
   const [mmColor, setMMColor] = useState("grey");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -163,82 +165,139 @@ export default function App() {
     setOpenPlusModal(true);
   }
 
+  function clickShowSidebar() {
+    setShowSidebar(true);
+  }
+  function clickHideSidebar() {
+    setShowSidebar(false);
+  }
   return (
     <div>
-      <div className="content">
-        <TopMenu
-          btnText={btnText}
-          acctNum={acctNum}
-          chainId={chainId}
-          ethBal={ethBal}
-          connectMM={connectMM}
-          clickHome={clickHome}
-          clickTrade={clickTrade}
-          clickManager={clickManager}
-          renderHome={renderHome}
-          renderManager={renderManager}
-          renderFollow={renderFollow}
-          renderPortfolio={renderPortfolio}
-          homeNav={homeNav}
-          tradeNav={tradeNav}
-          managerNav={managerNav}
-          mmColor={mmColor}
-        />
-        {/* <Tab panes={panes} /> */}
-        {renderHome && <Introduction />}
-        {addr ? (
-          <div>
-            <VTList
-              acctNum={acctNum}
-              mpAddress={mpAddress}
-              renderManager={renderManager}
-              renderFollow={renderFollow}
-              renderPortfolio={renderPortfolio}
-            />
-            {renderManager && (
-              <Grid centered padded>
-                <Grid.Row />
-                <Button
-                  icon="plus circle"
-                  size="huge"
-                  color="purple"
-                  onClick={openModal}
-                  disabled={!acctNum}
-                >
-                  New Token
-                </Button>
-                <Grid.Row />
-                <Grid.Row />
-                <Grid.Row />
-              </Grid>
-            )}
-          </div>
-        ) : (
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "20px",
-              marginTop: "20px",
-              color: "red",
-            }}
-          >
-            <Icon name="exclamation triangle" color="red" />
-            Please install
-            <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
-              {" "}
-              MetaMask
-            </a>{" "}
-          </div>
-        )}
+      {/* <Sidebar.Pushable> */}
+      <Sidebar
+        as={Menu}
+        animation="overlay"
+        icon="labeled"
+        inverted
+        onHide={() => setShowSidebar(false)}
+        vertical
+        visible={showSidebar}
+        width="thin"
+      >
+        <Menu.Item
+          name="home"
+          position="right"
+          // active={menuActive === "home"}
+          active={renderHome}
+          // onClick={clickMenu}
+          onClick={clickHome}
+        >
+          <div style={{ color: "white", fontSize: "25px" }}>Home</div>
+        </Menu.Item>
+        <Menu.Item
+          name="trade"
+          position="right"
+          // active={menuActive === "trade"}
+          active={renderFollow}
+          // onClick={clickMenu}
+          onClick={clickTrade}
+        >
+          <div style={{ color: "white", fontSize: "25px" }}>Trade</div>
+        </Menu.Item>
+        <Menu.Item
+          name="manager"
+          position="right"
+          // active={menuActive === "manager"}
+          active={renderManager}
+          onClick={clickManager}
+        >
+          <div style={{ color: "white", fontSize: "25px" }}>Manager</div>
+        </Menu.Item>
+      </Sidebar>
 
-        <DeployNewVaultToken
-          openPlusModal={openPlusModal}
-          onClose={() => setOpenPlusModal(false)}
-          acctNum={acctNum}
-        />
-      </div>
+      <Sidebar.Pusher dimmed={showSidebar}>
+        <div className="content">
+          <TopSidebar
+            showSidebar={showSidebar}
+            clickShowSidebar={clickShowSidebar}
+            clickHideSidebar={clickHideSidebar}
+          />
+          <TopMenu
+            btnText={btnText}
+            acctNum={acctNum}
+            chainId={chainId}
+            ethBal={ethBal}
+            connectMM={connectMM}
+            clickHome={clickHome}
+            clickTrade={clickTrade}
+            clickManager={clickManager}
+            renderHome={renderHome}
+            renderManager={renderManager}
+            renderFollow={renderFollow}
+            renderPortfolio={renderPortfolio}
+            homeNav={homeNav}
+            tradeNav={tradeNav}
+            managerNav={managerNav}
+            mmColor={mmColor}
+          />
+          {/* <Tab panes={panes} /> */}
 
-      <Footer />
+          {renderHome && <Introduction />}
+          {addr ? (
+            <div>
+              <VTList
+                acctNum={acctNum}
+                mpAddress={mpAddress}
+                renderManager={renderManager}
+                renderFollow={renderFollow}
+                renderPortfolio={renderPortfolio}
+              />
+              {renderManager && (
+                <Grid centered padded>
+                  <Grid.Row />
+                  <Button
+                    icon="plus circle"
+                    size="huge"
+                    color="purple"
+                    onClick={openModal}
+                    disabled={!acctNum}
+                  >
+                    New Token
+                  </Button>
+                  <Grid.Row />
+                  <Grid.Row />
+                  <Grid.Row />
+                </Grid>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: "20px",
+                marginTop: "20px",
+                color: "red",
+              }}
+            >
+              <Icon name="exclamation triangle" color="red" />
+              Please install
+              <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
+                {" "}
+                MetaMask
+              </a>{" "}
+            </div>
+          )}
+
+          <DeployNewVaultToken
+            openPlusModal={openPlusModal}
+            onClose={() => setOpenPlusModal(false)}
+            acctNum={acctNum}
+          />
+        </div>
+
+        <Footer />
+      </Sidebar.Pusher>
+      {/* </Sidebar.Pushable> */}
     </div>
   );
 }

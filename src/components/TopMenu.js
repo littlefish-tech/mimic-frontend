@@ -6,12 +6,13 @@ import profileImg from "../images/cover.png";
 export default function TopMenu(props) {
   return (
     <div
+      className="topMenu"
       style={{
         backgroundColor: "#eddbf4",
       }}
     >
       <div>
-        <Menu inverted secondary stackable>
+        <Menu inverted secondary>
           <Menu.Item>
             <img
               src={profileImg}

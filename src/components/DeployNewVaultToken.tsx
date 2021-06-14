@@ -104,10 +104,10 @@ export default function DeployNewVaultToken(props: {
         amount,
         props.acctNum
       )
-      .on("receipt", function (receipt: any) {
-        //console.log(receipt);
-        setSM("TX Receipt Received", "", true, false);
-      })
+      // .on("receipt", function (receipt: any) {
+      //   //console.log(receipt);
+      //   setSM("TX Receipt Received", "", true, false);
+      // })
       .on("transactionHash", function (hash: any) {
         setTxHash(hash);
         setSM("TX Hash Received", hash, true, false);

@@ -14,8 +14,6 @@ export default function Introduction() {
   const cardHeaderStyling = {
     paddingTop: "45px",
     fontWeight: "bold",
-    backgroundColor: "#4F70F6",
-    paddingBottom: "40px",
     borderTopLeftRadius: "30px",
     borderTopRightRadius: "30px",
   };
@@ -23,7 +21,7 @@ export default function Introduction() {
   return (
     <div
       style={{
-        backgroundImage: " linear-gradient(#eddbf4, #89609e)",
+        backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
       }}
     >
       <img src={profileImg} className="optionalBodyImg" />
