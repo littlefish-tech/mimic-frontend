@@ -9,11 +9,18 @@ export class ERC20 {
     this.tSymbol = "";
     this.myBalance = -1;
     this.totalSupply = -1;
+    this.ercStatus = true;
     this.erc = new web3.eth.Contract(abi, address);
   }
-  async getName() {
-    let name = "";
-    await this.erc.methods.name().call(function (error, result) {
+  async getName1(f) {
+    if (!this.ercStatus) {
+      return this.tName;
+    }
+    let name = "undefined";
+    await this.erc.methods.name().call({ from: f }, function (error, result) {
+      if (error !== null) {
+        return "undefined";
+      }
       name = result;
     });
     // this.erc.methods.symbol().call(function (error, result) {
@@ -21,6 +28,18 @@ export class ERC20 {
     // });
     return name;
   }
+
+  async getName(f) {
+    if (!this.ercStatus) {
+      return this.tName;
+    }
+
+    return this.erc.methods.name().call();
+    // this.erc.methods.symbol().call(function (error, result) {
+    //   this.tSymbol = result;
+    // });
+  }
+
   setName(n) {
     this.tName = n;
   }
@@ -35,23 +54,35 @@ export class ERC20 {
   }
 
   async getBalance(addr) {
+    if (!this.ercStatus) {
+      return "-1";
+    }
     let b = 0;
-    await this.erc.methods.balanceOf(addr).call(function (error, result) {
-      b = result;
-    });
+    await this.erc.methods
+      .balanceOf(addr)
+      .call({ from: addr }, function (error, result) {
+        b = result;
+      });
     return b;
   }
   setBalance(b) {
     this.myBalance = parseInt(b);
   }
 
-  totalSupply() {
-    this.erc.methods.totalSupply().call(function (error, result) {
-      return result;
-    });
-  }
+  // totalSupply() {
+  //   if (!this.ercStatus) {
+  //     return "undefined";
+  //   }
+  //   this.erc.methods.totalSupply().call(function (error, result) {
+  //     return result;
+  //   });
+  // }
 
   async updateTotalSupply() {
+    if (!this.ercStatus) {
+      return "undefined";
+    }
+
     let s = 0;
     await this.erc.methods.totalSupply().call(function (error, result) {
       s = result;

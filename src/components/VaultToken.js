@@ -39,13 +39,14 @@ export class VaultToken extends ERC20 {
 
   // asset is the contract address of an ERC20 token that can be used to buy or sell this vault token
 
-  async getAsset() {
+  async getAsset(f) {
     let asset = "";
-    await this.vt.methods.asset().call(function (error, result) {
+    await this.vt.methods.asset().call({ from: f }, function (error, result) {
       asset = result;
     });
     return asset;
   }
+
   setAsset(a) {
     this.asset = a;
   }
@@ -111,8 +112,6 @@ export class VaultToken extends ERC20 {
   }
 
   sellCalls(amount, premiumAmount, otherPartyAddress, f) {
-    console.log("==============sell call========");
-
     return this.vt.methods["sellCalls"](
       amount,
       premiumAmount,

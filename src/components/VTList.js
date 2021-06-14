@@ -23,7 +23,6 @@ export default function VTList(props) {
   let web3 = new Web3(Web3.givenProvider);
 
   function getAllVT() {
-    console.log("getting all vault token");
     let factoryObj = new Factory(web3);
 
     let p = factoryObj.findAllVT();
@@ -99,11 +98,13 @@ export default function VTList(props) {
   }
 
   function populateAsset(k) {
+    console.log("populate asset");
+
     let v = vtList[k];
     let found = false;
     if (v.asset === "") {
       let i = 0;
-      v.getAsset().then((result) => {
+      v.getAsset(props.acctNum).then((result) => {
         v.setAsset(result);
         for (i = 0; i < assetTokenList.length; i++) {
           if (assetTokenList[i].address === result) {
@@ -115,6 +116,7 @@ export default function VTList(props) {
             vtList[k].assetObject = assetTokenList[i];
           }
         }
+
         if (!found) {
           let a = new ERC20(web3, result);
           // console.log("+++++++++" + v.tName);
@@ -138,7 +140,7 @@ export default function VTList(props) {
     if (v.tName === "") {
       let o = [];
 
-      v.getName().then((result) => {
+      v.getName(props.acctNum).then((result) => {
         v.setName(result);
         o = [...vtList];
         o[i] = v;
@@ -150,16 +152,22 @@ export default function VTList(props) {
   function populateAssetName(i) {
     // v.getName().then((result) => {
     // });
+
     let v = assetTokenList[i];
     if (v.tName === "") {
       let o = [];
 
-      v.getName().then((result) => {
-        v.setName(result);
-        o = [...assetTokenList];
-        o[i] = v;
-        setAssetTokenList(o);
-      });
+      v.getName(props.acctNum)
+        .then((result) => {
+          v.setName(result);
+          o = [...assetTokenList];
+          o[i] = v;
+          setAssetTokenList(o);
+        })
+        .catch((error) => {
+          v.setName("Non erc20 token");
+          v.ercStatus = false;
+        });
     }
   }
 
@@ -247,9 +255,11 @@ export default function VTList(props) {
       assetTokenList[i].getBalance(props.acctNum).then((result) => {
         assetTokenList[i].setBalance(result);
       });
+
       assetTokenList[i].updateTotalSupply().then((result) => {
         assetTokenList[i].setTotalSupply(result);
       });
+
       // console.log(assetTokenList);
       // populateManager(i);
       // populateAsset(i);
