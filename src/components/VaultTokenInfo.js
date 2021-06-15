@@ -16,6 +16,7 @@ import {
   Dropdown,
   Menu,
   Message,
+  Container,
 } from "semantic-ui-react";
 import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";
@@ -637,7 +638,7 @@ export default function VaultTokenInfo(props) {
     <div>
       {showStatus && (
         <Grid>
-          <Grid.Row>
+          <Grid.Column width={14}>
             <StatusMessage
               statusHeader={statusHeader}
               statusMessage={statusMessage}
@@ -645,10 +646,12 @@ export default function VaultTokenInfo(props) {
               txHash={txHash}
               iconStatus={iconStatus}
             />
+          </Grid.Column>
+          <Grid.Column width={2} verticalAlign="middle">
             {iconStatus !== "loading" && (
-              <Button onClick={resetForm}>Confirm</Button>
+              <Button onClick={resetForm} icon="check" circular />
             )}
-          </Grid.Row>
+          </Grid.Column>
         </Grid>
       )}
       {showTokenPair()}

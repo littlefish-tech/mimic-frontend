@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import profileImg from "../images/profile.png";
-import { Icon, Grid, Image } from "semantic-ui-react";
+import { Icon, Grid, Image, Divider } from "semantic-ui-react";
 
 export default function TopSidebar(props) {
   return (
@@ -12,9 +12,17 @@ export default function TopSidebar(props) {
         </Grid.Column>
         <Grid.Column floated="right" width={3}>
           {props.showSidebar ? (
-            <Icon name="close" size="big" onClick={props.clickHideSidebar} />
+            <div style={{ paddingTop: "15px" }}>
+              <Icon name="close" size="big" onClick={props.clickHideSidebar} />
+            </div>
           ) : (
-            <Icon name="sidebar" size="big" onClick={props.clickShowSidebar} />
+            <div style={{ paddingTop: "15px" }}>
+              <Icon
+                name="sidebar"
+                size="big"
+                onClick={props.clickShowSidebar}
+              />
+            </div>
           )}
         </Grid.Column>
       </Grid>

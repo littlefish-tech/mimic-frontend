@@ -183,6 +183,7 @@ export default function App() {
         vertical
         visible={showSidebar}
         width="thin"
+        color="purple"
       >
         <Menu.Item
           name="home"
