@@ -23,7 +23,11 @@ import StatusMessage from "./StatusMessage";
 // );
 let web3 = new Web3(Web3.givenProvider);
 
-const controllerAddr = "0xdee7d0f8ccc0f7ac7e45af454e5e7ec1552e8e4e";
+// the kovan controller addr
+//  const controllerAddr = "0xdee7d0f8ccc0f7ac7e45af454e5e7ec1552e8e4e";
+
+// the ropsten controller addr
+const controllerAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
 
 const assetTokenAddrs = [
   {

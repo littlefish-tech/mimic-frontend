@@ -17,34 +17,29 @@ export class VaultToken extends ERC20 {
     this.expireTime = -1;
   }
   // return the manager address
-  async getManager() {
+  async getManager1() {
     let manager = "";
     await this.vt.methods.manager().call(function (error, result) {
       manager = result;
     });
     return manager;
   }
+  async getManager() {
+    return this.vt.methods.manager().call();
+  }
+
   setManager(a) {
     this.manager = a;
   }
 
   async symbol() {
-    let symbol = "";
-    await this.vt.methods.symbol().call(function (error, result) {
-      console.log(result);
-      symbol = result;
-    });
-    return symbol;
+    return this.vt.methods.symbol().call();
   }
 
   // asset is the contract address of an ERC20 token that can be used to buy or sell this vault token
 
-  async getAsset(f) {
-    let asset = "";
-    await this.vt.methods.asset().call({ from: f }, function (error, result) {
-      asset = result;
-    });
-    return asset;
+  async getAsset() {
+    return this.vt.methods.asset().call();
   }
 
   setAsset(a) {
@@ -116,5 +111,22 @@ export class VaultToken extends ERC20 {
       premiumAmount,
       otherPartyAddress
     ).send({ from: f });
+  }
+
+  async symbol1() {
+    let symbol = "";
+    await this.vt.methods.symbol().call(function (error, result) {
+      console.log(result);
+      symbol = result;
+    });
+    return symbol;
+  }
+
+  async getAsset1(f) {
+    let asset = "";
+    await this.vt.methods.asset().call({ from: f }, function (error, result) {
+      asset = result;
+    });
+    return asset;
   }
 }

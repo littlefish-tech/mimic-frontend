@@ -1,7 +1,11 @@
 import { VaultToken } from "./VaultToken";
 
 const abi = require("../abi/factoryabi.json");
-const factoryContractAddr = "0xa7CD2F79F9aebc0E0fe9bd33Ebf3ce9bD1eBE20c";
+// the kovan network
+// const factoryContractAddr = "0xa7CD2F79F9aebc0E0fe9bd33Ebf3ce9bD1eBE20c";
+
+// the ropsten network
+const factoryContractAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
 
 export class Factory {
   constructor(web3) {

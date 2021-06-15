@@ -89,6 +89,7 @@ export default function TokenList(props: {
     <div>
       <div>
         <Header size="large">{props.title}</Header>
+
         <Table striped celled>
           <Table.Body>
             {props.tList.map((item: any, i) => {

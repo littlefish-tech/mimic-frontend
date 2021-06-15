@@ -101,7 +101,8 @@ export default function VTList(props) {
     let found = false;
     if (v.asset === "") {
       let i = 0;
-      v.getAsset(props.acctNum).then((result) => {
+      v.getAsset().then((result) => {
+        console.log(result);
         v.setAsset(result);
         for (i = 0; i < assetTokenList.length; i++) {
           if (assetTokenList[i].address === result) {

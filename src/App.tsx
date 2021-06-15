@@ -9,6 +9,7 @@ import Introduction from "./components/Introduction";
 import Footer from "./components/Footer";
 import { AddressBook } from "./components/AddressBook";
 import TopSidebar from "./components/TopSideBar";
+import MMInstallModal from "./components/MMInstallModal.js";
 
 // create a new web3 oject
 // let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
@@ -19,12 +20,6 @@ declare global {
     ethereum: any;
   }
 }
-
-const panes = [
-  { menuItem: "Home", render: () => <Tab.Pane>Tab 1 Content</Tab.Pane> },
-  { menuItem: "Trade", render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
-  { menuItem: "Manager", render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
-];
 
 export default function App() {
   let addr: string = JSON.parse(localStorage.getItem("account") || "false");
@@ -47,6 +42,7 @@ export default function App() {
   const [tradeNav, setTradeNav] = useState("black");
   const [mmColor, setMMColor] = useState("grey");
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showMMInstallModal, setShowMMInstallModal] = useState(false);
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -93,7 +89,8 @@ export default function App() {
   }
   async function connectMM(e: any) {
     if (!hasMM) {
-      alert("You must install MetaMask first");
+      // alert("You must install MetaMask first");
+      setShowMMInstallModal(true);
     } else {
       // const accounts = await web3.eth.getAccounts();
       const accounts = await window.ethereum.request({
@@ -156,6 +153,10 @@ export default function App() {
   }
   function clickHideSidebar() {
     setShowSidebar(false);
+  }
+
+  function closeMMInstallModal() {
+    setShowMMInstallModal(false);
   }
   return (
     <div>
@@ -227,7 +228,6 @@ export default function App() {
             managerNav={managerNav}
             mmColor={mmColor}
           />
-          {/* <Tab panes={panes} /> */}
 
           {renderHome && <Introduction />}
           {addr ? (
@@ -274,6 +274,10 @@ export default function App() {
               </a>{" "}
             </div>
           )}
+          <MMInstallModal
+            showMMInstallModal={showMMInstallModal}
+            closeMMInstallModal={closeMMInstallModal}
+          />
 
           <DeployNewVaultToken
             openPlusModal={openPlusModal}
