@@ -7,7 +7,7 @@ import {
   Header,
   Input,
   Modal,
-  Message,
+  Grid,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
 // import ErrorMessage from "./ErrorMessage";
@@ -68,6 +68,8 @@ export default function DeployNewVaultToken(props: {
   const [statusError, setStatusError] = useState<boolean>(false);
   const [txSent, setTxSent] = useState<boolean>(false);
   const [txHash, setTxHash] = useState<string>("");
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [iconStatus, setIconStatus] = useState("loading");
 
   let factory = new Factory(web3);
 
@@ -78,7 +80,59 @@ export default function DeployNewVaultToken(props: {
     setStatusError(e);
   }
 
+  function startTX() {
+    setBtnDisabled(true);
+    setSM("MetaMask", "Sending Transaction", true, false);
+    setTxSent(true);
+  }
+
+  function sendTX(c: any, label: any) {
+    c.on("transactionHash", function (hash: any) {
+      setTxHash(hash);
+      setSM("TX Hash Received", hash, true, false);
+    })
+      .on("error", function (error: any, receipt: any) {
+        let m = "";
+        if (error !== null) {
+          let i = error.message.indexOf(":");
+          m = error.message.substring(0, i > 0 ? i : 40);
+        }
+        setSM(label + " TX Error", m, true, true);
+        setTxSent(false);
+        setIconStatus("error");
+      })
+      .on("confirmation", function (confirmationNumber: any, receipt: any) {
+        setSM(
+          label + " TX Confirmed",
+          confirmationNumber + " Confirmation Received",
+          true,
+          false
+        );
+        setIconStatus("confirmed");
+      });
+  }
   function handleClick(e: any) {
+    startTX();
+    e.preventDefault();
+    if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+      return;
+    }
+    let amount = web3.utils.toWei(maxAmt, "ether");
+    let c = factory.deployNewVT(
+      tokenName,
+      tokenSymble,
+      controllerAddr,
+      // "0x0000000000000000000000000000000000000000",
+      assetTokenAddr,
+      amount,
+      props.acctNum
+    );
+    sendTX(c, "Deploy New Token");
+  }
+
+  function handleClick1(e: any) {
     e.preventDefault();
     if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
       setSM("Error", "Form input Error", true, true);
@@ -90,7 +144,6 @@ export default function DeployNewVaultToken(props: {
       return;
     }
     let amount = web3.utils.toWei(maxAmt, "ether");
-    console.log(amount);
 
     setSM("MetaMask", "Sending Transaction", true, false);
     setTxSent(true);
@@ -149,6 +202,12 @@ export default function DeployNewVaultToken(props: {
     resetSM();
     //reset the fields
     props.onClose();
+  }
+
+  function resetForm() {
+    setBtnDisabled(false);
+    setIconStatus("loading");
+    setShowStatus(false);
   }
 
   return (
@@ -219,12 +278,22 @@ export default function DeployNewVaultToken(props: {
             {/* {showErrorMessage && <ErrorMessage />} */}
 
             {showStatus && (
-              <StatusMessage
-                statusHeader={statusHeader}
-                statusMessage={statusMessage}
-                statusError={statusError}
-                txHash={txHash}
-              />
+              <Grid>
+                <Grid.Column width={14}>
+                  <StatusMessage
+                    statusHeader={statusHeader}
+                    statusMessage={statusMessage}
+                    statusError={statusError}
+                    txHash={txHash}
+                    iconStatus={iconStatus}
+                  />
+                </Grid.Column>
+                <Grid.Column width={2} verticalAlign="middle">
+                  {iconStatus !== "loading" && (
+                    <Button onClick={resetForm} icon="check" circular />
+                  )}
+                </Grid.Column>
+              </Grid>
             )}
             {/* {showSuccessMessage && <SuccessMessage />} */}
             <Form.Field
@@ -235,7 +304,7 @@ export default function DeployNewVaultToken(props: {
               labelPosition="right"
               color="teal"
               required
-              disabled={txSent}
+              disabled={btnDisabled}
             />
           </Form>
         </Modal.Content>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Card } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 import "../App.css";
 
@@ -29,29 +29,35 @@ export default function SuccessMessage() {
         width: "100%",
       }}
     >
-      <div
-        className="socialLink"
-        href="https://twitter.com/Official_ASDev"
-        style={socialStyle}
-      >
-        <Icon name="twitter" />
-        Twitter{" "}
+      <div>
+        <a
+          className="socialLink"
+          href="https://twitter.com/Official_ASDev"
+          style={socialStyle}
+        >
+          <Icon name="twitter" />
+          Twitter{" "}
+        </a>
       </div>
-      <div
-        className="socialLink"
-        href="https://github.com/Alpha-Serpentis-Developments/Project-Mimic"
-        style={socialStyle}
-      >
-        <Icon name="github" />
-        Github
+      <div>
+        <a
+          className="socialLink"
+          href="https://github.com/Alpha-Serpentis-Developments/Project-Mimic"
+          style={socialStyle}
+        >
+          <Icon name="github" />
+          Github
+        </a>
       </div>
-      <div
-        className="socialLink"
-        href="https://discord.gg/u9wMgBY"
-        style={socialStyle}
-      >
-        <Icon name="discord" />
-        Discord
+      <div>
+        <a
+          className="socialLink"
+          href="https://discord.gg/u9wMgBY"
+          style={socialStyle}
+        >
+          <Icon name="discord" />
+          Discord
+        </a>
       </div>
     </div>
   );

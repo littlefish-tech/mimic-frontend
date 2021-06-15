@@ -3,20 +3,15 @@ import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 import StatusMessage from "./StatusMessage";
 import {
-  Item,
-  Modal,
   Header,
   Button,
   Grid,
   Divider,
-  Label,
   Icon,
   Segment,
   Form,
   Dropdown,
   Menu,
-  Message,
-  Container,
 } from "semantic-ui-react";
 import Web3 from "web3";
 import ERCTokenInfo from "./ERCTokenInfo";

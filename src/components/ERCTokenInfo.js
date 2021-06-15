@@ -1,5 +1,5 @@
 import React from "react";
-import { Item, Modal, Header, Grid, Segment } from "semantic-ui-react";
+import { Header, Grid } from "semantic-ui-react";
 
 export default function ERCTokenInfo(props) {
   return (

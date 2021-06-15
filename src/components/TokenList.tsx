@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { List } from "semantic-ui-react";
 import { Header, Modal, Button, Icon, Table, Divider } from "semantic-ui-react";
 import ERCTokenInfo from "./ERCTokenInfo";
 import VaultTokenInfo from "./VaultTokenInfo";
@@ -15,7 +14,6 @@ export default function TokenList(props: {
   const [clickedItem, setClickedItem] = useState<Object | null>();
 
   function showTokenInfo(e: any, i: any) {
-    console.log(e);
     setClickedItem(i.value);
     setOpen(true);
   }
@@ -90,9 +88,7 @@ export default function TokenList(props: {
   return (
     <div>
       <div>
-        <Header size="large" color="blue">
-          {props.title}
-        </Header>
+        <Header size="large">{props.title}</Header>
         <Table striped celled>
           <Table.Body>
             {props.tList.map((item: any, i) => {

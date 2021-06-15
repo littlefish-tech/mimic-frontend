@@ -9,7 +9,6 @@ import { ERC20 } from "./Erc20";
 
 export default function VTList(props) {
   const [vtList, setVTList] = useState([]);
-  const [count, setCount] = useState(-1);
   const [update, setUpdate] = useState(0);
   const [managedList, setManagedList] = useState([]);
   const [portfolioList, setPortfolioList] = useState([]);
@@ -98,8 +97,6 @@ export default function VTList(props) {
   }
 
   function populateAsset(k) {
-    console.log("populate asset");
-
     let v = vtList[k];
     let found = false;
     if (v.asset === "") {
@@ -304,7 +301,11 @@ export default function VTList(props) {
     populate();
   }, [update]);
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
+      }}
+    >
       <Table padded textAlign="center">
         <Table.Body>
           <Table.Row verticalAlign="top">

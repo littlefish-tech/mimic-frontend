@@ -78,6 +78,7 @@
   display: none;
   background-color: #eddbf4;
 }
+
 @media only screen and (max-width: 700px) {
   .introCards {
     flex-direction: column;

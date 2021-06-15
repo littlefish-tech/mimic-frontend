@@ -69,12 +69,11 @@ export class VaultToken extends ERC20 {
     //   console.log("approve result +");
     //   console.log(result);
     // });
-    console.log("at the deposit**************");
+
     return this.vt.methods["deposit"](amount).send({ from: f });
   }
 
   withdraw(amount, f) {
-    console.log("amt  " + amount);
     this.assetObject.approve(this.address, amount, f).then((result) => {
       console.log("approve result +");
       console.log(result);

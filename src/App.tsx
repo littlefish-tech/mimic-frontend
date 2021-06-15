@@ -2,15 +2,7 @@ import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import Web3 from "web3";
 import VTList from "./components/VTList.js";
-import {
-  Button,
-  Header,
-  Icon,
-  Tab,
-  Grid,
-  Menu,
-  Sidebar,
-} from "semantic-ui-react";
+import { Button, Icon, Tab, Grid, Menu, Sidebar } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
@@ -58,9 +50,6 @@ export default function App() {
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
-    console.log("acctNum");
-    console.log(typeof acctNum);
-    console.log(acctNum);
     if (acctNum && acctNum !== "undefined") {
       const fFive = addr.slice(0, 10);
       const lFive = addr.slice(-8);
@@ -82,7 +71,6 @@ export default function App() {
   async function getChainID() {
     const chain_Id = await web3.eth.getChainId();
     setChainId(chain_Id);
-    console.log(chain_Id);
     if (chain_Id === 1) {
       setMMColor("teal");
     } else if (chain_Id === 3) {
@@ -111,7 +99,7 @@ export default function App() {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log(accounts);
+
       const account: string = accounts[0];
       const fFive = account.slice(0, 10);
       const lFive = account.slice(-8);
@@ -149,7 +137,6 @@ export default function App() {
     setTradeNav("purple");
   }
   function clickManager(e: any) {
-    console.log("click");
     e.preventDefault();
     setRenderHome(false);
     setRenderManager(true);
@@ -161,7 +148,6 @@ export default function App() {
   }
 
   function openModal() {
-    console.log("clikced");
     setOpenPlusModal(true);
   }
 
