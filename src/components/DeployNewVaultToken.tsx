@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Web3 from "web3";
+import { web3 } from "./Web3Handler";
+import { nwConfig, currentChain } from "./NetworkConfig";
 import {
   Button,
   Dropdown,
@@ -11,44 +12,14 @@ import {
   Divider,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
-// import ErrorMessage from "./ErrorMessage";
-// import SuccessMessage from "./SuccessMessage";
+
 import StatusMessage from "./StatusMessage";
-
-// import Factory from "../lib/Factory";
-
-// const assetTokenAddr = require("../assetTokenAddr.json");
-
-// let web3 = new Web3(
-//   Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-// );
-let web3 = new Web3(Web3.givenProvider);
 
 // the kovan controller addr
 //  const controllerAddr = "0xdee7d0f8ccc0f7ac7e45af454e5e7ec1552e8e4e";
 
 // the ropsten controller addr
-const controllerAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
-
-const assetTokenAddrs = [
-  {
-    key: "1",
-    text: "DAI : 0x1528F3FCc26d13F7079325Fb78D9442607781c8C ",
-    value: "0x1528F3FCc26d13F7079325Fb78D9442607781c8C",
-  },
-  {
-    key: "2",
-    text: "WBTC : 0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
-    value: "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
-  },
-  {
-    key: "3",
-    // text: "WETH : 0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-    text: "WETH : 0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5",
-    // value: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-    value: "0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5",
-  },
-];
+// const controllerAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
 
 export interface tObj {
   address: string;
@@ -57,12 +28,17 @@ export interface tObj {
   };
 }
 
+let nc: any = nwConfig;
+
 export default function DeployNewVaultToken(props: {
   openPlusModal: boolean;
   onClose: any;
   acctNum: string;
 }) {
   let managerAddr: string = JSON.parse(localStorage.getItem("account") || "{}");
+  let controllerAddr = nc[currentChain].controllerAddress;
+
+  let assetTokenAddrs = nc[currentChain].aTokenAddrs;
 
   const [tokenName, setTokenName] = useState<string>("");
   const [tokenSymble, setTokenSymble] = useState<string>("");
@@ -105,7 +81,6 @@ export default function DeployNewVaultToken(props: {
           m = error.message.substring(0, i > 0 ? i : 40);
         }
         setSM(label + " TX Error", m, true, true);
-        setTxSent(false);
         setIconStatus("error");
       })
       .on("confirmation", function (confirmationNumber: any, receipt: any) {
@@ -130,8 +105,8 @@ export default function DeployNewVaultToken(props: {
     let c = factory.deployNewVT(
       tokenName,
       tokenSymble,
-      controllerAddr,
-      // "0x0000000000000000000000000000000000000000",
+      // controllerAddr,
+      "0x0000000000000000000000000000000000000000",
       assetTokenAddr,
       amount,
       props.acctNum
@@ -139,64 +114,11 @@ export default function DeployNewVaultToken(props: {
     sendTX(c, "Deploy New Token");
   }
 
-  function handleClick1(e: any) {
-    e.preventDefault();
-    if (tokenName === "" || tokenSymble === "" || assetTokenAddr === "") {
-      setSM("Error", "Form input Error", true, true);
-
-      setTimeout(() => {
-        setSM("", "", false, false);
-      }, 3000);
-
-      return;
-    }
-    let amount = web3.utils.toWei(maxAmt, "ether");
-
-    setSM("MetaMask", "Sending Transaction", true, false);
-    setTxSent(true);
-    factory
-      .deployNewVT(
-        tokenName,
-        tokenSymble,
-        controllerAddr,
-        // "0x0000000000000000000000000000000000000000",
-        assetTokenAddr,
-        amount,
-        props.acctNum
-      )
-      // .on("receipt", function (receipt: any) {
-      //   //console.log(receipt);
-      //   setSM("TX Receipt Received", "", true, false);
-      // })
-      .on("transactionHash", function (hash: any) {
-        setTxHash(hash);
-        setSM("TX Hash Received", hash, true, false);
-      })
-      .on("error", function (error: any, receipt: any) {
-        let m = "";
-        if (error !== null) {
-          let i = error.message.indexOf(":");
-          m = error.message.substring(0, i > 0 ? i : 40);
-        }
-
-        // let i = error.message.indexOf(":");
-        // let m = error.message.substring(0, i > 0 ? i : 40);
-        setSM("TX Error", m, true, true);
-      })
-      .on("confirmation", function (confirmationNumber: any, receipt: any) {
-        setSM(
-          "Deploy TX Confirmed",
-          confirmationNumber + " Confirmation Received",
-          true,
-          false
-        );
-      });
-  }
-
   function resetSM() {
     setSM("", "", false, false);
   }
   function closeNewTokenModal() {
+    resetForm();
     setTxSent(false);
     setTxHash("");
     resetSM();
@@ -206,11 +128,9 @@ export default function DeployNewVaultToken(props: {
   }
 
   function resetForm() {
-    console.log(showStatus);
     setBtnDisabled(false);
     setIconStatus("loading");
     setShowStatus(false);
-    console.log(showStatus);
   }
 
   return (
@@ -280,7 +200,7 @@ export default function DeployNewVaultToken(props: {
             </Form.Field>
             {/* {showErrorMessage && <ErrorMessage />} */}
 
-            {showStatus && (
+            {showStatus && txSent && (
               <Grid>
                 <Grid.Column width={14}>
                   <StatusMessage
@@ -309,9 +229,9 @@ export default function DeployNewVaultToken(props: {
               control={Button}
               onClick={handleClick}
               icon="plus circle"
-              content="Generate Token"
+              content={"Deploy Token on " + nc[currentChain].name}
               labelPosition="right"
-              color="teal"
+              color={nc[currentChain].color}
               disabled={btnDisabled}
             />
           </Form>

@@ -1,9 +1,10 @@
+import { nwConfig, currentChain } from "./NetworkConfig";
 const addressabi = require("../abi/ab.json");
-const AddressBookAddr = "0x8812f219f507e8cfe9d2f1e790164714c5e06a73";
 
 export class AddressBook {
   constructor(web3) {
     this.provider = web3;
+    const AddressBookAddr = nwConfig[currentChain].addressBookAddr;
     this.address = AddressBookAddr;
     this.addressBook = new web3.eth.Contract(addressabi, AddressBookAddr);
     this.marginPoolAddress = "";

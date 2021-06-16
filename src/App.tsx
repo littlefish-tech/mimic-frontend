@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
-import Web3 from "web3";
+
+import { web3 } from "./components/Web3Handler";
 import VTList from "./components/VTList.js";
-import { Button, Icon, Tab, Grid, Menu, Sidebar } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Tab,
+  Grid,
+  Menu,
+  Sidebar,
+  Modal,
+} from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
 import Introduction from "./components/Introduction";
@@ -10,17 +19,17 @@ import Footer from "./components/Footer";
 import { AddressBook } from "./components/AddressBook";
 import TopSidebar from "./components/TopSideBar";
 import MMInstallModal from "./components/MMInstallModal.js";
+import { nwConfig, currentChain, setChain } from "./components/NetworkConfig";
+import AppReload from "./components/AppReload";
 import "./App.css";
-
-// create a new web3 oject
-// let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-let web3 = new Web3(Web3.givenProvider);
 
 declare global {
   interface Window {
     ethereum: any;
   }
 }
+
+let nC: any = nwConfig;
 
 export default function App() {
   let addr: string = JSON.parse(localStorage.getItem("account") || "false");
@@ -44,6 +53,20 @@ export default function App() {
   const [mmColor, setMMColor] = useState("grey");
   const [showSidebar, setShowSidebar] = useState(false);
   const [showMMInstallModal, setShowMMInstallModal] = useState(false);
+  const [reload, setReload] = useState(false);
+
+  window.ethereum.on("chainChanged", (chainId: any) => {
+    // setChainId(parseInt(chainId));
+    setChain(parseInt(chainId, 16));
+    console.log(chainId);
+    setReload(true);
+    // Handle the new chain.
+    // Correctly handling chain changes can be complicated.
+    // We recommend reloading the page unless you have good reason not to.
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  });
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -66,19 +89,10 @@ export default function App() {
     });
   }
   async function getChainID() {
-    const chain_Id = await web3.eth.getChainId();
+    const chain_Id: number = await web3.eth.getChainId();
+    setChain(chain_Id);
     setChainId(chain_Id);
-    if (chain_Id === 1) {
-      setMMColor("teal");
-    } else if (chain_Id === 3) {
-      setMMColor("pink");
-    } else if (chain_Id === 42) {
-      setMMColor("purple");
-    } else if (chain_Id === 4) {
-      setMMColor("orange");
-    } else if (chain_Id === 5) {
-      setMMColor("blue");
-    }
+    setMMColor(nC[currentChain].color);
   }
   // check if meta mask is installed
   async function hasMMInstall() {
@@ -161,6 +175,7 @@ export default function App() {
   }
   return (
     <div>
+      {reload && <AppReload chainId={chainId} reload={reload} />}
       {/* <Sidebar.Pushable> */}
       <Sidebar
         as={Menu}

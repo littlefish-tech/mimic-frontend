@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Web3 from "web3";
+import { web3 } from "./Web3Handler";
 import { Factory } from "./Factory";
 import { VaultToken } from "./VaultToken";
 import TokenList from "./TokenList";
@@ -14,12 +14,6 @@ export default function VTList(props) {
   const [portfolioList, setPortfolioList] = useState([]);
   const [followList, setFollowList] = useState([]);
   const [assetTokenList, setAssetTokenList] = useState([]);
-
-  // let web3 = new Web3(
-  //   Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-  // );
-
-  let web3 = new Web3(Web3.givenProvider);
 
   function getAllVT() {
     let factoryObj = new Factory(web3);

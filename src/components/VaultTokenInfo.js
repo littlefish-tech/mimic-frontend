@@ -13,10 +13,8 @@ import {
   Dropdown,
   Menu,
 } from "semantic-ui-react";
-import Web3 from "web3";
+import { web3 } from "./Web3Handler";
 import ERCTokenInfo from "./ERCTokenInfo";
-// let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-let web3 = new Web3(Web3.givenProvider);
 
 const units = [
   { key: 1, text: "Wei", value: "wei" },

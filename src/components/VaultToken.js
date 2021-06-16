@@ -17,13 +17,7 @@ export class VaultToken extends ERC20 {
     this.expireTime = -1;
   }
   // return the manager address
-  async getManager1() {
-    let manager = "";
-    await this.vt.methods.manager().call(function (error, result) {
-      manager = result;
-    });
-    return manager;
-  }
+
   async getManager() {
     return this.vt.methods.manager().call();
   }

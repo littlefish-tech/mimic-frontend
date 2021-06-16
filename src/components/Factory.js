@@ -1,15 +1,17 @@
 import { VaultToken } from "./VaultToken";
+import { nwConfig, currentChain } from "./NetworkConfig";
 
 const abi = require("../abi/factoryabi.json");
 // the kovan network
 // const factoryContractAddr = "0xa7CD2F79F9aebc0E0fe9bd33Ebf3ce9bD1eBE20c";
 
 // the ropsten network
-const factoryContractAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
+// const factoryContractAddr = "0x7A6828eF4AB3Cb9c08c40D0a05ad2416C8335C5c";
 
 export class Factory {
   constructor(web3) {
     this.provider = web3;
+    let factoryContractAddr = nwConfig[currentChain].factoryAddress;
     this.address = factoryContractAddr;
     this.factory = new web3.eth.Contract(abi, factoryContractAddr);
   }
