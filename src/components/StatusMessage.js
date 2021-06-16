@@ -14,7 +14,8 @@ export default function SuccessMessage(props) {
       return "exclamation triangle";
     }
     if (s === "confirmed") {
-      return "check circle";
+      //return "check circle";
+      return "thumbs up outline";
     }
   }
   return (

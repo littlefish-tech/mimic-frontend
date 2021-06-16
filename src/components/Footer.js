@@ -29,32 +29,26 @@ export default function SuccessMessage() {
         width: "100%",
       }}
     >
-      <div>
+      <div style={socialStyle} className="socialLink">
         <a
-          className="socialLink"
+          style={{ color: "purple" }}
           href="https://twitter.com/Official_ASDev"
-          style={socialStyle}
         >
           <Icon name="twitter" />
           Twitter{" "}
         </a>
       </div>
-      <div>
+      <div style={socialStyle} className="socialLink">
         <a
-          className="socialLink"
+          style={{ color: "purple" }}
           href="https://github.com/Alpha-Serpentis-Developments/Project-Mimic"
-          style={socialStyle}
         >
           <Icon name="github" />
           Github
         </a>
       </div>
-      <div>
-        <a
-          className="socialLink"
-          href="https://discord.gg/u9wMgBY"
-          style={socialStyle}
-        >
+      <div style={socialStyle} className="socialLink">
+        <a style={{ color: "purple" }} href="https://discord.gg/u9wMgBY">
           <Icon name="discord" />
           Discord
         </a>

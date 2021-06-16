@@ -302,11 +302,7 @@ export default function VTList(props) {
     populate();
   }, [update]);
   return (
-    <div
-      style={{
-        backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
-      }}
-    >
+    <div>
       <Table padded textAlign="center">
         <Table.Body>
           <Table.Row verticalAlign="top">

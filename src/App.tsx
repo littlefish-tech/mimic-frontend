@@ -204,7 +204,12 @@ export default function App() {
       </Sidebar>
 
       <Sidebar.Pusher dimmed={showSidebar}>
-        <div className="content">
+        <div
+          className="content"
+          // style={{
+          //   backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
+          // }}
+        >
           <TopSidebar
             showSidebar={showSidebar}
             clickShowSidebar={clickShowSidebar}

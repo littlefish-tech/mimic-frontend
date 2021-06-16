@@ -8,6 +8,7 @@ import {
   Input,
   Modal,
   Grid,
+  Divider,
 } from "semantic-ui-react";
 import { Factory } from "./Factory";
 // import ErrorMessage from "./ErrorMessage";
@@ -42,8 +43,10 @@ const assetTokenAddrs = [
   },
   {
     key: "3",
-    text: "WETH : 0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-    value: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+    // text: "WETH : 0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+    text: "WETH : 0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5",
+    // value: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+    value: "0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5",
   },
 ];
 
@@ -188,13 +191,6 @@ export default function DeployNewVaultToken(props: {
           false
         );
       });
-    // setShowSuccessMessage(true);
-    setTimeout(() => {
-      // setShowSuccessMessage(false);
-      setTxSent(false);
-      setTxHash("");
-      // resetSM();
-    }, 3000);
   }
 
   function resetSM() {
@@ -204,14 +200,17 @@ export default function DeployNewVaultToken(props: {
     setTxSent(false);
     setTxHash("");
     resetSM();
-    //reset the fields
+    setTokenName("");
+    setTokenSymble("");
     props.onClose();
   }
 
   function resetForm() {
+    console.log(showStatus);
     setBtnDisabled(false);
     setIconStatus("loading");
     setShowStatus(false);
+    console.log(showStatus);
   }
 
   return (
@@ -294,12 +293,18 @@ export default function DeployNewVaultToken(props: {
                 </Grid.Column>
                 <Grid.Column width={2} verticalAlign="middle">
                   {iconStatus !== "loading" && (
-                    <Button onClick={resetForm} icon="check" circular />
+                    <Button
+                      onClick={resetForm}
+                      icon="check"
+                      circular
+                      color="teal"
+                    />
                   )}
                 </Grid.Column>
               </Grid>
             )}
             {/* {showSuccessMessage && <SuccessMessage />} */}
+            <Divider hidden />
             <Form.Field
               control={Button}
               onClick={handleClick}
@@ -307,7 +312,6 @@ export default function DeployNewVaultToken(props: {
               content="Generate Token"
               labelPosition="right"
               color="teal"
-              required
               disabled={btnDisabled}
             />
           </Form>

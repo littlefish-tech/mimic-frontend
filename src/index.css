@@ -8,6 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   /* min-height: 100vh; */
+  background-image: linear-gradient(#eddbf4, #f54aefad) !important;
 }
 ::-webkit-scrollbar {
   display: none;
