@@ -18,9 +18,11 @@ export default function MMInstallModal(props) {
         </Grid>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" inverted onClick={props.closeMMInstallModal}>
-          <Icon name="checkmark" /> OK
-        </Button>
+        <Grid textAlign="center">
+          <Button color="green" inverted onClick={props.closeMMInstallModal}>
+            <Icon name="checkmark" /> OK
+          </Button>
+        </Grid>
       </Modal.Actions>
     </Modal>
   );

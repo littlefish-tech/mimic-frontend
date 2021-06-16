@@ -18,8 +18,8 @@ export default function TopMenu(props) {
               src={profileImg}
               style={{
                 objectFit: "cover",
-                height: "50px",
-                width: "50px",
+                height: "40px",
+                width: "40px",
                 // marginLeft: "20px",
               }}
             />

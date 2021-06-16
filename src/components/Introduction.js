@@ -20,9 +20,10 @@ export default function Introduction() {
 
   return (
     <div
-      style={{
-        backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
-      }}
+      className="introductionPage"
+      // style={{
+      //   backgroundImage: "linear-gradient(#eddbf4, #f54aefad) !important",
+      // }}
     >
       <img src={profileImg} className="optionalBodyImg" />
 

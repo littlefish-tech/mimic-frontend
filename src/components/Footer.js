@@ -22,7 +22,6 @@ export default function SuccessMessage() {
         display: "flex",
         flexDirection: "center",
         justifyContent: "space-evenly",
-        // backgroundColor: "white",
         position: "fixed",
         left: "0",
         bottom: "0",

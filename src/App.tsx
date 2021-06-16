@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { AddressBook } from "./components/AddressBook";
 import TopSidebar from "./components/TopSideBar";
 import MMInstallModal from "./components/MMInstallModal.js";
+import "./App.css";
 
 // create a new web3 oject
 // let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
