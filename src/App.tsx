@@ -62,7 +62,7 @@ export default function App() {
 
   window.ethereum.on("chainChanged", (chainId: any) => {
     // setChainId(parseInt(chainId));
-    if (parseInt(chainId, 16) !== 1 || parseInt(chainId, 16) !== 52) {
+    if (parseInt(chainId, 16) !== 1 && parseInt(chainId, 16) !== 42) {
       setShowChainAlert(true);
       return;
     }
