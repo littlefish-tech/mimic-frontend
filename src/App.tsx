@@ -60,22 +60,22 @@ export default function App() {
   // state variable to let users now we only work on the kovan and
   const [showChainAlert, setShowChainAlert] = useState(false);
 
-  window.ethereum.on("chainChanged", (chainId: any) => {
-    // setChainId(parseInt(chainId));
-    if (parseInt(chainId, 16) !== 1 && parseInt(chainId, 16) !== 42) {
-      setShowChainAlert(true);
-      return;
-    }
+  // window.ethereum.on("chainChanged", (chainId: any) => {
+  //   // setChainId(parseInt(chainId));
+  //   if (parseInt(chainId, 16) !== 1 && parseInt(chainId, 16) !== 42) {
+  //     setShowChainAlert(true);
+  //     return;
+  //   }
 
-    setChain(parseInt(chainId, 16));
-    setReload(true);
-    // Handle the new chain.
-    // Correctly handling chain changes can be complicated.
-    // We recommend reloading the page unless you have good reason not to.
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-  });
+  //   setChain(parseInt(chainId, 16));
+  //   setReload(true);
+  //   // Handle the new chain.
+  //   // Correctly handling chain changes can be complicated.
+  //   // We recommend reloading the page unless you have good reason not to.
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 3000);
+  // });
 
   // check if the meta mask is installed when the page load
   useEffect(() => {
@@ -107,7 +107,22 @@ export default function App() {
   async function hasMMInstall() {
     if (typeof window.ethereum !== "undefined") {
       await setHasMM(true);
+      window.ethereum.on("chainChanged", (chainId: any) => {
+        // setChainId(parseInt(chainId));
+        if (parseInt(chainId, 16) !== 1 && parseInt(chainId, 16) !== 42) {
+          setShowChainAlert(true);
+          return;
+        }
 
+        setChain(parseInt(chainId, 16));
+        setReload(true);
+        // Handle the new chain.
+        // Correctly handling chain changes can be complicated.
+        // We recommend reloading the page unless you have good reason not to.
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      });
       return;
     }
   }
