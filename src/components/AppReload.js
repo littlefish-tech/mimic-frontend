@@ -6,11 +6,13 @@ export default function AppReload(props) {
   return (
     <Modal basic open={props.reload} size="small">
       <Header icon>
-        <Icon name="attention" />
+        <Icon name="spinner" loading size="large" />
       </Header>
       <Modal.Content>
         <Grid textAlign="center">
-          <p>Changing Network to {nwConfig[currentChain].name}</p>
+          <Header inverted>
+            Changing Network to {nwConfig[currentChain].name}
+          </Header>
         </Grid>
       </Modal.Content>
     </Modal>

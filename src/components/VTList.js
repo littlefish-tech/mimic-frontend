@@ -297,7 +297,7 @@ export default function VTList(props) {
   }, [update]);
   return (
     <div>
-      <Table padded textAlign="center">
+      <Table padded textAlign="center" celled={true}>
         <Table.Body>
           <Table.Row verticalAlign="top">
             {/* <Table.Cell>
@@ -312,6 +312,7 @@ export default function VTList(props) {
                   title="Managed Token"
                   acct={props.acctNum}
                   mpAddress={props.mpAddress}
+                  showSpinner={vtList.length === 0}
                 />
               </Table.Cell>
             )}
@@ -322,6 +323,7 @@ export default function VTList(props) {
                   update={update}
                   title="Portfolio"
                   acct={props.acctNum}
+                  showSpinner={vtList.length === 0}
                 />
               </Table.Cell>
             )}
@@ -332,6 +334,7 @@ export default function VTList(props) {
                   update={update}
                   title="Follow List"
                   acct={props.acctNum}
+                  showSpinner={vtList.length === 0}
                 />
               </Table.Cell>
             )}

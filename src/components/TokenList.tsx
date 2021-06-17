@@ -9,6 +9,7 @@ export default function TokenList(props: {
   title: string;
   acct: string;
   mpAddress: string;
+  showSpinner: boolean;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [clickedItem, setClickedItem] = useState<Object | null>();
@@ -89,8 +90,8 @@ export default function TokenList(props: {
     <div>
       <div>
         <Header size="large">{props.title}</Header>
-
-        <Table striped celled>
+        {props.showSpinner && <Icon name="spinner" loading size="large" />}
+        <Table striped>
           <Table.Body>
             {props.tList.map((item: any, i) => {
               return (
@@ -100,7 +101,6 @@ export default function TokenList(props: {
                   // disabled={!item.status}
 
                   value={item}
-                  celled
                   size="large"
                 >
                   {onetoken(item)}

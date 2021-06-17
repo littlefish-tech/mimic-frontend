@@ -11,6 +11,8 @@ import {
   Menu,
   Sidebar,
   Modal,
+  Segment,
+  Divider,
 } from "semantic-ui-react";
 import DeployNewVaultToken from "./components/DeployNewVaultToken";
 import TopMenu from "./components/TopMenu";
@@ -173,6 +175,7 @@ export default function App() {
   function closeMMInstallModal() {
     setShowMMInstallModal(false);
   }
+
   return (
     <div>
       {reload && <AppReload chainId={chainId} reload={reload} />}
@@ -250,7 +253,7 @@ export default function App() {
             mmColor={mmColor}
           />
 
-          {renderHome && <Introduction />}
+          {renderHome && <Introduction clickTrade={clickTrade} />}
           {addr ? (
             <div>
               <VTList
@@ -306,7 +309,42 @@ export default function App() {
             acctNum={acctNum}
           />
         </div>
-
+        {!renderHome && (
+          <>
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+            <Divider hidden />
+          </>
+        )}
         <Footer />
       </Sidebar.Pusher>
       {/* </Sidebar.Pushable> */}

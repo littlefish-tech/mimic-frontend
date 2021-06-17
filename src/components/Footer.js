@@ -11,7 +11,6 @@ export default function SuccessMessage() {
     fontWeight: "bold",
     transition: "transform 0.5s",
     cursor: "pointer",
-    textShadow: "2px 2px 8px black",
   };
   return (
     <div
@@ -22,10 +21,10 @@ export default function SuccessMessage() {
         display: "flex",
         flexDirection: "center",
         justifyContent: "space-evenly",
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-        width: "100%",
+        // position: "fixed",
+        // left: "0",
+        // bottom: "0",
+        // width: "100%",
       }}
     >
       <div style={socialStyle} className="socialLink">

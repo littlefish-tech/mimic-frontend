@@ -1,10 +1,10 @@
 import React from "react";
-
+import StartTXBtn from "./StartTXBtn";
 import profileImg from "../images/profile.png";
 
 import "../App.css";
 
-export default function Introduction() {
+export default function Introduction(props) {
   const aboutTextStyle = {
     lineHeight: "1.5",
     paddingBottom: "20px",
@@ -21,9 +21,9 @@ export default function Introduction() {
   return (
     <div
       className="introductionPage"
-      // style={{
-      //   backgroundImage: "linear-gradient(#eddbf4, #f54aefad) !important",
-      // }}
+      style={{
+        backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
+      }}
     >
       <img src={profileImg} className="optionalBodyImg" />
 
@@ -41,6 +41,7 @@ export default function Introduction() {
       >
         You Deposit. They Trade. You Earn.
       </h2>
+      <StartTXBtn clickTrade={props.clickTrade} />
       <div className="introCards">
         <div className="aboutCard">
           <h1 style={cardHeaderStyling}>About Optional</h1>
