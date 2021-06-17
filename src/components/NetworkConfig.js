@@ -4,7 +4,7 @@ export let nwConfig = {
     chainId: 1,
     color: "green",
     prefix: "https://etherscan.io/tx/",
-    factoryAddress: "0x7a6828ef4ab3cb9c08c40d0a05ad2416c8335c5c",
+    factoryAddress: "0xe73aFc806411859D49977dbADe5c9328CD565Bcb",
     addressBookAddr: "0x1E31F2DCBad4dc572004Eae6355fB18F9615cBe4",
     controllerAddress: "0x4ccc2339F87F6c59c6893E1A678c2266cA58dC72",
     aTokenAddrs: [
