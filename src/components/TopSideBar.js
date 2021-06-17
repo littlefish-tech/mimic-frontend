@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import profileImg from "../images/profile.png";
 import { Icon, Grid, Image } from "semantic-ui-react";
+import cover from "../images/cover.png";
 
 export default function TopSidebar(props) {
   return (
@@ -22,6 +23,9 @@ export default function TopSidebar(props) {
                 size="big"
                 onClick={props.clickShowSidebar}
               />
+              {/* <button onClick={props.clickHideSidebar}>
+                <img src={cover} style={{ height: "30px", width: "30px" }} />
+              </button> */}
             </div>
           )}
         </Grid.Column>

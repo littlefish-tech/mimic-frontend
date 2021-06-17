@@ -67,7 +67,9 @@ export default function TokenList(props: {
               <Icon name="clock outline" size="large" color="teal" />
             </Table.Cell>
             <Table.Cell verticalAlign="middle">
-              <Header size="small">{timeLeft(item.expireTime * 1000)}</Header>
+              <Header size="small">
+                Vault will close in {timeLeft(item.expireTime * 1000)} hours
+              </Header>
             </Table.Cell>
           </>
         )}
@@ -77,7 +79,9 @@ export default function TokenList(props: {
               <Icon name="lock" size="large" color="red" />
             </Table.Cell>
             <Table.Cell verticalAlign="middle">
-              <Header size="small">{renderTime(item.expireTime * 1000)}</Header>
+              <Header size="small">
+                Vault closed at {renderTime(item.expireTime * 1000)}
+              </Header>
             </Table.Cell>
           </>
         )}
