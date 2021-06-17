@@ -21,10 +21,10 @@ export default function SuccessMessage() {
         display: "flex",
         flexDirection: "center",
         justifyContent: "space-evenly",
-        // position: "fixed",
-        // left: "0",
-        // bottom: "0",
-        // width: "100%",
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100%",
       }}
     >
       <div style={socialStyle} className="socialLink">

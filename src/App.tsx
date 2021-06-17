@@ -23,6 +23,7 @@ import TopSidebar from "./components/TopSideBar";
 import MMInstallModal from "./components/MMInstallModal.js";
 import { nwConfig, currentChain, setChain } from "./components/NetworkConfig";
 import AppReload from "./components/AppReload";
+import ChainAlert from "./components/ChainAlert";
 import "./App.css";
 
 declare global {
@@ -56,11 +57,17 @@ export default function App() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showMMInstallModal, setShowMMInstallModal] = useState(false);
   const [reload, setReload] = useState(false);
+  // state variable to let users now we only work on the kovan and
+  const [showChainAlert, setShowChainAlert] = useState(false);
 
   window.ethereum.on("chainChanged", (chainId: any) => {
     // setChainId(parseInt(chainId));
+    if (parseInt(chainId, 16) !== 1 || parseInt(chainId, 16) !== 52) {
+      setShowChainAlert(true);
+      return;
+    }
+
     setChain(parseInt(chainId, 16));
-    console.log(chainId);
     setReload(true);
     // Handle the new chain.
     // Correctly handling chain changes can be complicated.
@@ -302,7 +309,7 @@ export default function App() {
             showMMInstallModal={showMMInstallModal}
             closeMMInstallModal={closeMMInstallModal}
           />
-
+          <ChainAlert showChainAlert={showChainAlert} />
           <DeployNewVaultToken
             openPlusModal={openPlusModal}
             onClose={() => setOpenPlusModal(false)}
