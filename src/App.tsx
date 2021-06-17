@@ -59,7 +59,7 @@ export default function App() {
   const [reload, setReload] = useState(false);
   // state variable to let users now we only work on the kovan and
   const [showChainAlert, setShowChainAlert] = useState(false);
-
+  //=======detect chain id change before==============
   // window.ethereum.on("chainChanged", (chainId: any) => {
   //   // setChainId(parseInt(chainId));
   //   if (parseInt(chainId, 16) !== 1 && parseInt(chainId, 16) !== 42) {
@@ -76,7 +76,7 @@ export default function App() {
   //     window.location.reload();
   //   }, 3000);
   // });
-
+  /// =======================================
   // check if the meta mask is installed when the page load
   useEffect(() => {
     if (acctNum && acctNum !== "undefined") {
@@ -313,11 +313,11 @@ export default function App() {
               }}
             >
               <Icon name="exclamation triangle" color="red" />
-              Please install
-              <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
+              Please install MetaMask
+              {/* <a href="https://metamask.io/" style={{ fontWeight: "bold" }}>
                 {" "}
                 MetaMask
-              </a>{" "}
+              </a>{" "} */}
             </div>
           )}
           <MMInstallModal
