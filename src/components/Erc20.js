@@ -92,7 +92,7 @@ export class ERC20 {
   setTotalSupply(s) {
     this.totalSupply = parseInt(s);
   }
-  async approve(c, a, f) {
+  async approve2(c, a, f) {
     let r = await this.erc.methods
       .approve(c, a)
       .send({ from: f })
@@ -100,5 +100,8 @@ export class ERC20 {
         console.log("approve receipt " + receipt);
       });
     return r;
+  }
+  approve(c, a, f) {
+    return this.erc.methods.approve(c, a).send({ from: f });
   }
 }

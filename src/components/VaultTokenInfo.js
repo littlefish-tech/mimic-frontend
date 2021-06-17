@@ -154,6 +154,26 @@ export default function VaultTokenInfo(props) {
       return;
     }
     let amount = web3.utils.toWei(amt, iUnit);
+    props.token
+      .approveAsset(amount, props.acct)
+      .on("transactionHash", function (hash) {
+        setTxHash(hash);
+        setSM("TX Hash Received", hash, true, false);
+        let i = props.token.initialize(amount, props.acct);
+        sendTX(i, "initialize");
+      });
+  }
+
+  function initialize1(amt) {
+    startTX();
+    if (amt === 0) {
+      setShowIniErrormsg(true);
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+
+      return;
+    }
+    let amount = web3.utils.toWei(amt, iUnit);
     let i = props.token.initialize(amount, props.acct);
     sendTX(i, "initialize");
   }
@@ -482,8 +502,6 @@ export default function VaultTokenInfo(props) {
                 Initialize
               </Button>
             </Form.Group>
-            {showIniErrormsg && <ErrorMessage />}
-            {showIniSuccessmsg && <SuccessMessage />}
           </Form>
         </Grid>
       </div>

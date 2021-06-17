@@ -74,11 +74,18 @@ export class VaultToken extends ERC20 {
     this.vaultBalance = parseInt(amount);
   }
 
-  initialize(amount, f) {
+  initialize1(amount, f) {
     this.assetObject.approve(this.address, amount, f).then((result) => {
       console.log("approve result +");
       console.log(result);
     });
+    return this.vt.methods["initializeRatio"](amount).send({ from: f });
+  }
+
+  approveAsset(amount, f) {
+    return this.assetObject.approve(this.address, amount, f);
+  }
+  initialize(amount, f) {
     return this.vt.methods["initializeRatio"](amount).send({ from: f });
   }
 
