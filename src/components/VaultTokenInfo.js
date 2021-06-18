@@ -21,6 +21,8 @@ const units = [
   { key: 2, text: "Token", value: "ether" },
 ];
 
+// const units = [{ key: 1, text: "Token", value: "ether" }];
+
 export default function VaultTokenInfo(props) {
   const [depositAmt, setDeposit] = useState(0);
   const [withdrawAmt, setWithdrawAmt] = useState(0);
