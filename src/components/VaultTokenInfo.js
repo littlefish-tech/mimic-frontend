@@ -57,6 +57,7 @@ export default function VaultTokenInfo(props) {
   const [iconStatus, setIconStatus] = useState("loading");
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [managerClick, setManagerClick] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
 
   function setSM(h, m, s, e) {
     setStatusHeader(h);
@@ -97,7 +98,7 @@ export default function VaultTokenInfo(props) {
       });
   }
 
-  function deposit(amt) {
+  function deposit1(amt) {
     startTX();
     if (amt === 0) {
       setSM("Error", "Form input Error", true, true);
@@ -143,6 +144,47 @@ export default function VaultTokenInfo(props) {
   //       setIconStatus("confirmed");
   //     });
   // }
+  ///=================
+
+  function deposit(amt) {
+    startTX();
+    if (amt === 0) {
+      setSM("Error", "Form input Error", true, true);
+      setIconStatus("error");
+      return;
+    }
+    let amount = web3.utils.toWei(amt, dUnit);
+    props.token
+      .approveAsset(amount, props.acct)
+      .on("transactionHash", function (hash) {
+        setTxHash(hash);
+        setSM("TX Hash Received", hash, true, false);
+      })
+      .on("error", function (error, receipt) {
+        let m = "";
+        if (error !== null) {
+          let i = error.message.indexOf(":");
+          m = error.message.substring(0, i > 0 ? i : 40);
+        }
+        setSM("" + " TX Error", m, true, true);
+        setTxSent(false);
+        setIconStatus("error");
+      })
+      .on("confirmation", function (confirmationNumber, receipt) {
+        if (confirmationNumber == 1) {
+          let i = props.token.deposit(amount, props.acct);
+          sendTX(i, "deposit");
+          setSM(
+            "Approval" + " TX Confirmed",
+            confirmationNumber + " Confirmation Received",
+            true,
+            false
+          );
+
+          setIconStatus("confirmed");
+        }
+      });
+  }
 
   function initialize(amt) {
     startTX();
@@ -159,8 +201,6 @@ export default function VaultTokenInfo(props) {
       .on("transactionHash", function (hash) {
         setTxHash(hash);
         setSM("TX Hash Received", hash, true, false);
-        let i = props.token.initialize(amount, props.acct);
-        sendTX(i, "initialize");
       })
       .on("error", function (error, receipt) {
         let m = "";
@@ -171,8 +211,23 @@ export default function VaultTokenInfo(props) {
         setSM("" + " TX Error", m, true, true);
         setTxSent(false);
         setIconStatus("error");
+      })
+      .on("confirmation", function (confirmationNumber, receipt) {
+        if (confirmationNumber == 1) {
+          let i = props.token.initialize(amount, props.acct);
+          sendTX(i, "initialize");
+          setSM(
+            "Approval" + " TX Confirmed",
+            confirmationNumber + " Confirmation Received",
+            true,
+            false
+          );
+
+          setIconStatus("confirmed");
+        }
       });
   }
+  //====================
 
   function initialize1(amt) {
     startTX();
