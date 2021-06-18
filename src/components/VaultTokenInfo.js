@@ -161,6 +161,16 @@ export default function VaultTokenInfo(props) {
         setSM("TX Hash Received", hash, true, false);
         let i = props.token.initialize(amount, props.acct);
         sendTX(i, "initialize");
+      })
+      .on("error", function (error, receipt) {
+        let m = "";
+        if (error !== null) {
+          let i = error.message.indexOf(":");
+          m = error.message.substring(0, i > 0 ? i : 40);
+        }
+        setSM("" + " TX Error", m, true, true);
+        setTxSent(false);
+        setIconStatus("error");
       });
   }
 
