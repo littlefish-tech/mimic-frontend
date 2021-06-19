@@ -16,23 +16,35 @@ import {
 import { web3 } from "./Web3Handler";
 import ERCTokenInfo from "./ERCTokenInfo";
 
-const units = [
+const units1 = [
   { key: 1, text: "Wei", value: "wei" },
   { key: 2, text: "Token", value: "ether" },
 ];
 
-// const units = [{ key: 1, text: "Token", value: "ether" }];
+const units = [
+  { key: 1, text: "Ether", value: "ether" },
+  { key: 2, text: "Wei", value: "wei" },
+];
 
 export default function VaultTokenInfo(props) {
   const [depositAmt, setDeposit] = useState(0);
   const [withdrawAmt, setWithdrawAmt] = useState(0);
   const [initializeAmt, setInitializeAmt] = useState(0);
-  const [dUnit, setDUnit] = useState("wei");
-  const [wUnit, setWUnit] = useState("wei");
-  const [iUnit, setIUnit] = useState("wei");
-  const [writeCallUnit, setWiteCallIUnit] = useState("wei");
-  const [sellCallUnit, setSellCallIUnit] = useState("wei");
-  const [pemiumUnit, setPemiumUnit] = useState("wei");
+  // ================= before set unit=========== start
+  // const [dUnit, setDUnit] = useState("wei");
+  // const [wUnit, setWUnit] = useState("wei");
+  // const [iUnit, setIUnit] = useState("wei");
+  // const [writeCallUnit, setWiteCallIUnit] = useState("wei");
+  // const [sellCallUnit, setSellCallIUnit] = useState("wei");
+  // const [pemiumUnit, setPemiumUnit] = useState("wei");
+  // ==================== end ================
+
+  const [dUnit, setDUnit] = useState("ether");
+  const [wUnit, setWUnit] = useState("ether");
+  const [iUnit, setIUnit] = useState("ether");
+  const [writeCallUnit, setWiteCallIUnit] = useState("ether");
+  const [sellCallUnit, setSellCallIUnit] = useState("ether");
+  const [pemiumUnit, setPemiumUnit] = useState("ether");
 
   const [oTokenAddress, setOTokenaddress] = useState("");
   const [writeCallAmt, setWriteCallAmt] = useState(0);
@@ -178,7 +190,7 @@ export default function VaultTokenInfo(props) {
           sendTX(i, "deposit");
           setSM(
             "Approval" + " TX Confirmed",
-            confirmationNumber + " Confirmation Received",
+            "" + " Confirmation Received",
             true,
             false
           );
@@ -220,7 +232,7 @@ export default function VaultTokenInfo(props) {
           sendTX(i, "initialize");
           setSM(
             "Approval" + " TX Confirmed",
-            confirmationNumber + " Confirmation Received",
+            "" + " Confirmation Received",
             true,
             false
           );
@@ -367,7 +379,7 @@ export default function VaultTokenInfo(props) {
             <label>select</label>
             <Menu compact size="tiny">
               <Dropdown
-                defaultValue="wei"
+                defaultValue="ether"
                 options={units}
                 item
                 onChange={updateWriteCallUnit}
@@ -440,7 +452,7 @@ export default function VaultTokenInfo(props) {
                   </Form.Field>
                   <Menu compact size="tiny">
                     <Dropdown
-                      defaultValue="wei"
+                      defaultValue="ether"
                       options={units}
                       item
                       onChange={updatewUnit}
@@ -488,7 +500,7 @@ export default function VaultTokenInfo(props) {
                   </Form.Field>
                   <Menu compact size="tiny">
                     <Dropdown
-                      defaultValue="wei"
+                      defaultValue="ether"
                       options={units}
                       item
                       onChange={updatedUnit}
@@ -554,7 +566,8 @@ export default function VaultTokenInfo(props) {
               </Form.Field>
               <Menu compact size="tiny">
                 <Dropdown
-                  defaultValue="wei"
+                  // defaultValue="wei"
+                  defaultValue="ether"
                   options={units}
                   item
                   onChange={updateIUnit}
@@ -592,7 +605,7 @@ export default function VaultTokenInfo(props) {
             <label>select</label>
             <Menu compact size="tiny">
               <Dropdown
-                defaultValue="wei"
+                defaultValue="ether"
                 options={units}
                 item
                 onChange={updateSellCallUnit}
@@ -613,7 +626,7 @@ export default function VaultTokenInfo(props) {
             <label>select</label>
             <Menu compact size="tiny">
               <Dropdown
-                defaultValue="wei"
+                defaultValue="ether"
                 options={units}
                 item
                 onChange={updatePremiumUnit}
