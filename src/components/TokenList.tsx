@@ -31,7 +31,6 @@ export default function TokenList(props: {
   }
 
   function timeLeft(ts: number) {
-    console.log(ts);
     let n = ts - Date.now();
     // let t = new Date(n);
     // let h = t.getHours();
