@@ -28,6 +28,7 @@ const units = [
 ];
 
 export default function VaultTokenInfo(props) {
+  console.log(props.mpaddress);
   const [depositAmt, setDeposit] = useState(0);
   const [withdrawAmt, setWithdrawAmt] = useState(0);
   const [initializeAmt, setInitializeAmt] = useState(0);
@@ -57,11 +58,6 @@ export default function VaultTokenInfo(props) {
   const [writeColor, setWriteColor] = useState("teal");
   const [sellColor, setSellColor] = useState("teal");
   const [settleColor, setSettleColor] = useState("teal");
-
-  const [showDepositErrormsg, setShowDepositErrormsg] = useState(false);
-  const [showIniErrormsg, setShowIniErrormsg] = useState(false);
-  const [showDepositSuccessmsg, setShowDepositSuccessmsg] = useState(false);
-  const [showIniSuccessmsg, setShowIniSuccessmsg] = useState(false);
 
   const [statusMessage, setStatusMessage] = useState("");
   const [showStatus, setShowStatus] = useState(false);
@@ -205,7 +201,6 @@ export default function VaultTokenInfo(props) {
   function initialize(amt) {
     startTX();
     if (amt === 0) {
-      setShowIniErrormsg(true);
       setSM("Error", "Form input Error", true, true);
       setIconStatus("error");
 
@@ -248,7 +243,6 @@ export default function VaultTokenInfo(props) {
   function initialize1(amt) {
     startTX();
     if (amt === 0) {
-      setShowIniErrormsg(true);
       setSM("Error", "Form input Error", true, true);
       setIconStatus("error");
 
@@ -316,7 +310,8 @@ export default function VaultTokenInfo(props) {
   }
 
   function sellCall(amt, premiumAmount, otherPartyAddress) {
-    let amount = web3.utils.toWei(amt, sellCallUnit);
+    //let amount = web3.utils.toWei(amt, sellCallUnit);
+    let amount = parseInt(amt) * (1e8).toString();
     // let pAmount = web3.utils.toWei(premiumAmount, pemiumUnit);
     let pAmount = web3.utils.toWei(premiumAmount, "ether");
     let sc = props.token.sellCalls(
@@ -368,6 +363,7 @@ export default function VaultTokenInfo(props) {
   }
 
   function writeCallRender() {
+    console.log(props.mpaddress);
     return (
       <Form>
         <Divider hidden />
@@ -503,17 +499,18 @@ export default function VaultTokenInfo(props) {
             <Divider hidden />
             {props.token.totalSupply > 0 && !managerClick && (
               <Form>
-                <Form.Group>
-                  <Form.Field>
-                    <input
-                      value={depositAmt}
-                      onChange={(e) => setDeposit(e.target.value)}
-                    />
-                  </Form.Field>
-                  <div style={{ paddingTop: "13px" }}>
-                    {props.token.assetObject.symbol()}
-                  </div>
-                  {/* <Menu compact size="tiny">
+                <div style={{ float: "right" }}>
+                  <Form.Group>
+                    <Form.Field>
+                      <input
+                        value={depositAmt}
+                        onChange={(e) => setDeposit(e.target.value)}
+                      />
+                    </Form.Field>
+                    <div style={{ paddingTop: "13px" }}>
+                      {props.token.assetObject.symbol()}
+                    </div>
+                    {/* <Menu compact size="tiny">
                     <Dropdown
                       defaultValue="ether"
                       options={units}
@@ -521,7 +518,8 @@ export default function VaultTokenInfo(props) {
                       onChange={updatedUnit}
                     />
                   </Menu> */}
-                </Form.Group>
+                  </Form.Group>
+                </div>
                 {/* {showDepositErrormsg && <ErrorMessage />}
                 {showDepositSuccessmsg && <SuccessMessage />} */}
                 <Button

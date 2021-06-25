@@ -128,4 +128,11 @@ export class VaultToken extends ERC20 {
     });
     return asset;
   }
+
+  findAllOT() {
+    return this.VT.getPastEvents("CallsMinted", {
+      fromBlock: 0,
+      toBlock: "latest",
+    });
+  }
 }
