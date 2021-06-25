@@ -8,7 +8,6 @@ import { Table } from "semantic-ui-react";
 import { ERC20 } from "./Erc20";
 
 export default function VTList(props) {
-  console.log(props.mpAddress);
   const [vtList, setVTList] = useState([]);
   const [update, setUpdate] = useState(0);
   const [managedList, setManagedList] = useState([]);
