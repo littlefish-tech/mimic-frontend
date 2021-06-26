@@ -28,7 +28,6 @@ const units = [
 ];
 
 export default function VaultTokenInfo(props) {
-  console.log(props.mpaddress);
   const [depositAmt, setDeposit] = useState(0);
   const [withdrawAmt, setWithdrawAmt] = useState(0);
   const [initializeAmt, setInitializeAmt] = useState(0);
@@ -42,11 +41,7 @@ export default function VaultTokenInfo(props) {
   // ==================== end ================
 
   const [dUnit, setDUnit] = useState("ether");
-  const [wUnit, setWUnit] = useState("ether");
   const [iUnit, setIUnit] = useState("ether");
-  const [writeCallUnit, setWiteCallIUnit] = useState("ether");
-  const [sellCallUnit, setSellCallIUnit] = useState("ether");
-  const [pemiumUnit, setPemiumUnit] = useState("ether");
 
   const [oTokenAddress, setOTokenaddress] = useState("");
   const [writeCallAmt, setWriteCallAmt] = useState(0);
@@ -206,7 +201,7 @@ export default function VaultTokenInfo(props) {
 
       return;
     }
-    let amount = web3.utils.toWei(amt, iUnit);
+    let amount = web3.utils.toWei(amt, "ehter");
     props.token
       .approveAsset(amount, props.acct)
       .on("transactionHash", function (hash) {
@@ -266,28 +261,6 @@ export default function VaultTokenInfo(props) {
     let amount = web3.utils.toWei(amt, "ether");
     let w = props.token.withdraw(amount, props.acct);
     sendTX(w, "Withdraw");
-  }
-
-  function updatedUnit(e, { value }) {
-    setDUnit(value);
-  }
-  function updatewUnit(e, { value }) {
-    setWUnit(value);
-  }
-
-  function updateIUnit(e, { value }) {
-    setIUnit(value);
-  }
-
-  function updatePremiumUnit(e, { value }) {
-    setPemiumUnit(value);
-  }
-
-  function updateWriteCallUnit(e, { value }) {
-    setWiteCallIUnit(value);
-  }
-  function updateSellCallUnit(e, { value }) {
-    setSellCallIUnit(value);
   }
 
   function settleVault() {
@@ -363,7 +336,6 @@ export default function VaultTokenInfo(props) {
   }
 
   function writeCallRender() {
-    console.log(props.mpaddress);
     return (
       <Form>
         <Divider hidden />
