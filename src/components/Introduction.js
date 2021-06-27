@@ -67,9 +67,9 @@ export default function Introduction(props) {
           {" "}
           <h1 style={cardHeaderStyling}>Performance Leaderboard</h1>
           <br />
-          <p style={aboutTextStyle}>
+          <div style={aboutTextStyle}>
             <p style={{ paddingTop: "45px" }}>Coming Soon ...</p>
-          </p>
+          </div>
         </div>
       </div>
     </div>

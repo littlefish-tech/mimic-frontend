@@ -190,7 +190,7 @@ export default function DeployNewVaultToken(props: {
                 onChange={(e: React.SyntheticEvent<HTMLElement>, data: any) =>
                   setAssetTokenAddr(data.value)
                 }
-                allowAdditions
+                // allowAdditions
                 options={assetTokenAddrs}
                 placeholder="Asset Token Address"
                 selection
