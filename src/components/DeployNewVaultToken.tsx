@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { web3 } from "./Web3Handler";
 import { nwConfig, currentChain } from "./NetworkConfig";
 import {

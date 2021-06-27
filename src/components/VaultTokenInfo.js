@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import ErrorMessage from "./ErrorMessage";
-import SuccessMessage from "./SuccessMessage";
+
 import StatusMessage from "./StatusMessage";
 import {
   Header,
@@ -10,9 +9,6 @@ import {
   Icon,
   Segment,
   Form,
-  Dropdown,
-  Menu,
-  Label,
 } from "semantic-ui-react";
 import { web3 } from "./Web3Handler";
 import ERCTokenInfo from "./ERCTokenInfo";
@@ -63,7 +59,6 @@ export default function VaultTokenInfo(props) {
   const [iconStatus, setIconStatus] = useState("loading");
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [managerClick, setManagerClick] = useState(false);
-  const [isApproved, setIsApproved] = useState(false);
 
   function setSM(h, m, s, e) {
     setStatusHeader(h);
@@ -178,7 +173,7 @@ export default function VaultTokenInfo(props) {
         setIconStatus("error");
       })
       .on("confirmation", function (confirmationNumber, receipt) {
-        if (confirmationNumber == 1) {
+        if (confirmationNumber === 1) {
           let i = props.token.deposit(amount, props.acct);
           sendTX(i, "deposit");
           setSM(
@@ -219,7 +214,7 @@ export default function VaultTokenInfo(props) {
         setIconStatus("error");
       })
       .on("confirmation", function (confirmationNumber, receipt) {
-        if (confirmationNumber == 1) {
+        if (confirmationNumber === 1) {
           let i = props.token.initialize(amount, props.acct);
           sendTX(i, "initialize");
           setSM(
@@ -516,7 +511,8 @@ export default function VaultTokenInfo(props) {
           {/* <Header>{props.token.symbol()}</Header> */}
         </Grid>
         <Divider vertical>
-          <Icon name="sync" size="huge" color="teal" />
+          {/* <Icon name="sync" size="huge" color="teal" /> */}
+          And
         </Divider>
       </Segment>
     );

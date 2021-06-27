@@ -25,7 +25,7 @@ export default function Introduction(props) {
         backgroundImage: "linear-gradient(#eddbf4, #f54aefad)",
       }}
     >
-      <img src={profileImg} className="optionalBodyImg" />
+      <img src={profileImg} alt="optional logo" className="optionalBodyImg" />
 
       <h2
         style={{
