@@ -25,9 +25,6 @@ declare global {
 let nC: any = nwConfig;
 
 export default function App() {
-  // let a = web3.eth.getStorageAt(nC[currentChain].storageAddr, 3);
-  // console.log(a);
-
   let addr: string = JSON.parse(localStorage.getItem("account") || "false");
 
   const [hasMM, setHasMM] = useState<boolean>(false);

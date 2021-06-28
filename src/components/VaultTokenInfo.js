@@ -517,15 +517,23 @@ export default function VaultTokenInfo(props) {
       </Segment>
     );
   }
-
+  // vault tokens / (asset tokens + collateral amount)
+  //props.token.assetObject
   function showRatio() {
     return (
       <Grid textAlign="center" stackable>
         <Grid.Column>
           <Header size="large" color="blue">
-            Ratio: {props.token.totalSupply / props.token.vaultBalance}
+            Ratio:{" "}
+            {/* {props.token.totalSupply /
+              (props.token.vaultBalance} */}
+            {props.token.totalSupply /
+              (props.token.vaultBalance + props.token.collateralAmount)}
           </Header>
-          <Header.Subheader># vault tokens/ vault assets</Header.Subheader>
+          {/* <Header.Subheader># vault tokens/ vault assets</Header.Subheader> */}
+          <Header.Subheader>
+            # vault tokens / (asset tokens + collateral amount)
+          </Header.Subheader>
         </Grid.Column>
       </Grid>
     );
